@@ -6,6 +6,7 @@ class Home extends BaseController
 {
     public function index(): string
     {
+        // start
         return view('welcome_message');
     }
 }
