@@ -14,7 +14,7 @@
 
     <!-- LOGO -->
     <div class="p-3 text-center">
-      <a href="<?= base_url() ?>index.html">
+      <a href="<?= base_url() ?>">
         <img src="<?= base_url() ?>assets/img/LOGO_PANJANG.png" alt="LOGO TRANSPARAN" class="img-fluid rectangular-logo">
         <img src="<?= base_url() ?>assets/img/LOGO BULAT.png" alt="LOGO BULAT TRANSPARAN" width="50" class="dark-mode-logo">
       </a>

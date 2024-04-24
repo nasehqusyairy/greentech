@@ -4,23 +4,21 @@ namespace App\Database\Migrations;
 
 use App\Helpers\Migration\Blueprint;
 
-class AddSubmenus extends Blueprint
+class AddMenuRole extends Blueprint
 {
     public function up()
     {
-        $this->create('submenus', function (Blueprint $table) {
+        $this->create('menu_role', function (Blueprint $table) {
             $table->id();
             $table->foreignId('menu_id')->constrained('menus')->cascadeOnDelete()->add();
-            $table->string('name');
-            $table->string('url');
-            $table->string('icon');
-            $table->boolean('isActive')->default(true);
+            $table->foreignId('role_id')->constrained('roles')->cascadeOnDelete()->add();
             $table->timestamps();
+            $table->softDelete();
         });
     }
 
     public function down()
     {
-        $this->dropIfExists('submenus');
+        $this->dropIfExists('menu_role');
     }
 }

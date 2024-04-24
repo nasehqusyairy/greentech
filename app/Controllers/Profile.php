@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use CodeIgniter\Exceptions\PageNotFoundException;
 use App\Models\User;
 
 class Profile extends BaseController

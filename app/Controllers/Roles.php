@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Exceptions\HTTPException;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use App\Models\Role;
 
@@ -17,6 +16,7 @@ class Roles extends BaseController
 
   public function __construct()
   {
+    $this->isNeedLogin();
     parent::__construct();
   }
 
