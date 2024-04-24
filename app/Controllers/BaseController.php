@@ -2,11 +2,14 @@
 
 namespace App\Controllers;
 
+use App\Exceptions\HTTPException;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
+use CodeIgniter\HTTP\Exceptions\RedirectException;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\Services;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -35,7 +38,7 @@ abstract class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = [];
+    protected $helpers = ['input', 'url', 'email', 'user', 'form'];
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -54,5 +57,89 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = \Config\Services::session();
+    }
+
+    protected $rule = ['store' => [], 'update' => []];
+    protected $validator;
+    protected $session;
+
+    public function __construct()
+    {
+        $this->session = Services::session();
+        $this->validator = Services::validation();
+    }
+
+    protected function isNeedLogin(): void
+    {
+        if (!session()->has('user')) throw new RedirectException('/auth');
+    }
+
+    // function to get validated input from POST request
+    protected function validInput(array $files = null): bool|array
+    {
+        // get input
+        $input = $this->request->getPost();
+
+        // clean input
+        $cleanedInput = clean_input($input);
+
+        // get files
+        if ($files) {
+            foreach ($files as $file) {
+                $cleanedInput[$file] = $this->request->getFile($file);
+            }
+        }
+
+        // validate
+        return $this->validator->run($cleanedInput) ? $cleanedInput : false;
+    }
+
+    // function to return response if the input is invalid
+    protected function invalidInputResponse(array $errors): ResponseInterface
+    {
+        return redirect()->setStatusCode(422)->back()->withInput()->with('errors', $errors);
+    }
+
+    // funtion to throw error if the request is not POST
+    protected function isPostRequest(): void
+    {
+        if (!$this->request->is('post')) {
+            throw new HTTPException('This route only accepts POST requests', 405);
+        }
+    }
+
+    protected function cropImage($sourcePath, $destinationPath, $size = 300)
+    {
+        Services::image()
+            ->withFile($sourcePath)
+            ->fit($size, $size, 'center')
+            ->save($destinationPath);
+    }
+
+    protected function upload(array $files = null, callable $callback = null)
+    {
+        $fileUrls = [];
+        foreach ($files as $file) {
+            $key = $file;
+            $file = $this->request->getFile($file);
+
+            if ($file->isValid() && !$file->hasMoved()) {
+                // Generate a new filename
+                $newName = $file->getRandomName();
+
+                $newLocation = 'uploads/' . $file->getExtension();
+
+                // Move the file to uploads/{extenstion} folder under public folder path
+                $file->move(FCPATH . $newLocation, $newName);
+
+                if ($callback) {
+                    $callback($newName, $newLocation, $file);
+                }
+
+                // Get the file URL
+                $fileUrls[$key] = base_url($newLocation . '/' . $newName);
+            }
+        }
+        return $fileUrls;
     }
 }

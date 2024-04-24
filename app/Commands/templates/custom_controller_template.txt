@@ -1,0 +1,110 @@
+<?php
+
+namespace App\Controllers;
+
+use CodeIgniter\Exceptions\PageNotFoundException;
+use App\Models\{modelName};
+
+class {controllerName} extends BaseController
+{
+    protected $rule = [
+      'store'=> [],
+      'update'=> [
+        'id' => 'required|is_not_unique[{modelVar}s.id]',
+      ],
+    ];
+
+    public function __construct()
+    {
+        $this->isNeedLogin();
+        parent::__construct();
+    }
+
+    public function index()
+    {
+      // main view
+      // return view('{segment}/index',[
+      //   '{modelVar}s' => {modelName}::all(),
+      //   'message' => $this->session->has('message') ? $this->session->get('message') : ''
+      // ]);
+      dd({modelName}::all()->toArray());
+    }
+
+    public function create()
+    {
+      // create form
+      return view('{segment}/create');
+    }
+
+    public function store()
+    {
+      // check if the request is POST
+      $this->isPostRequest();
+
+      // set validation rules
+      $this->validator->setRules($this->rule['store']);
+
+      // validated input
+      $validInput = $this->validInput();
+
+      // return response if the input is invalid
+      if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+
+      // manipulate data here
+      {modelName}::create($validInput);
+
+      // redirect
+      return redirect()->to('/{segment}/index')->with('message', '{modelName} data has been saved successfully');
+    }
+
+    public function edit($id)
+    {
+      // find data
+      ${modelVar} = {modelName}::find($id);
+
+      // throw error if the data is not found
+      if ($id == null || !${modelVar}) throw new PageNotFoundException();
+
+      // return view
+      return view('{segment}/edit',[
+        '{modelVar}'=>${modelVar}
+      ]);
+    }
+
+    public function update()
+    {
+       // check if the request is POST
+      $this->isPostRequest();
+
+      // set validation rules
+      $this->validator->setRules($this->rule['update']);
+
+      // validated input
+      $validInput = $this->validInput();
+
+      // return response if the input is invalid
+      if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+
+      // manipulate data here
+      ${modelVar} = {modelName}::find($validInput['id']);
+      ${modelVar}->update($validInput);
+
+      // redirect
+      return redirect()->to('/{segment}/index')->with('message', '{modelName} data has been updated successfully');
+    }
+    
+    public function delete($id)
+    {
+        // find data
+        ${modelVar} = {modelName}::find($id);
+
+        // throw error if the data is not found
+        if (!${modelVar}) throw new PageNotFoundException();
+
+        // delete data
+        ${modelVar}->delete();
+
+        // redirect
+        return redirect()->to('/{segment}/index')->with('message', '{modelName} data has been deleted successfully');
+    }
+}

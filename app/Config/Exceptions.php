@@ -2,9 +2,11 @@
 
 namespace Config;
 
+use App\Exceptions\HTTPException;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Debug\ExceptionHandler;
 use CodeIgniter\Debug\ExceptionHandlerInterface;
+use CodeIgniter\Exceptions\PageNotFoundException;
 use Psr\Log\LogLevel;
 use Throwable;
 
@@ -99,6 +101,15 @@ class Exceptions extends BaseConfig
      */
     public function handler(int $statusCode, Throwable $exception): ExceptionHandlerInterface
     {
+        // if environment is production and server error
+        if (ENVIRONMENT === 'production') {
+            return new \App\Libraries\HTTPExceptionHandler($this);
+        }
+
+        if (in_array($statusCode, [403, 404, 405])) {
+            return new \App\Libraries\HTTPExceptionHandler($this);
+        }
+
         return new ExceptionHandler($this);
     }
 }

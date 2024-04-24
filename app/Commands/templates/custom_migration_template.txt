@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Database\Migrations;
+
+use App\Helpers\Migration\Blueprint;
+
+class {migrationName} extends Blueprint
+{
+    public function up()
+    {
+        $this->create('{tableName}', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+            $table->softDelete();
+        });
+    }
+
+    public function down()
+    {
+        $this->dropIfExists('{tableName}');
+    }
+}
