@@ -6,36 +6,45 @@
 $this->extend('components/layout')
 ?>
 
-<!-- Header (Optional) -->
-<?= $this->section('header') ?>
-<style>
-  body {
-    background-color: #e0e0e0;
-  }
-</style>
-<?= $this->endSection() ?>
-
 <!-- Content -->
-<?= $this->section('content') ?>
-<?php if (session()->has('errors')) : ?>
-  <ul>
-    <?php foreach (session('errors') as $error) : ?>
-      <li><?= $error ?></li>
-    <?php endforeach; ?>
-  </ul>
-<?php endif; ?>
-<form action="/roles/store" method="post">
-  <?= csrf_field() ?>
-  <label for="name">Name</label>
-  <input type="text" name="name" id="name" value="<?= old('name'); ?>">
-  <br>
-  <button type="submit">Submit</button>
-</form>
-<?= $this->endSection() ?>
+<?php $this->section('content');
+if (session()->has('errors')) : ?>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <ul class="m-0">
+      <?php foreach (session('errors') as $error) : ?>
+        <li><?= $error ?></li>
+      <?php endforeach; ?>
+    </ul>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<?php endif;
+?>
+<form action="<?= base_url('roles/store'); ?>" method="post">
+  <?= csrf_field(); ?>
+  <div class="card mb-3">
+    <div class="card-body">
+      <div class="mb-3">
+        <label for="code" class="form-label">Code</label>
+        <input type="text" class="form-control" id="code" name="code" value="<?= old('code'); ?>">
+      </div>
+      <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" class="form-control" id="name" name="name" value="<?= old('name'); ?>">
+      </div>
+      <div class="d-grid d-lg-block gap-2">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="<?= base_url('roles'); ?>" class="btn btn-secondary">Cancel</a>
+      </div>
+    </div>
+  </div>
 
-<!-- Footer (Optional) -->
-<?= $this->section('footer') ?>
+</form>
+
+<?php
+$this->endSection();
+$this->section('footer');
+?>
 <script>
-  document.body.append('footer');
+
 </script>
-<?= $this->endSection() ?>
+<?php $this->endSection() ?>

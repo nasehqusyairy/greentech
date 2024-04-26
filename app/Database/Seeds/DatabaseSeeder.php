@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Super Admin',
             'email' => 'admin@greentech.com',
             'password' => password_hash('password', PASSWORD_DEFAULT),
-            'image' => $fake->imageUrl(),
+            'image' => null,
             'isActive' => 1,
             'gender' => 0,
             'role_id' => 1,
@@ -77,7 +77,7 @@ class DatabaseSeeder extends Seeder
             $this->db->table('submenus')->insert([
                 'menu_id' => $menu_id,
                 'name' => ucfirst($submenu),
-                'url' => $submenu . '/',
+                'url' => base_url() . $submenu . '/',
                 'icon' => 'person-gear',
             ]);
         }
@@ -93,7 +93,7 @@ class DatabaseSeeder extends Seeder
             $this->db->table('submenus')->insert([
                 'menu_id' => $menu_id,
                 'name' => ucfirst($submenu),
-                'url' => $submenu . '/',
+                'url' => base_url() . $submenu . '/',
                 'icon' => 'people',
             ]);
         }
@@ -111,7 +111,7 @@ class DatabaseSeeder extends Seeder
             $this->db->table('submenus')->insert([
                 'menu_id' => $menu_id,
                 'name' => ucfirst($submenu),
-                'url' => $submenu . '/',
+                'url' => base_url() . $submenu . '/',
                 'icon' => 'gear',
             ]);
         }
@@ -119,6 +119,8 @@ class DatabaseSeeder extends Seeder
         // menu_role
         $menuRoles = [
             ['role' => 'Super Admin', 'menu' => 'Super'],
+            ['role' => 'Super Admin', 'menu' => 'Admin'],
+            ['role' => 'Super Admin', 'menu' => 'Setting'],
             ['role' => 'Admin', 'menu' => 'Admin'],
             ['role' => 'Admin', 'menu' => 'Setting'],
         ];
@@ -135,11 +137,11 @@ class DatabaseSeeder extends Seeder
 
         // permissions
         $permissions = [
-            'roles/',
-            'users/',
-            'permissions/',
-            'menus/',
-            'submenus/',
+            '/' . 'roles/',
+            '/' . 'users/',
+            '/' . 'permissions/',
+            '/' . 'menus/',
+            '/' . 'submenus/',
         ];
 
         foreach ($permissions as $key => $permission) {
@@ -150,11 +152,15 @@ class DatabaseSeeder extends Seeder
 
         // permission_role
         $permissionRoles = [
-            ['role' => 'Super Admin', 'permission' => 'roles/'],
-            ['role' => 'Super Admin', 'permission' => 'users/'],
-            ['role' => 'Super Admin', 'permission' => 'permissions/'],
-            ['role' => 'Super Admin', 'permission' => 'menus/'],
-            ['role' => 'Super Admin', 'permission' => 'submenus/'],
+            ['role' => 'Super Admin', 'permission' => $permissions[0]],
+            ['role' => 'Super Admin', 'permission' => $permissions[1]],
+            ['role' => 'Super Admin', 'permission' => $permissions[2]],
+            ['role' => 'Super Admin', 'permission' => $permissions[3]],
+            ['role' => 'Super Admin', 'permission' => $permissions[4]],
+            ['role' => 'Admin', 'permission' => $permissions[1]],
+            ['role' => 'Admin', 'permission' => $permissions[2]],
+            ['role' => 'Admin', 'permission' => $permissions[3]],
+            ['role' => 'Admin', 'permission' => $permissions[4]],
         ];
 
         foreach ($permissionRoles as $key => $permissionRole) {

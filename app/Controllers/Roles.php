@@ -8,9 +8,14 @@ use App\Models\Role;
 class Roles extends BaseController
 {
   protected $rule = [
-    'store' => [],
+    'store' => [
+      'code' => 'required|is_unique[roles.code]',
+      'name' => 'required|alpha_numeric_punct',
+    ],
     'update' => [
       'id' => 'required|is_not_unique[roles.id]',
+      'code' => 'required|is_unique[roles.code,roles.id,{id}]',
+      'name' => 'required|alpha_numeric_punct',
     ],
   ];
 
@@ -23,17 +28,21 @@ class Roles extends BaseController
   public function index()
   {
     // main view
-    // return view('roles/index',[
-    //   'roles' => Role::all(),
-    //   'message' => $this->session->has('message') ? $this->session->get('message') : ''
-    // ]);
-    dd(Role::all()->toArray());
+    return view('roles/index', [
+      'title' => 'Roles',
+      'roles' => Role::where('code', '!=', '0')->get(),
+      'deleted' => Role::onlyTrashed()->get(),
+      'message' => $this->session->has('message') ? $this->session->get('message') : ''
+    ]);
+    // dd(Role::all()->toArray());
   }
 
   public function create()
   {
     // create form
-    return view('roles/create');
+    return view('roles/create', [
+      'title' => 'New Role'
+    ]);
   }
 
   public function store()
@@ -55,7 +64,7 @@ class Roles extends BaseController
     $role->create($validInput);
 
     // redirect
-    return redirect()->to('/roles/index')->with('message', 'Role data has been saved successfully');
+    return redirect()->to('/roles')->with('message', 'Role data has been saved successfully');
   }
 
   public function edit($id)
@@ -68,7 +77,8 @@ class Roles extends BaseController
 
     // return view
     return view('roles/edit', [
-      'role' => $role
+      'role' => $role,
+      'title' => 'Edit Role'
     ]);
   }
 
@@ -85,6 +95,8 @@ class Roles extends BaseController
 
     // return response if the input is invalid
     if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+
+    // dd($validInput);
 
     // manipulate data here
     $role = Role::find($validInput['id']);
@@ -106,6 +118,20 @@ class Roles extends BaseController
     $role->delete();
 
     // redirect
-    return redirect()->to('/roles/index')->with('message', 'Role data has been deleted successfully');
+    return redirect()->to('/roles')->with('message', 'Role data has been deleted successfully');
+  }
+
+  public function restore($id)
+  {
+    $role = Role::withTrashed()->find($id);
+
+    // throw error if the role is not found
+    if (!$role) throw new PageNotFoundException();
+
+    // restore data
+    $role->restore();
+
+    // redirect
+    return redirect()->to('/roles')->with('message', 'Role data has been restored successfully');
   }
 }

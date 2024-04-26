@@ -13,7 +13,7 @@
     <!-- END OF SIDEBAR HEADER -->
 
     <!-- LOGO -->
-    <div class="p-3 text-center">
+    <div class="p-3 text-center sidebar-logo">
       <a href="<?= base_url() ?>">
         <img src="<?= base_url() ?>assets/img/LOGO_PANJANG.png" alt="LOGO TRANSPARAN" class="img-fluid rectangular-logo">
         <img src="<?= base_url() ?>assets/img/LOGO BULAT.png" alt="LOGO BULAT TRANSPARAN" width="50" class="dark-mode-logo">
@@ -26,49 +26,49 @@
 
       <div class="accordion accordion-flush">
 
-        <!-- ADMIN MENU -->
-        <!-- <div class="accordion-item text-bg-dark border-0"> -->
+        <?php
 
-        <!-- ADMIN MENU HEADER -->
-        <!-- <div class="accordion-header px-3">
-            <button class="accordion-button text-bg-dark shadow-none p-0 py-3" type="button" data-bs-toggle="collapse" data-bs-target="#submenu-admin">
-              ADMIN
-            </button>
-          </div> -->
+        use App\Models\User;
 
-        <!-- ADMIN SUBMENU -->
-        <!-- <div id="submenu-admin" class="accordion-collapse collapse show">
-            <div class="accordion-body p-0 px-3">
-              <div class="list-group list-group-flush">
 
-                <a href="<?= base_url() ?>index.html" class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark" data-bs-placement="right" data-bs-title="Dashboard">
-                  <i class="bi bi-speedometer me-3"></i>
-                  <span class="submenu-title">Dashboard</span>
-                </a>
+        User::find(session('user'))->load('role.menus.submenus')->role->menus->each(function ($menu) {
+        ?>
+          <!-- <?= strtoupper($menu->name); ?> MENU -->
+          <div class="accordion-item text-bg-dark border-0">
 
-                <a href="<?= base_url() ?>table.html" class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark" data-bs-placement="right" data-bs-title="Table">
-                  <i class="bi bi-table me-3"></i>
-                  <span class="submenu-title">Table</span>
-                </a>
+            <!-- <?= strtoupper($menu->name); ?> MENU HEADER -->
+            <div class="accordion-header px-3">
+              <button class="accordion-button text-bg-dark shadow-none p-0 py-3" type="button" data-bs-toggle="collapse" data-bs-target="#submenu-<?= $menu->id; ?>">
+                <?= $menu->name ?>
+              </button>
+            </div>
 
-                <a href="<?= base_url() ?>form.html" class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark" data-bs-placement="right" data-bs-title="Form">
-                  <i class="bi bi-input-cursor me-3"></i>
-                  <span class="submenu-title">Form</span>
-                </a>
+            <!-- <?= strtoupper($menu->name); ?> SUBMENU -->
+            <div id="submenu-<?= $menu->id; ?>" class="accordion-collapse collapse show">
+              <div class="accordion-body p-0 px-3">
+                <div class="list-group list-group-flush">
 
-                <a href="<?= base_url() ?>settings.html" class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark" data-bs-placement="right" data-bs-title="Settings">
-                  <i class="bi bi-gear me-3"></i>
-                  <span class="submenu-title">Settings</span>
-                </a>
+                  <?php
+                  $menu->submenus->each(function ($submenu) {
+                    $uri = new \CodeIgniter\HTTP\URI($submenu->url);
+                    $firstSegment = $uri->getSegment(1);
+                  ?>
+                    <a href="<?= $submenu->url ?>" class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark <?= current_url(true)->getSegment(1) == $firstSegment ? 'active' : ''; ?>" data-bs-placement="right" data-bs-title="<?= $submenu->name ?>">
+                      <i class="bi bi-<?= $submenu->icon ?> me-3"></i>
+                      <span class="submenu-title"><?= $submenu->name ?></span>
+                    </a>
+                  <?php }); ?>
 
+                </div>
               </div>
             </div>
-          </div> -->
-        <!-- END OF ADMIN SUBMENU -->
+            <!-- END OF <?= strtoupper($menu->name); ?> SUBMENU -->
 
-        <!-- </div> -->
-        <!-- END OF ADMIN MENU -->
-
+          </div>
+          <!-- END OF <?= strtoupper($menu->name); ?> MENU -->
+        <?php
+        });
+        ?>
 
 
         <!-- GENERAL MENU -->
@@ -85,12 +85,12 @@
             <div class="accordion-body p-0 px-3">
               <div class="list-group list-group-flush">
 
-                <a href="/profile.html" class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark" data-bs-placement="right" data-bs-title="Profile">
+                <a href="<?= base_url('profile'); ?>" class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark" data-bs-placement="right" data-bs-title="Profile">
                   <img src="<?= user()->image ?? base_url('assets/img/person-circle.svg') ?>" alt="" width="16" class="me-3 rounded-circle">
                   <span class="submenu-title">Profile</span>
                 </a>
 
-                <a href="#" class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark" data-bs-toggle="modal" data-bs-target="#logoutModal" data-bs-placement="right" data-bs-title="Log Out">
+                <a href="javascript:void()" class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark" data-bs-toggle="modal" data-bs-target="#logoutModal" data-bs-placement="right" data-bs-title="Log Out">
                   <i class="bi bi-box-arrow-left me-3"></i>
                   <span class="submenu-title">Log Out</span>
                 </a>

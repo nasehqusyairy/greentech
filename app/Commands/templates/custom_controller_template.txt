@@ -25,7 +25,8 @@ class {controllerName} extends BaseController
       // main view
       // return view('{segment}/index',[
       //   '{modelVar}s' => {modelName}::all(),
-      //   'message' => $this->session->has('message') ? $this->session->get('message') : ''
+      //   'message' => $this->session->has('message') ? $this->session->get('message') : '',
+      //   'title' => '{modelName}'
       // ]);
       dd({modelName}::all()->toArray());
     }
@@ -33,7 +34,9 @@ class {controllerName} extends BaseController
     public function create()
     {
       // create form
-      return view('{segment}/create');
+      return view('{segment}/create',[
+        'title' => 'New {modelName}'
+      ]);
     }
 
     public function store()
@@ -67,7 +70,8 @@ class {controllerName} extends BaseController
 
       // return view
       return view('{segment}/edit',[
-        '{modelVar}'=>${modelVar}
+        '{modelVar}'=>${modelVar},
+        'title' => 'Edit {modelName}'
       ]);
     }
 
