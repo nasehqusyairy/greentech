@@ -3,6 +3,9 @@
 namespace App\Controllers;
 
 use App\Exceptions\HTTPException;
+use App\Models\Permission;
+use App\Models\Role;
+use App\Models\User;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\Exceptions\RedirectException;
@@ -38,7 +41,7 @@ abstract class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = ['input', 'url', 'email', 'user', 'form'];
+    protected $helpers = ['input', 'url', 'email', 'form', 'component', 'output'];
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -69,9 +72,33 @@ abstract class BaseController extends Controller
         $this->validator = Services::validation();
     }
 
+    private function authorize(): void
+    {
+        // Ambil path dari URL saat ini
+        $currentPath = service('uri')->getPath();
+
+        // $currentPath tidak boleh diawali maupun diakhiri dengan '/'
+        $currentPath = trim($currentPath, '/');
+
+        // pisahkan path berdasarkan '/'
+        $pathParts = explode('/', $currentPath);
+
+        // Ambil data user dari session
+        $user = User::find(session('user'))->load('role.permissions');
+
+        if (Permission::where('path', $pathParts[0])->first() && !$user->role->permissions->contains('path', $pathParts[0])) {
+            throw new HTTPException('You are not authorized to access this page', 403);
+        }
+
+        if (Permission::where('path', $currentPath)->first() && !$user->role->permissions->contains('path', $currentPath)) {
+            throw new HTTPException('You are not authorized to access this page', 403);
+        }
+    }
+
     protected function isNeedLogin(): void
     {
         if (!session()->has('user')) throw new RedirectException('/auth');
+        $this->authorize();
     }
 
     // function to get validated input from POST request
@@ -141,5 +168,19 @@ abstract class BaseController extends Controller
             }
         }
         return $fileUrls;
+    }
+
+    protected function getCountries()
+    {
+        return json_decode(file_get_contents('https://restcountries.com/v3.1/all?fields=name,cca2,idd'));
+    }
+
+    protected function getCountryRules(): string
+    {
+        $countryList = [];
+        foreach ($this->getCountries() as $country) {
+            $countryList[] = $country->cca2;
+        }
+        return 'in_list' . str_replace('"', '', json_encode($countryList));
     }
 }

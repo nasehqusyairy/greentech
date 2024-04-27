@@ -26,6 +26,7 @@ class AddUsers extends Blueprint
             $table->string('activationCode')->nullable();
             $table->string('resetPasswordCode')->nullable();
             $table->timestamps();
+            $table->softDelete();
         });
     }
 

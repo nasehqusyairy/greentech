@@ -12,6 +12,7 @@ class AddMenus extends Blueprint
             $table->id();
             $table->string('name');
             $table->timestamps();
+            $table->softDelete();
         });
     }
 

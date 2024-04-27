@@ -12,6 +12,7 @@ class AddPermissions extends Blueprint
             $table->id();
             $table->string('path')->unique();
             $table->timestamps();
+            $table->softDelete();
         });
     }
 

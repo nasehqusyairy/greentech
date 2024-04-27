@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
                 'name' => $fake->name,
                 'email' => $fake->email,
                 'password' => password_hash('password', PASSWORD_DEFAULT),
-                'image' => $fake->imageUrl(),
+                'image' => null,
                 'isActive' => 1,
                 'gender' => rand(0, 2),
                 'role_id' => $role_id,
@@ -137,11 +137,11 @@ class DatabaseSeeder extends Seeder
 
         // permissions
         $permissions = [
-            '/' . 'roles/',
-            '/' . 'users/',
-            '/' . 'permissions/',
-            '/' . 'menus/',
-            '/' . 'submenus/',
+            'roles',
+            'users',
+            'permissions',
+            'menus',
+            'submenus',
         ];
 
         foreach ($permissions as $key => $permission) {

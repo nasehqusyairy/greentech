@@ -21,8 +21,8 @@ class Profile extends BaseController
 
   public function __construct()
   {
-    $this->isNeedLogin();
     parent::__construct();
+    $this->isNeedLogin();
   }
 
   public function index()
@@ -39,14 +39,8 @@ class Profile extends BaseController
     // check if the request is POST
     $this->isPostRequest();
 
-    // country must be matched with the cca2 country list from https://restcountries.com/v3.1/all?fields=name,cca2,idd using file_get_contents
-    $res = file_get_contents('https://restcountries.com/v3.1/all?fields=name,cca2,idd');
-    $countries = json_decode($res);
-    $countryList = [];
-    foreach ($countries as $country) {
-      $countryList[] = $country->cca2;
-    }
-    $this->rule['update']['country'] = 'in_list' . str_replace('"', '', json_encode($countryList));
+    // country must be matched with the cca2 country list from https://restcountries.com/v3.1/all?fields=name,cca2,idd
+    $this->rule['update']['country'] = $this->getCountryRules();
 
     // set validation rules
     $this->validator->setRules($this->rule['update']);
@@ -72,6 +66,19 @@ class Profile extends BaseController
         unlink(FCPATH . str_replace('/', '\\', str_replace(base_url(), '', $user->image)));
       }
       $validInput['image'] = $files['image'];
+    }
+
+    // set mail
+    $mail = set_mail(
+      'Your account has been updated',
+      "Hello, <strong>$validInput[name]</strong>! Your account has been updated. If you did not make this change, please contact our customer service.",
+      base_url('/profile/index'),
+      'Go to Profile'
+    );
+
+    // send email
+    if (!send_email($mail, $user->email)) {
+      return redirect()->back()->withInput()->with('message', 'Failed to send email, please make sure your email is valid and try again. If the problem persists, please contact our customer service.');
     }
 
     $user->update($validInput);

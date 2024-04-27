@@ -21,8 +21,8 @@ class Roles extends BaseController
 
   public function __construct()
   {
-    $this->isNeedLogin();
     parent::__construct();
+    $this->isNeedLogin();
   }
 
   public function index()
@@ -67,7 +67,7 @@ class Roles extends BaseController
     return redirect()->to('/roles')->with('message', 'Role data has been saved successfully');
   }
 
-  public function edit($id)
+  public function edit($id = null)
   {
     // edit form
     $role = Role::find($id);
@@ -106,13 +106,13 @@ class Roles extends BaseController
     return redirect()->to('/roles/index')->with('message', 'Role data has been updated successfully');
   }
 
-  public function delete($id)
+  public function delete($id = null)
   {
     // delete data
     $role = Role::find($id);
 
     // throw error if the role is not found
-    if (!$role) throw new PageNotFoundException();
+    if (!$role || $role->code == 0) throw new PageNotFoundException();
 
     // delete data
     $role->delete();
@@ -121,7 +121,7 @@ class Roles extends BaseController
     return redirect()->to('/roles')->with('message', 'Role data has been deleted successfully');
   }
 
-  public function restore($id)
+  public function restore($id = null)
   {
     $role = Role::withTrashed()->find($id);
 

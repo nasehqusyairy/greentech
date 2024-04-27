@@ -16,6 +16,7 @@ class AddSubmenus extends Blueprint
             $table->string('icon');
             $table->boolean('isActive')->default(true);
             $table->timestamps();
+            $table->softDelete();
         });
     }
 

@@ -16,8 +16,8 @@ class {controllerName} extends BaseController
 
     public function __construct()
     {
-        $this->isNeedLogin();
         parent::__construct();
+        $this->isNeedLogin();
     }
 
     public function index()
@@ -26,7 +26,7 @@ class {controllerName} extends BaseController
       // return view('{segment}/index',[
       //   '{modelVar}s' => {modelName}::all(),
       //   'message' => $this->session->has('message') ? $this->session->get('message') : '',
-      //   'title' => '{modelName}'
+      //   'title' => '{modelName}s'
       // ]);
       dd({modelName}::all()->toArray());
     }
@@ -110,5 +110,18 @@ class {controllerName} extends BaseController
 
         // redirect
         return redirect()->to('/{segment}/index')->with('message', '{modelName} data has been deleted successfully');
+    }
+    public function restore($id = null)
+    {
+      ${modelVar} = {modelName}::withTrashed()->find($id);
+
+      // throw error if the {modelVar} is not found
+      if (!${modelVar}) throw new PageNotFoundException();
+
+      // restore data
+      ${modelVar}->restore();
+
+      // redirect
+      return redirect()->to('/{segment}')->with('message', '{modelName} data has been restored successfully');
     }
 }

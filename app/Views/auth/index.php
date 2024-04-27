@@ -15,11 +15,17 @@ $this->section('content');
           <h3 class="text-center">Welcome Back!</h3>
           <?php if (session()->has('errors')) : ?>
             <div class="alert alert-danger" role="alert">
-              <ul>
-                <?php foreach (session('errors') as $error) : ?>
-                  <li><?= $error ?></li>
-                <?php endforeach; ?>
-              </ul>
+              <?php
+              if (count(session('errors')) > 1) :
+              ?>
+                <ul>
+                  <?php foreach (session('errors') as $error) : ?>
+                    <li><?= $error ?></li>
+                  <?php endforeach; ?>
+                </ul>
+              <?php else : ?>
+                <?= array_values(session('errors'))[0] ?>
+              <?php endif; ?>
             </div>
           <?php endif; ?>
           <?php if (session()->has('message')) : ?>

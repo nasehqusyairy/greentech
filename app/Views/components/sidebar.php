@@ -15,11 +15,12 @@
     <!-- LOGO -->
     <div class="p-3 text-center sidebar-logo">
       <a href="<?= base_url() ?>">
-        <img src="<?= base_url() ?>assets/img/LOGO_PANJANG.png" alt="LOGO TRANSPARAN" class="img-fluid rectangular-logo">
-        <img src="<?= base_url() ?>assets/img/LOGO BULAT.png" alt="LOGO BULAT TRANSPARAN" width="50" class="dark-mode-logo">
+        <img src="<?= base_url() ?>assets/img/LOGO_TRANSPARAN.png" alt="LOGO TRANSPARAN" class="img-fluid rectangular-logo">
+        <img src="<?= base_url() ?>assets/img/LOGO BULAT TRANSPARAN.png" alt="LOGO BULAT TRANSPARAN" width="50" class="dark-mode-logo">
       </a>
       <!-- <img src="<?= base_url() ?>assets/img/logo greentech.png" loading="lazy" alt="" class="img-fluid"> -->
     </div>
+    <hr>
 
     <!-- SIDEBAR BODY -->
     <div class="sidebar-body mb-3">
@@ -30,8 +31,10 @@
 
         use App\Models\User;
 
+        $user = User::find(session('user'));
 
-        User::find(session('user'))->load('role.menus.submenus')->role->menus->each(function ($menu) {
+
+        $user->load('role.menus.submenus')->role->menus->each(function ($menu) {
         ?>
           <!-- <?= strtoupper($menu->name); ?> MENU -->
           <div class="accordion-item text-bg-dark border-0">
@@ -85,8 +88,8 @@
             <div class="accordion-body p-0 px-3">
               <div class="list-group list-group-flush">
 
-                <a href="<?= base_url('profile'); ?>" class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark" data-bs-placement="right" data-bs-title="Profile">
-                  <img src="<?= user()->image ?? base_url('assets/img/person-circle.svg') ?>" alt="" width="16" class="me-3 rounded-circle">
+                <a href="<?= base_url('profile'); ?>" class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark <?= current_url(true)->getSegment(1) == 'profile' ? 'active' : ''; ?>" data-bs-placement="right" data-bs-title="Profile">
+                  <img src="<?= $user->image ?? base_url('assets/img/person-circle.svg') ?>" alt="" width="16" class="me-3 rounded-circle border border-light">
                   <span class="submenu-title">Profile</span>
                 </a>
 

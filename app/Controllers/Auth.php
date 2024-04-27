@@ -43,14 +43,20 @@ class Auth extends BaseController
 
     if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
 
-    $user = User::where('email', $validInput['email'])->first();
+    // get user by email including deleted user
+    $user = User::withTrashed()->where('email', $validInput['email'])->first();
 
     if (!$user) {
       return $this->invalidInputResponse(['email' => 'Email is not registered']);
     }
 
     if (!$user->isActive) {
-      // return $this->invalidInputResponse(['email' => 'Email is not activated']);
+      return $this->invalidInputResponse(['email' => 'Email is not activated, please check your email to activate your account']);
+    }
+
+    // if deleted
+    if ($user->deleted_at) {
+      return $this->invalidInputResponse(['email' => 'Your account has been deleted, please contact our customer service']);
     }
 
     if (!password_verify($validInput['password'], $user->password)) {

@@ -6,86 +6,84 @@
 $this->extend('components/layout');
 $this->section('content');
 ?>
-<div class="container">
-  <?php
-  if (!empty($message)) : ?>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <?= $message ?>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<?php
+if (!empty($message)) : ?>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <?= $message ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<?php endif ?>
+<div class="card">
+  <div class="card-body">
+    <div class="mb-3">
+      <a href="/roles/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Role</a>
     </div>
-  <?php endif ?>
-  <div class="card">
-    <div class="card-body">
-      <div class="mb-3">
-        <a href="/roles/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Role</a>
-      </div>
-      <ul class="nav nav-tabs" id="tab">
-        <li class="nav-item">
-          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#available-tab-pane" type="button">Available</button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#deleted-tab-pane" type="button">Deleted</button>
-        </li>
-      </ul>
-      <div class="tab-content" id="tabContent">
-        <div class="tab-pane fade show active" id="available-tab-pane">
-          <div class="table-responsive">
-            <table class="table table-striped table-hover w-100" id="available">
-              <thead>
+    <ul class="nav nav-tabs" id="tab">
+      <li class="nav-item">
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#available-tab-pane" type="button">Available</button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#deleted-tab-pane" type="button">Deleted</button>
+      </li>
+    </ul>
+    <div class="tab-content" id="tabContent">
+      <div class="tab-pane fade show active" id="available-tab-pane">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover w-100" id="available">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Code</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              $i = 1;
+              foreach ($roles as $role) : ?>
                 <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Code</th>
-                  <th>Actions</th>
+                  <td><?= $i++; ?></td>
+                  <td><?= $role->name ?></td>
+                  <td><?= $role->code ?></td>
+                  <td>
+                    <a href="/roles/edit/<?= $role->id ?>" class="btn btn-warning"><i class="bi bi-pencil"></i></a>
+                    <button onclick="handleDelete(<?= $role->id; ?>)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                <?php
-                $i = 1;
-                foreach ($roles as $role) : ?>
-                  <tr>
-                    <td><?= $i++; ?></td>
-                    <td><?= $role->name ?></td>
-                    <td><?= $role->code ?></td>
-                    <td>
-                      <a href="/roles/edit/<?= $role->id ?>" class="btn btn-warning"><i class="bi bi-pencil"></i></a>
-                      <button onclick="handleDelete(<?= $role->id; ?>)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
-                    </td>
-                  </tr>
-                <?php endforeach; ?>
-              </tbody>
-            </table>
-          </div>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
         </div>
-        <div class="tab-pane fade" id="deleted-tab-pane">
-          <div class="table-responsive">
-            <table class="table table-striped table-hover w-100" id="deleted">
-              <thead>
+      </div>
+      <div class="tab-pane fade" id="deleted-tab-pane">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover w-100" id="deleted">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Code</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              $i = 1;
+              foreach ($deleted as $role) : ?>
                 <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Code</th>
-                  <th>Actions</th>
+                  <td><?= $i++; ?></td>
+                  <td><?= $role->name ?></td>
+                  <td><?= $role->code ?></td>
+                  <td>
+                    <a href="<?= base_url('roles/restore/' . $role->id); ?>" class="btn btn-secondary">
+                      <i class="bi bi-arrow-repeat"></i>
+                    </a>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                <?php
-                $i = 1;
-                foreach ($deleted as $role) : ?>
-                  <tr>
-                    <td><?= $i++; ?></td>
-                    <td><?= $role->name ?></td>
-                    <td><?= $role->code ?></td>
-                    <td>
-                      <a href="<?= base_url('roles/restore/' . $role->id); ?>" class="btn btn-secondary">
-                        <i class="bi bi-arrow-repeat"></i>
-                      </a>
-                    </td>
-                  </tr>
-                <?php endforeach; ?>
-              </tbody>
-            </table>
-          </div>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

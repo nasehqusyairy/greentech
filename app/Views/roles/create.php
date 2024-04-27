@@ -3,11 +3,9 @@
 /**
  * @var CodeIgniter\View\View $this
  */
-$this->extend('components/layout')
-?>
+$this->extend('components/layout');
+$this->section('content');
 
-<!-- Content -->
-<?php $this->section('content');
 if (session()->has('errors')) : ?>
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
     <ul class="m-0">
@@ -17,8 +15,8 @@ if (session()->has('errors')) : ?>
     </ul>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
-<?php endif;
-?>
+<?php endif ?>
+
 <form action="<?= base_url('roles/store'); ?>" method="post">
   <?= csrf_field(); ?>
   <div class="card mb-3">
