@@ -33,6 +33,7 @@ if (!empty($message)) : ?>
             <thead>
               <tr>
                 <th>#</th>
+                <th>Code</th>
                 <th>Name</th>
                 <th>Actions</th>
               </tr>
@@ -43,6 +44,7 @@ if (!empty($message)) : ?>
               foreach ($menus as $menu) : ?>
                 <tr>
                   <td><?= $i++; ?></td>
+                  <td><?= $menu->code; ?></td>
                   <td><?= $menu->name ?></td>
                   <td>
                     <a href="/menus/addroles/<?= $menu->id ?>" class="btn btn-info mb-1"><i class="bi bi-gear"></i></a>
@@ -61,6 +63,7 @@ if (!empty($message)) : ?>
             <thead>
               <tr>
                 <th>#</th>
+                <th>Code</th>
                 <th>Name</th>
                 <th>Actions</th>
               </tr>
@@ -71,6 +74,7 @@ if (!empty($message)) : ?>
               foreach ($deleted as $menu) : ?>
                 <tr>
                   <td><?= $i++; ?></td>
+                  <td><?= $menu->code; ?></td>
                   <td><?= $menu->name ?></td>
                   <td>
                     <a href="<?= base_url('menus/restore/' . $menu->id); ?>" class="btn btn-secondary">
@@ -98,7 +102,7 @@ if (!empty($message)) : ?>
         <p>Are you sure you want to delete this item?</p>
       </div>
       <div class="modal-footer">
-        <a href="javascript:void()" class="btn btn-danger">Delete</a>
+        <a href="javascript:void(0)" class="btn btn-danger">Delete</a>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
       </div>
     </div>

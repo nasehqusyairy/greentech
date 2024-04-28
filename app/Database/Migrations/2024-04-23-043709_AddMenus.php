@@ -10,6 +10,7 @@ class AddMenus extends Blueprint
     {
         $this->create('menus', function (Blueprint $table) {
             $table->id();
+            $table->string('code')->unique();
             $table->string('name');
             $table->timestamps();
             $table->softDelete();

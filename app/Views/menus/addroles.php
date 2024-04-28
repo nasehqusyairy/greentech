@@ -64,7 +64,7 @@ if (session()->has('message')) : ?>
               <td><?= $i++; ?></td>
               <td><?= $role->name ?></td>
               <td>
-                <a href="javascript:void()" onclick="handleDelete('<?= $menu->id; ?>','<?= $role->id; ?>')" class="btn btn-danger mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-x"></i></a>
+                <a href="javascript:void(0)" onclick="handleDelete('<?= $menu->id; ?>','<?= $role->id; ?>')" class="btn btn-danger mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-x"></i></a>
               </td>
             </tr>
           <?php endforeach; ?>
@@ -94,7 +94,7 @@ if (session()->has('message')) : ?>
         <p>Are you sure you want to <u>permanently</u> delete this item?</p>
       </div>
       <div class="modal-footer">
-        <a href="javascript:void()" class="btn btn-danger">Delete</a>
+        <a href="javascript:void(0)" class="btn btn-danger">Delete</a>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
       </div>
     </div>

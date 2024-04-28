@@ -8,7 +8,7 @@ $this->section('content');
 ?>
 <?php
 if (!empty($message)) : ?>
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <div class="alert alert-success alert-dismissible fade show">
     <?= $message ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
@@ -16,7 +16,7 @@ if (!empty($message)) : ?>
 <div class="card">
   <div class="card-body">
     <div class="mb-3">
-      <a href="/roles/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Role</a>
+      <a href="/submenus/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Submenu</a>
     </div>
     <ul class="nav nav-tabs" id="tab">
       <li class="nav-item">
@@ -34,21 +34,33 @@ if (!empty($message)) : ?>
               <tr>
                 <th>#</th>
                 <th>Name</th>
+                <th>URL</th>
                 <th>Code</th>
+                <th>Parent</th>
+                <th>Icon</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               <?php
               $i = 1;
-              foreach ($roles as $role) : ?>
+              foreach ($submenus as $submenu) : ?>
                 <tr>
                   <td><?= $i++; ?></td>
-                  <td><?= $role->name ?></td>
-                  <td><?= $role->code ?></td>
+                  <td><?= $submenu->name ?></td>
                   <td>
-                    <a href="/roles/edit/<?= $role->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
-                    <button onclick="handleDelete(<?= $role->id; ?>)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <a href="<?= $submenu->url ?>"><?= $submenu->url ?></a>
+                  </td>
+                  <td><?= $submenu->code; ?></td>
+                  <td><?= $submenu->menu->name; ?></td>
+                  <td>
+                    <button class="btn btn-primary">
+                      <i class="<?= $submenu->icon ?>"></i>
+                    </button>
+                  </td>
+                  <td>
+                    <a href="/submenus/edit/<?= $submenu->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
+                    <button onclick="handleDelete(<?= $submenu->id; ?>)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -63,20 +75,32 @@ if (!empty($message)) : ?>
               <tr>
                 <th>#</th>
                 <th>Name</th>
+                <th>URL</th>
                 <th>Code</th>
+                <th>Parent</th>
+                <th>Icon</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               <?php
               $i = 1;
-              foreach ($deleted as $role) : ?>
+              foreach ($deleted as $submenu) : ?>
                 <tr>
                   <td><?= $i++; ?></td>
-                  <td><?= $role->name ?></td>
-                  <td><?= $role->code ?></td>
+                  <td><?= $submenu->name ?></td>
                   <td>
-                    <a href="<?= base_url('roles/restore/' . $role->id); ?>" class="btn btn-secondary">
+                    <a href="<?= $submenu->url ?>"><?= $submenu->url ?></a>
+                  </td>
+                  <td><?= $submenu->code; ?></td>
+                  <td><?= $submenu->menu->name; ?></td>
+                  <td>
+                    <button class="btn btn-primary">
+                      <i class="bi bi-<?= $submenu->icon ?>"></i>
+                    </button>
+                  </td>
+                  <td>
+                    <a href="<?= base_url('submenus/restore/' . $submenu->id); ?>" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
                     </a>
                   </td>
@@ -113,7 +137,7 @@ $this->endSection();
 $this->section('footer');
 ?>
 <script>
-  const handleDelete = (id) => document.querySelector('#deleteModal .modal-footer a').href = '<?= base_url(); ?>' + 'roles/delete/' + id;
+  const handleDelete = (id) => document.querySelector('#deleteModal .modal-footer a').href = '<?= base_url(); ?>' + 'submenus/delete/' + id;
   // DataTables
   const table = new DataTable('#available');
   const table_deleted = new DataTable('#deleted');

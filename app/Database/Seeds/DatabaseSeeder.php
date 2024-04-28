@@ -62,13 +62,14 @@ class DatabaseSeeder extends Seeder
 
         foreach ($menus as $key => $menu) {
             $this->db->table('menus')->insert([
+                'code' => $key,
                 'name' => $menu,
             ]);
         }
 
         // super's submenus
         $superSubmenus = [
-            'roles',
+            '0' => 'roles',
         ];
 
         foreach ($superSubmenus as $key => $submenu) {
@@ -76,15 +77,16 @@ class DatabaseSeeder extends Seeder
 
             $this->db->table('submenus')->insert([
                 'menu_id' => $menu_id,
+                'code' => $key,
                 'name' => ucfirst($submenu),
                 'url' => base_url() . $submenu . '/',
-                'icon' => 'person-gear',
+                'icon' => 'bi bi-person-gear',
             ]);
         }
 
         // admin's submenus
         $adminSubmenus = [
-            'users',
+            '1' => 'users',
         ];
 
         foreach ($adminSubmenus as $key => $submenu) {
@@ -92,17 +94,18 @@ class DatabaseSeeder extends Seeder
 
             $this->db->table('submenus')->insert([
                 'menu_id' => $menu_id,
+                'code' => $key,
                 'name' => ucfirst($submenu),
                 'url' => base_url() . $submenu . '/',
-                'icon' => 'people',
+                'icon' => 'bi bi-people',
             ]);
         }
 
         // setting's submenus
         $settingSubmenus = [
-            'permissions',
-            'menus',
-            'submenus',
+            '2' => 'permissions',
+            '3' => 'menus',
+            '4' => 'submenus',
         ];
 
         foreach ($settingSubmenus as $key => $submenu) {
@@ -110,9 +113,10 @@ class DatabaseSeeder extends Seeder
 
             $this->db->table('submenus')->insert([
                 'menu_id' => $menu_id,
+                'code' => $key,
                 'name' => ucfirst($submenu),
                 'url' => base_url() . $submenu . '/',
-                'icon' => 'gear',
+                'icon' => 'bi bi-gear',
             ]);
         }
 

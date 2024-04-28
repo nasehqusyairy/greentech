@@ -10,7 +10,7 @@ class AddRoles extends Blueprint
     {
         $this->create('roles', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
+            $table->string('code')->unique();
             $table->string('name');
             $table->timestamps();
             $table->softDelete();

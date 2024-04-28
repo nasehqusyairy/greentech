@@ -10,11 +10,11 @@ class AddSubmenus extends Blueprint
     {
         $this->create('submenus', function (Blueprint $table) {
             $table->id();
+            $table->string('code')->unique();
             $table->foreignId('menu_id')->constrained('menus')->cascadeOnDelete()->add();
             $table->string('name');
             $table->string('url');
             $table->string('icon');
-            $table->boolean('isActive')->default(true);
             $table->timestamps();
             $table->softDelete();
         });

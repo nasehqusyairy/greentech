@@ -23,6 +23,10 @@ if (session()->has('errors')) : ?>
   <div class="card mb-3">
     <div class="card-body">
       <div class="mb-3">
+        <label for="code" class="form-label">Code</label>
+        <input type="text" class="form-control" id="code" name="code" value="<?= old('code') ?? $menu->code; ?>">
+      </div>
+      <div class="mb-3">
         <label for="name" class="form-label">Name</label>
         <input type="text" class="form-control" id="name" name="name" value="<?= old('name') ?? $menu->name; ?>">
       </div>

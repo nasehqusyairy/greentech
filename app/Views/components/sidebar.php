@@ -57,7 +57,7 @@
                     $firstSegment = $uri->getSegment(1);
                   ?>
                     <a href="<?= $submenu->url ?>" class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark <?= current_url(true)->getSegment(1) == $firstSegment ? 'active' : ''; ?>" data-bs-placement="right" data-bs-title="<?= $submenu->name ?>">
-                      <i class="bi bi-<?= $submenu->icon ?> me-3"></i>
+                      <i class="<?= $submenu->icon ?> me-3"></i>
                       <span class="submenu-title"><?= $submenu->name ?></span>
                     </a>
                   <?php }); ?>
@@ -93,7 +93,7 @@
                   <span class="submenu-title">Profile</span>
                 </a>
 
-                <a href="javascript:void()" class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark" data-bs-toggle="modal" data-bs-target="#logoutModal" data-bs-placement="right" data-bs-title="Log Out">
+                <a href="javascript:void(0)" class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark" data-bs-toggle="modal" data-bs-target="#logoutModal" data-bs-placement="right" data-bs-title="Log Out">
                   <i class="bi bi-box-arrow-left me-3"></i>
                   <span class="submenu-title">Log Out</span>
                 </a>

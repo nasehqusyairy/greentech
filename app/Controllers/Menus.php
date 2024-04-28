@@ -10,11 +10,13 @@ class Menus extends BaseController
 {
   protected $rule = [
     'store' => [
-      'name' => 'required|alpha_numeric_punct|is_unique[menus.name]',
+      'code' => 'required|alpha_numeric_punct|is_unique[menus.code]',
+      'name' => 'required|alpha_numeric_punct',
     ],
     'update' => [
       'id' => 'required|is_not_unique[menus.id]',
-      'name' => 'required|alpha_numeric_punct|is_unique[menus.name,id,{id}]',
+      'code' => 'required|alpha_numeric_punct|is_unique[menus.code,id,{id}]',
+      'name' => 'required|alpha_numeric_punct',
     ],
   ];
 
@@ -29,9 +31,11 @@ class Menus extends BaseController
     // main view
     /** @disregard */
     $menus = Menu::all();
+    /** @disregard */
+    $deleted = Menu::onlyTrashed()->get();
     return view('menus/index', [
       'menus' => $menus,
-      'deleted' => Menu::onlyTrashed()->get(),
+      'deleted' => $deleted,
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
       'title' => 'Menus'
     ]);
