@@ -1,0 +1,121 @@
+<?php
+
+/**
+ * @var CodeIgniter\View\View $this
+ */
+$this->extend('components/layout');
+$this->section('content');
+
+if (session()->has('errors')) : ?>
+  <div class="alert alert-danger alert-dismissible fade show">
+    <ul class="m-0">
+      <?php foreach (session('errors') as $error) : ?>
+        <li><?= $error ?></li>
+      <?php endforeach; ?>
+    </ul>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<?php endif;
+
+if (session()->has('message')) : ?>
+  <div class="alert alert-success alert-dismissible fade show">
+    <?= session('message'); ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<?php endif ?>
+
+<form action="<?= base_url('menus/addroles/' . $menu->id); ?>" method="post">
+  <?= csrf_field(); ?>
+  <div class="card mb-3">
+    <div class="card-body">
+      <div class="mb-3">
+        <label for="role" class="form-label">Role</label>
+        <select class="form-select" id="role" name="role_id">
+          <option value="">Select role</option>
+          <?php foreach ($roles as $role) : ?>
+            <option value="<?= $role->id; ?>"><?= $role->name; ?></option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+      <div class="d-grid d-lg-block gap-2">
+        <button type="submit" class="btn btn-primary">Add</button>
+        <a href="<?= base_url('menus'); ?>" class="btn btn-secondary">Cancel</a>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-striped table-hover w-100" id="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+          $i = 1;
+          foreach ($menu->roles as $role) : ?>
+            <tr>
+              <td><?= $i++; ?></td>
+              <td><?= $role->name ?></td>
+              <td>
+                <a href="javascript:void()" onclick="handleDelete('<?= $menu->id; ?>','<?= $role->id; ?>')" class="btn btn-danger mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-x"></i></a>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="alert alert-info alert-dismissible fade show">
+  <h5>Notes</h5>
+  <ul class="m-0">
+    <li>Only users with the selected role can see this menu in the sidebar</li>
+    <li>Make sure you have defined permissions to prevent access to another role</li>
+  </ul>
+</div>
+
+<!-- DELETE MODAL -->
+<div class="modal fade" id="deleteModal">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to <u>permanently</u> delete this item?</p>
+      </div>
+      <div class="modal-footer">
+        <a href="javascript:void()" class="btn btn-danger">Delete</a>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END OF DELETE MODAL -->
+
+<?php
+$this->endSection();
+$this->section('footer');
+?>
+<script>
+  $('#role').select2({
+    theme: 'bootstrap-5',
+    placeholder: 'Select...',
+    width: '100%'
+  });
+
+  const handleDelete = (menuId, roleId) => document.querySelector('#deleteModal .modal-footer a').href = '<?= base_url(); ?>' + 'menus/removerole/' + menuId + '/' + roleId;
+
+  // DataTable
+  const table = new DataTable('#table');
+</script>
+<?php $this->endSection() ?>

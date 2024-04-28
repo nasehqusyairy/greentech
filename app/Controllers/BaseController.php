@@ -86,12 +86,14 @@ abstract class BaseController extends Controller
         // Ambil data user dari session
         $user = User::find(session('user'))->load('role.permissions');
 
-        if (Permission::where('path', $pathParts[0])->first() && !$user->role->permissions->contains('path', $pathParts[0])) {
-            throw new HTTPException('You are not authorized to access this page', 403);
-        }
+        if ($user->role->code != 0) {
+            if (Permission::where('path', $pathParts[0])->first() && !$user->role->permissions->contains('path', $pathParts[0])) {
+                throw new HTTPException('You are not authorized to access this page', 403);
+            }
 
-        if (Permission::where('path', $currentPath)->first() && !$user->role->permissions->contains('path', $currentPath)) {
-            throw new HTTPException('You are not authorized to access this page', 403);
+            if (Permission::where('path', $currentPath)->first() && !$user->role->permissions->contains('path', $currentPath)) {
+                throw new HTTPException('You are not authorized to access this page', 403);
+            }
         }
     }
 

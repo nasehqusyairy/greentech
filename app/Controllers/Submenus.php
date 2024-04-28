@@ -3,14 +3,14 @@
 namespace App\Controllers;
 
 use CodeIgniter\Exceptions\PageNotFoundException;
-use App\Models\{modelName};
+use App\Models\Submenu;
 
-class {controllerName} extends BaseController
+class Submenus extends BaseController
 {
     protected $rule = [
       'store'=> [],
       'update'=> [
-        'id' => 'required|is_not_unique[{modelVar}s.id]',
+        'id' => 'required|is_not_unique[submenus.id]',
       ],
     ];
 
@@ -23,19 +23,19 @@ class {controllerName} extends BaseController
     public function index()
     {
       // main view
-      // return view('{segment}/index',[
-      //   '{modelVar}s' => {modelName}::all(),
+      // return view('submenus/index',[
+      //   'submenus' => Submenu::all(),
       //   'message' => $this->session->has('message') ? $this->session->get('message') : '',
-      //   'title' => '{modelName}s'
+      //   'title' => 'Submenus'
       // ]);
-      dd({modelName}::all()->toArray());
+      dd(Submenu::all()->toArray());
     }
 
     public function create()
     {
       // create form
-      return view('{segment}/create',[
-        'title' => 'New {modelName}'
+      return view('submenus/create',[
+        'title' => 'New Submenu'
       ]);
     }
 
@@ -54,24 +54,24 @@ class {controllerName} extends BaseController
       if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
 
       // manipulate data here
-      {modelName}::create($validInput);
+      Submenu::create($validInput);
 
       // redirect
-      return redirect()->to('/{segment}/')->with('message', '{modelName} data has been saved successfully');
+      return redirect()->to('/submenus/')->with('message', 'Submenu data has been saved successfully');
     }
 
     public function edit($id)
     {
       // find data
-      ${modelVar} = {modelName}::find($id);
+      $submenu = Submenu::find($id);
 
       // throw error if the data is not found
-      if ($id == null || !${modelVar}) throw new PageNotFoundException();
+      if ($id == null || !$submenu) throw new PageNotFoundException();
 
       // return view
-      return view('{segment}/edit',[
-        '{modelVar}'=>${modelVar},
-        'title' => 'Edit {modelName}'
+      return view('submenus/edit',[
+        'submenu'=>$submenu,
+        'title' => 'Edit Submenu'
       ]);
     }
 
@@ -90,38 +90,38 @@ class {controllerName} extends BaseController
       if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
 
       // manipulate data here
-      ${modelVar} = {modelName}::find($validInput['id']);
-      ${modelVar}->update($validInput);
+      $submenu = Submenu::find($validInput['id']);
+      $submenu->update($validInput);
 
       // redirect
-      return redirect()->to('/{segment}/')->with('message', '{modelName} data has been updated successfully');
+      return redirect()->to('/submenus/')->with('message', 'Submenu data has been updated successfully');
     }
     
     public function delete($id)
     {
         // find data
-        ${modelVar} = {modelName}::find($id);
+        $submenu = Submenu::find($id);
 
         // throw error if the data is not found
-        if (!${modelVar}) throw new PageNotFoundException();
+        if (!$submenu) throw new PageNotFoundException();
 
         // delete data
-        ${modelVar}->delete();
+        $submenu->delete();
 
         // redirect
-        return redirect()->to('/{segment}/')->with('message', '{modelName} data has been deleted successfully');
+        return redirect()->to('/submenus/')->with('message', 'Submenu data has been deleted successfully');
     }
     public function restore($id = null)
     {
-      ${modelVar} = {modelName}::withTrashed()->find($id);
+      $submenu = Submenu::withTrashed()->find($id);
 
-      // throw error if the {modelVar} is not found
-      if (!${modelVar}) throw new PageNotFoundException();
+      // throw error if the submenu is not found
+      if (!$submenu) throw new PageNotFoundException();
 
       // restore data
-      ${modelVar}->restore();
+      $submenu->restore();
 
       // redirect
-      return redirect()->to('/{segment}/')->with('message', '{modelName} data has been restored successfully');
+      return redirect()->to('/submenus/')->with('message', 'Submenu data has been restored successfully');
     }
 }
