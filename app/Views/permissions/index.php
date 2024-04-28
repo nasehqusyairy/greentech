@@ -16,7 +16,7 @@ if (!empty($message)) : ?>
 <div class="card">
   <div class="card-body">
     <div class="mb-3">
-      <a href="/menus/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Menu</a>
+      <a href="/permissions/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Permission</a>
     </div>
     <ul class="nav nav-tabs" id="tab">
       <li class="nav-item">
@@ -33,23 +33,21 @@ if (!empty($message)) : ?>
             <thead>
               <tr>
                 <th>#</th>
-                <th>Name</th>
-                <th>Code</th>
+                <th>Path</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               <?php
               $i = 1;
-              foreach ($menus as $menu) : ?>
+              foreach ($permissions as $permission) : ?>
                 <tr>
                   <td><?= $i++; ?></td>
-                  <td><?= $menu->name ?></td>
-                  <td><?= $menu->code; ?></td>
+                  <td>/<?= $permission->path ?></td>
                   <td>
-                    <a href="/menus/addroles/<?= $menu->id ?>" class="btn btn-info mb-1"><i class="bi bi-gear"></i></a>
-                    <a href="/menus/edit/<?= $menu->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
-                    <button onclick="handleDelete(<?= $menu->id; ?>)" class="btn btn-danger mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <a href="/permissions/addroles/<?= $permission->id ?>" class="btn btn-info mb-1"><i class="bi bi-gear"></i></a>
+                    <a href="/permissions/edit/<?= $permission->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
+                    <button onclick="handleDelete(<?= $permission->id; ?>)" class="btn btn-danger mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -63,21 +61,19 @@ if (!empty($message)) : ?>
             <thead>
               <tr>
                 <th>#</th>
-                <th>Name</th>
-                <th>Code</th>
+                <th>Path</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               <?php
               $i = 1;
-              foreach ($deleted as $menu) : ?>
+              foreach ($deleted as $permission) : ?>
                 <tr>
                   <td><?= $i++; ?></td>
-                  <td><?= $menu->name ?></td>
-                  <td><?= $menu->code; ?></td>
+                  <td>/<?= $permission->path ?></td>
                   <td>
-                    <a href="<?= base_url('menus/restore/' . $menu->id); ?>" class="btn btn-secondary">
+                    <a href="<?= base_url('permissions/restore/' . $permission->id); ?>" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
                     </a>
                   </td>
@@ -114,7 +110,7 @@ $this->endSection();
 $this->section('footer');
 ?>
 <script>
-  const handleDelete = (id) => document.querySelector('#deleteModal .modal-footer a').href = '<?= base_url(); ?>' + 'menus/delete/' + id;
+  const handleDelete = (id) => document.querySelector('#deleteModal .modal-footer a').href = '<?= base_url(); ?>' + 'permissions/delete/' + id;
   // DataTables
   const table = new DataTable('#available');
   const table_deleted = new DataTable('#deleted');

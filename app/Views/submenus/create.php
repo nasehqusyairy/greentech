@@ -42,7 +42,7 @@ if (session()->has('errors')) : ?>
       </div>
       <div class="mb-3">
         <label for="icon" class="form-label">Icon</label>
-        <input type="text" name="icon" value="<?= old('icon'); ?>" class="form-control iconpicker" placeholder="Icon Picker" />
+        <input type="text" name="icon" value="<?= old('icon'); ?>" class="form-control iconpicker" placeholder="Icon Picker" autocomplete="off" />
       </div>
       <div class="mb-3">
         <label for="name" class="form-label">Name</label>

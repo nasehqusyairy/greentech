@@ -31,7 +31,7 @@ if (session()->has('message')) : ?>
   </div>
 <?php endif ?>
 
-<form action="<?= base_url('menus/addroles/' . $menu->id); ?>" method="post">
+<form action="<?= base_url('permissions/addroles/' . $permission->id); ?>" method="post">
   <?= csrf_field(); ?>
   <div class="card mb-3">
     <div class="card-body">
@@ -46,7 +46,7 @@ if (session()->has('message')) : ?>
       </div>
       <div class="d-grid d-lg-block gap-2">
         <button type="submit" class="btn btn-primary">Add</button>
-        <a href="<?= base_url('menus'); ?>" class="btn btn-secondary">Cancel</a>
+        <a href="<?= base_url('permissions'); ?>" class="btn btn-secondary">Cancel</a>
       </div>
     </div>
   </div>
@@ -59,19 +59,19 @@ if (session()->has('message')) : ?>
         <thead>
           <tr>
             <th>#</th>
-            <th>Name</th>
+            <th>Path</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <?php
           $i = 1;
-          foreach ($menu->roles as $role) : ?>
+          foreach ($permission->roles as $role) : ?>
             <tr>
               <td><?= $i++; ?></td>
               <td><?= $role->name ?></td>
               <td>
-                <a href="javascript:void(0)" onclick="handleDelete('<?= $menu->id; ?>','<?= $role->id; ?>')" class="btn btn-danger mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-x"></i></a>
+                <a href="javascript:void(0)" onclick="handleDelete('<?= $permission->id; ?>','<?= $role->id; ?>')" class="btn btn-danger mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-x"></i></a>
               </td>
             </tr>
           <?php endforeach; ?>
@@ -84,7 +84,7 @@ if (session()->has('message')) : ?>
 <div class="alert alert-info alert-dismissible fade show">
   <h5>Notes</h5>
   <ul class="m-0">
-    <li>Only users with the selected role can see this menu in the sidebar</li>
+    <li>Only users with the selected role can see this permission in the sidebar</li>
     <li>Make sure to specify <a href="<?= base_url('permissions'); ?>">permissions</a> to limit the access</li>
   </ul>
 </div>
@@ -120,7 +120,7 @@ $this->section('footer');
     width: '100%'
   });
 
-  const handleDelete = (menuId, roleId) => document.querySelector('#deleteModal .modal-footer a').href = '<?= base_url(); ?>' + 'menus/removerole/' + menuId + '/' + roleId;
+  const handleDelete = (permissionId, roleId) => document.querySelector('#deleteModal .modal-footer a').href = '<?= base_url(); ?>' + 'permissions/removerole/' + permissionId + '/' + roleId;
 
   // DataTable
   const table = new DataTable('#table');

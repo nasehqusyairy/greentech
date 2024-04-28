@@ -159,6 +159,14 @@ class Menus extends BaseController
       // validated input
       $validInput = $this->validInput();
 
+      // return response if the input is invalid
+      if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+
+      // avoid duplicate data
+      if ($menu->roles()->where('role_id', $validInput['role_id'])->count() > 0) {
+        return redirect()->to('/menus/addroles/' . $menu->id)->with('errors', ['role' => 'Role already exists']);
+      }
+
       // add role
       $menu->roles()->attach($validInput['role_id']);
 
