@@ -94,19 +94,23 @@ class DatabaseSeeder extends Seeder
         $adminSubmenus = [
             '1' => [
                 'name' => 'dashboard',
-                'icon' => 'bi bi-speedometer'
+                'icon' => 'bi bi-speedometer',
+                'url' => 'dashboard'
             ],
             '2' => [
                 'name' => 'abstracts',
-                'icon' => 'bi bi-file-earmark-text'
+                'icon' => 'bi bi-file-earmark-text',
+                'url' => 'abstracs',
             ],
             '3' => [
                 'name' => 'users',
-                'icon' => 'bi bi-people'
+                'icon' => 'bi bi-people',
+                'url' => 'users',
             ],
             '4' => [
                 'name' => 'tickets',
-                'icon' => 'bi bi-people'
+                'icon' => 'bi bi-people',
+                'url' => 'tickets',
             ],
         ];
 
@@ -117,7 +121,7 @@ class DatabaseSeeder extends Seeder
                 'menu_id' => $menu_id,
                 'code' => $key,
                 'name' => ucfirst($submenu['name']),
-                'url' => base_url() . $submenu['name'] . '/',
+                'url' => base_url() . $submenu['url'] . '/',
                 'icon' => $submenu['icon'],
             ]);
         }
@@ -128,18 +132,22 @@ class DatabaseSeeder extends Seeder
         $settingSubmenus = [
             '5' => [
                 'name' => 'permissions',
+                'url'  => 'permissions',
                 'icon' => 'bi bi-key'
             ],
             '6' => [
                 'name' => 'menus',
+                'url'  => 'menus',
                 'icon' => 'bi bi-menu-button-wide'
             ],
             '7' => [
                 'name' => 'submenus',
+                'url'  => 'submenus',
                 'icon' => 'bi bi-menu-button-wide'
             ],
             '8' => [
                 'name' => 'systems',
+                'url' => 'systems',
                 'icon' => 'bi bi-gear'
             ],
         ];
@@ -151,7 +159,7 @@ class DatabaseSeeder extends Seeder
                 'menu_id' => $menu_id,
                 'code' => $key,
                 'name' => ucfirst($submenu['name']),
-                'url' => base_url() . $submenu['name'] . '/',
+                'url' => base_url() . $submenu['url'] . '/',
                 'icon' => $submenu['icon'],
             ]);
         }
@@ -160,10 +168,12 @@ class DatabaseSeeder extends Seeder
         $paymentSubmenus = [
             '9' => [
                 'name'=>'participants',
+                'url' =>'ticketusers',
                 'icon'=>'bi bi-building'
             ],
             '10' => [
                 'name'=>'abstracts',
+                'url'=>'abstracs',
                 'icon'=>'bi bi-journals'
             ],
         ];
@@ -175,7 +185,7 @@ class DatabaseSeeder extends Seeder
                 'menu_id' => $menu_id,
                 'code' => $key,
                 'name' => ucfirst($submenu['name']),
-                'url' => base_url() . $submenu['name'] . '/',
+                'url' => base_url() . $submenu['url'] . '/',
                 'icon' => $submenu['icon'],
             ]);
         }
@@ -184,15 +194,18 @@ class DatabaseSeeder extends Seeder
         $paymentSubmenus = [
             '11' => [
                 'name'=>'topics',
-                'icon'=>'bi bi-list-ul'
+                'icon'=>'bi bi-list-ul',
+                'url'=>'topics',
             ],
             '12' => [
                 'name'=>'statuses',
-                'icon'=>'bi bi-clipboard'
+                'icon'=>'bi bi-clipboard',
+                'url'=>'statuses',
             ],
             '13' => [
                 'name'=>"status's Types",
-                'icon'=>'bi bi-braces'
+                'icon'=>'bi bi-braces',
+                'url'=>'stypes'
             ],
         ];
 
@@ -203,7 +216,7 @@ class DatabaseSeeder extends Seeder
                 'menu_id' => $menu_id,
                 'code' => $key,
                 'name' => ucfirst($submenu['name']),
-                'url' => base_url() . $submenu['name'] . '/',
+                'url' => base_url() . $submenu['url'] . '/',
                 'icon' => $submenu['icon'],
             ]);
         }
@@ -212,18 +225,22 @@ class DatabaseSeeder extends Seeder
         $paymentSubmenus = [
             '14' => [
                 'name'=>'types',
+                'url'=>'ttypes',
                 'icon'=>'bi bi-braces'
             ],
             '15' => [
                 'name'=>'roles',
+                'url'=>'troles',
                 'icon'=>'bi bi-building-gear'
             ],
             '16' => [
-                'name'=>"states",
+                'name'=>'states',
+                'url'=>'states',
                 'icon'=>'bi bi-airplane'
             ],
             '17' => [
-                'name'=>"graduation",
+                'name'=>'graduation',
+                'url'=>'studies',
                 'icon'=>'bi bi-mortarboard'
             ],
         ];
@@ -235,7 +252,7 @@ class DatabaseSeeder extends Seeder
                 'menu_id' => $menu_id,
                 'code' => $key,
                 'name' => ucfirst($submenu['name']),
-                'url' => base_url() . $submenu['name'] . '/',
+                'url' => base_url() . $submenu['url'] . '/',
                 'icon' => $submenu['icon'],
             ]);
         }
