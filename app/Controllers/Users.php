@@ -46,10 +46,11 @@ class Users extends BaseController
 
   public function index()
   {
+    $users = User::with('role');
     // main view
     return view('users/index', [
-      'users' => User::with('role')->get(),
-      'deleted' => User::onlyTrashed()->with('role')->get(),
+      'users' => $users->get(),
+      'deleted' => $users->onlyTrashed()->get(),
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
       'title' => 'Users'
     ]);
