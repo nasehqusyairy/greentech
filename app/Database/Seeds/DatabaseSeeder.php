@@ -42,17 +42,6 @@ class DatabaseSeeder extends Seeder
                 'role_id' => $role_id,
             ]);
         }
-
-        $this->db->table('users')->insert([
-            'name' => 'akhmad',
-            'email' => 'akhmadbadawi04@gmail.com',
-            'password' => password_hash('password', PASSWORD_DEFAULT),
-            'image' => null,
-            'isActive' => 1,
-            'gender' => 1,
-            'role_id' => 3,
-        ]);
-
         // make 1 super admin
         $this->db->table('users')->insert([
             'name' => 'Super Admin',
@@ -170,11 +159,11 @@ class DatabaseSeeder extends Seeder
         // Payment submenus
         $paymentSubmenus = [
             '9' => [
-                'name'=>'participants',
+                'name'=>'ticketuser',
                 'icon'=>'bi bi-building'
             ],
             '10' => [
-                'name'=>'abstracts',
+                'name'=>'abstrac',
                 'icon'=>'bi bi-journals'
             ],
         ];
@@ -194,15 +183,15 @@ class DatabaseSeeder extends Seeder
         // Refeerence submenus
         $paymentSubmenus = [
             '11' => [
-                'name'=>'topics',
+                'name'=>'topic',
                 'icon'=>'bi bi-list-ul'
             ],
             '12' => [
-                'name'=>'statuses',
+                'name'=>'status',
                 'icon'=>'bi bi-clipboard'
             ],
             '13' => [
-                'name'=>"status's Types",
+                'name'=>"stype",
                 'icon'=>'bi bi-braces'
             ],
         ];
@@ -222,19 +211,19 @@ class DatabaseSeeder extends Seeder
         // Ticket submenus
         $paymentSubmenus = [
             '14' => [
-                'name'=>'types',
+                'name'=>'ttype',
                 'icon'=>'bi bi-braces'
             ],
             '15' => [
-                'name'=>'roles',
+                'name'=>'trole',
                 'icon'=>'bi bi-building-gear'
             ],
             '16' => [
-                'name'=>"states",
+                'name'=>"state",
                 'icon'=>'bi bi-airplane'
             ],
             '17' => [
-                'name'=>"graduation",
+                'name'=>"studies",
                 'icon'=>'bi bi-mortarboard'
             ],
         ];
