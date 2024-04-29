@@ -8,7 +8,7 @@ class AddTicketUser extends Blueprint
 {
     public function up()
     {
-        $this->create('ticket_user', function (Blueprint $table) {
+        $this->create('ticket_users', function (Blueprint $table) {
             $table->id();
             $table->text('fiile');
             $table->text('student_card');
@@ -23,6 +23,6 @@ class AddTicketUser extends Blueprint
 
     public function down()
     {
-        $this->dropIfExists('ticket_user');
+        $this->dropIfExists('ticket_users');
     }
 }
