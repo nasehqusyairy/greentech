@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        
+
         // make 10 users with random role
         for ($i = 0; $i < 10; $i++) {
             $role = $roles[rand(0, count($roles) - 1)];
@@ -73,8 +73,8 @@ class DatabaseSeeder extends Seeder
         // super's submenus
         $superSubmenus = [
             '0' => [
-                'name'=>'roles',
-                'icon'=>'bi bi-person-gear'
+                'name' => 'roles',
+                'icon' => 'bi bi-person-gear'
             ],
         ];
 
@@ -93,20 +93,20 @@ class DatabaseSeeder extends Seeder
         // admin's submenus
         $adminSubmenus = [
             '1' => [
-                'name'=>'dashboard',
-                'icon'=>'bi bi-speedometer'
+                'name' => 'dashboard',
+                'icon' => 'bi bi-speedometer'
             ],
             '2' => [
-                'name'=>'abstracts',
-                'icon'=>'bi bi-file-earmark-text'
+                'name' => 'abstracts',
+                'icon' => 'bi bi-file-earmark-text'
             ],
             '3' => [
-                'name'=>'users',
-                'icon'=>'bi bi-people'
+                'name' => 'users',
+                'icon' => 'bi bi-people'
             ],
             '4' => [
-                'name'=>'tickets',
-                'icon'=>'bi bi-people'
+                'name' => 'tickets',
+                'icon' => 'bi bi-people'
             ],
         ];
 
@@ -122,25 +122,25 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        
+
 
         // setting's submenus
         $settingSubmenus = [
             '5' => [
-                'name'=>'permissions',
-                'icon'=>'bi bi-key'
+                'name' => 'permissions',
+                'icon' => 'bi bi-key'
             ],
             '6' => [
-                'name'=>'menus',
-                'icon'=>'bi bi-menu-button-wide'
+                'name' => 'menus',
+                'icon' => 'bi bi-menu-button-wide'
             ],
             '7' => [
-                'name'=>'submenus',
-                'icon'=>'bi bi-menu-button-wide'
+                'name' => 'submenus',
+                'icon' => 'bi bi-menu-button-wide'
             ],
             '8' => [
-                'name'=>'systems',
-                'icon'=>'bi bi-gear'
+                'name' => 'systems',
+                'icon' => 'bi bi-gear'
             ],
         ];
 
@@ -159,11 +159,11 @@ class DatabaseSeeder extends Seeder
         // Payment submenus
         $paymentSubmenus = [
             '9' => [
-                'name'=>'ticketuser',
+                'name'=>'participants',
                 'icon'=>'bi bi-building'
             ],
             '10' => [
-                'name'=>'abstrac',
+                'name'=>'abstracts',
                 'icon'=>'bi bi-journals'
             ],
         ];
@@ -183,15 +183,15 @@ class DatabaseSeeder extends Seeder
         // Refeerence submenus
         $paymentSubmenus = [
             '11' => [
-                'name'=>'topic',
+                'name'=>'topics',
                 'icon'=>'bi bi-list-ul'
             ],
             '12' => [
-                'name'=>'status',
+                'name'=>'statuses',
                 'icon'=>'bi bi-clipboard'
             ],
             '13' => [
-                'name'=>"stype",
+                'name'=>"status's Types",
                 'icon'=>'bi bi-braces'
             ],
         ];
@@ -211,19 +211,19 @@ class DatabaseSeeder extends Seeder
         // Ticket submenus
         $paymentSubmenus = [
             '14' => [
-                'name'=>'ttype',
+                'name'=>'types',
                 'icon'=>'bi bi-braces'
             ],
             '15' => [
-                'name'=>'trole',
+                'name'=>'roles',
                 'icon'=>'bi bi-building-gear'
             ],
             '16' => [
-                'name'=>"state",
+                'name'=>"states",
                 'icon'=>'bi bi-airplane'
             ],
             '17' => [
-                'name'=>"studies",
+                'name'=>"graduation",
                 'icon'=>'bi bi-mortarboard'
             ],
         ];
