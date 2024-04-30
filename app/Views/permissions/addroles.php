@@ -81,14 +81,6 @@ if (session()->has('message')) : ?>
   </div>
 </div>
 
-<div class="alert alert-info alert-dismissible fade show">
-  <h5>Notes</h5>
-  <ul class="m-0">
-    <li>Only users with the selected role can see this permission in the sidebar</li>
-    <li>Make sure to specify <a href="<?= base_url('permissions'); ?>">permissions</a> to limit the access</li>
-  </ul>
-</div>
-
 <!-- DELETE MODAL -->
 <div class="modal fade" id="deleteModal">
   <div class="modal-dialog modal-dialog-scrollable">

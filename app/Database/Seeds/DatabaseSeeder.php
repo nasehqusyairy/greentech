@@ -67,7 +67,7 @@ class DatabaseSeeder extends Seeder
         foreach ($menus as $key => $menu) {
             $this->db->table('menus')->insert([
                 'code' => $key,
-                'name' => $menu,
+                'name' => strtoupper($menu),
             ]);
         }
 
