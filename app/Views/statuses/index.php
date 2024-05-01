@@ -32,7 +32,7 @@ if (!empty($message)) : ?>
           <table class="table table-striped table-hover w-100" id="available">
             <thead>
               <tr>
-              <th>#</th>
+                <th>#</th>
                 <th>Code</th>
                 <th>Text</th>
                 <th>Color</th>
@@ -52,9 +52,9 @@ if (!empty($message)) : ?>
                   <td><?= $status->color ?></td>
                   <td><?= $status->name ?></td>
                   <td><?= $status->stype->name ?></td>
-
-                    <a href="/statuses/edit/<?= $status->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
-                    <button onclick="handleDelete(<?= $status->id; ?>)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                  <td>
+                  <a href="/statuses/edit/<?= $status->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
+                  <button onclick="handleDelete(<?= $status->id; ?>)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                   </td>
                 </tr>
               <?php endforeach; ?>

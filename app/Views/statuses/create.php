@@ -31,7 +31,17 @@ if (session()->has('errors')) : ?>
       </div>
       <div class="mb-3">
         <label for="color" class="form-label">Color</label>
-        <input type="text" class="form-control" id="color" name="color" value="<?= old('color'); ?>">
+        <select class="form-select" id="color" name="color">
+          <option value="">Select Color</option>
+          <option value="primary" <?= old('color') == 'primary' ? 'selected' : ''; ?>>Primary</option>
+          <option value="secondary" <?= old('color') == 'secondary' ? 'selected' : ''; ?>>Secondary</option>
+          <option value="success" <?= old('color') == 'success' ? 'selected' : ''; ?>>Success</option>
+          <option value="danger" <?= old('color') == 'danger' ? 'selected' : ''; ?>>Danger</option>
+          <option value="warning" <?= old('color') == 'warning' ? 'selected' : ''; ?>>Warning</option>
+          <option value="info" <?= old('color') == 'info' ? 'selected' : ''; ?>>Info</option>
+          <option value="light" <?= old('color') == 'light' ? 'selected' : ''; ?>>Light</option>
+          <option value="dark" <?= old('color') == 'dark' ? 'selected' : ''; ?>>Dark</option>
+        </select>
       </div>
       <div class="mb-3">
         <label for="name" class="form-label">Name</label>
@@ -39,11 +49,11 @@ if (session()->has('errors')) : ?>
       </div>
       <!-- Type Drop down -->
       <div class="mb-3">
-        <label for="type_id" class="form-label">Type</label>
-        <select class="form-select" id="type_id" name="type_id">
+        <label for="stype_id" class="form-label">Type</label>
+        <select class="form-select" id="stype_id" name="stype_id">
           <option value="">Select Type</option>
           <?php foreach ($stypes as $stype) : ?>
-            <option value="<?= $stype->id; ?>" <?= old('type_id') == $stype->id ? 'selected' : ''; ?>><?= $stype->name; ?></option>
+            <option value="<?= $stype->id; ?>" <?= old('stype_id') == $stype->id ? 'selected' : ''; ?>><?= $stype->name; ?></option>
           <?php endforeach; ?>
         </select>
       </div>

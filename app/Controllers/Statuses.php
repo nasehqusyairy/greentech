@@ -13,7 +13,7 @@ class Statuses extends BaseController
         'text' => 'required',
         'color' => 'required',
         'name' => 'required',
-        'type_id' => 'required|is_not_unique[stypes.id]',
+        'stype_id' => 'required|is_not_unique[stypes.id]',
       ],
       'update'=> [
         'id' => 'required|is_not_unique[statuses.id]',        
@@ -21,7 +21,7 @@ class Statuses extends BaseController
         'text' => 'required',
         'color' => 'required',
         'name' => 'required',
-        'type_id' => 'required|is_not_unique[stypes.id]',
+        'stype_id' => 'required|is_not_unique[stypes.id]',
       ],
     ];
 
@@ -46,7 +46,8 @@ class Statuses extends BaseController
     {
       // create form
       return view('statuses/create',[
-        'title' => 'New Status'
+        'title' => 'New Status',
+        'stypes' => \App\Models\Stype::get()
       ]);
     }
 
@@ -82,7 +83,8 @@ class Statuses extends BaseController
       // return view
       return view('statuses/edit',[
         'status'=>$status,
-        'title' => 'Edit Status'
+        'title' => 'Edit Status',
+        'stypes' => \App\Models\Stype::get()
       ]);
     }
 
