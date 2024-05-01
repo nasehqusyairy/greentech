@@ -72,7 +72,7 @@ if (!empty($message)) : ?>
               $i = 1;
               foreach ($deleted as $study) : ?>
                 <tr>
-                  <td><?= $i++; ?></td>
+                  <td><?= $i++ ?></td>
                   <td><?= $study->name ?></td>
                   <td><?= $study->code ?></td>
                   <td>
