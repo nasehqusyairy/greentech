@@ -8,9 +8,14 @@ use App\Models\Study;
 class Studies extends BaseController
 {
     protected $rule = [
-      'store'=> [],
-      'update'=> [
-        'id' => 'required|is_not_unique[studys.id]',
+      'store' => [
+        'code' => 'required|is_unique[roles.code]',
+        'name' => 'required|alpha_numeric_punct',
+      ],
+      'update' => [
+        'id' => 'required|is_not_unique[roles.id]',
+        'code' => 'required|is_unique[roles.code,roles.id,{id}]',
+        'name' => 'required|alpha_numeric_punct',
       ],
     ];
 
@@ -23,11 +28,13 @@ class Studies extends BaseController
     public function index()
     {
       // main view
-      // return view('studies/index',[
-      //   'studys' => Study::all(),
-      //   'message' => $this->session->has('message') ? $this->session->get('message') : '',
-      //   'title' => 'Studys'
-      // ]);
+      return view('studies/index',[
+        'studies' => Study::all(),
+        'deleted' => Study::onlyTrashed()->get(),
+        'message' => $this->session->has('message') ? $this->session->get('message') : '',
+        'title' => 'studies'
+        
+      ]);
       dd(Study::all()->toArray());
     }
 
