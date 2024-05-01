@@ -160,11 +160,15 @@ class DatabaseSeeder extends Seeder
         // Payment submenus
         $paymentSubmenus = [
             '10' => [
-                'name' => 'participants',
+                'name' => 'conferences',
                 'icon' => 'bi bi-building'
             ],
             '11' => [
                 'name' => 'abstracts',
+                'icon' => 'bi bi-journals'
+            ],
+            '18' => [
+                'name' => 'fullpapers',
                 'icon' => 'bi bi-journals'
             ],
         ];
