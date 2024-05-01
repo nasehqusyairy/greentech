@@ -56,10 +56,10 @@ class DatabaseSeeder extends Seeder
 
         // menus
         $menus = [
-            'Super',
-            'Admin',
+            'Abstract',
+            'User',
             'Payment',
-            'Reference',
+            'Status',
             'Ticket',
             'Setting',
         ];
@@ -73,6 +73,10 @@ class DatabaseSeeder extends Seeder
 
         // super's submenus
         $superSubmenus = [
+            '4' => [
+                'name' => 'users',
+                'icon' => 'bi bi-people'
+            ],
             '0' => [
                 'name' => 'roles',
                 'icon' => 'bi bi-person-gear'
@@ -80,7 +84,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($superSubmenus as $key => $submenu) {
-            $menu_id = $this->db->table('menus')->where('name', 'Super')->get()->getRow()->id;
+            $menu_id = $this->db->table('menus')->where('name', 'User')->get()->getRow()->id;
 
             $this->db->table('submenus')->insert([
                 'menu_id' => $menu_id,
@@ -93,26 +97,22 @@ class DatabaseSeeder extends Seeder
 
         // admin's submenus
         $adminSubmenus = [
-            '1' => [
-                'name' => 'dashboard',
-                'icon' => 'bi bi-speedometer'
-            ],
+            // '1' => [
+            //     'name' => 'dashboard',
+            //     'icon' => 'bi bi-speedometer'
+            // ],
             '2' => [
                 'name' => 'abstracts',
                 'icon' => 'bi bi-file-earmark-text'
             ],
             '3' => [
-                'name' => 'users',
-                'icon' => 'bi bi-people'
-            ],
-            '4' => [
-                'name' => 'tickets',
-                'icon' => 'bi bi-people'
+                'name' => 'topics',
+                'icon' => 'bi bi-list-ul'
             ],
         ];
 
         foreach ($adminSubmenus as $key => $submenu) {
-            $menu_id = $this->db->table('menus')->where('name', 'Admin')->get()->getRow()->id;
+            $menu_id = $this->db->table('menus')->where('name', 'Abstract')->get()->getRow()->id;
 
             $this->db->table('submenus')->insert([
                 'menu_id' => $menu_id,
@@ -127,19 +127,19 @@ class DatabaseSeeder extends Seeder
 
         // setting's submenus
         $settingSubmenus = [
-            '5' => [
+            '6' => [
                 'name' => 'permissions',
                 'icon' => 'bi bi-key'
             ],
-            '6' => [
+            '7' => [
                 'name' => 'menus',
                 'icon' => 'bi bi-menu-button-wide'
             ],
-            '7' => [
+            '8' => [
                 'name' => 'submenus',
                 'icon' => 'bi bi-menu-button-wide'
             ],
-            '8' => [
+            '9' => [
                 'name' => 'systems',
                 'icon' => 'bi bi-gear'
             ],
@@ -159,11 +159,11 @@ class DatabaseSeeder extends Seeder
 
         // Payment submenus
         $paymentSubmenus = [
-            '9' => [
+            '10' => [
                 'name' => 'participants',
                 'icon' => 'bi bi-building'
             ],
-            '10' => [
+            '11' => [
                 'name' => 'abstracts',
                 'icon' => 'bi bi-journals'
             ],
@@ -183,36 +183,42 @@ class DatabaseSeeder extends Seeder
 
         // Refeerence submenus
         $paymentSubmenus = [
-            '11' => [
-                'name' => 'topics',
-                'icon' => 'bi bi-list-ul'
-            ],
             '12' => [
                 'name' => 'statuses',
                 'icon' => 'bi bi-clipboard'
             ],
             '13' => [
-                'name' => "status's Types",
+                'name' => "Types",
                 'icon' => 'bi bi-braces'
             ],
         ];
 
         foreach ($paymentSubmenus as $key => $submenu) {
-            $menu_id = $this->db->table('menus')->where('name', 'Reference')->get()->getRow()->id;
+            $menu_id = $this->db->table('menus')->where('name', 'Status')->get()->getRow()->id;
 
-            $this->db->table('submenus')->insert([
+            $record = [
                 'menu_id' => $menu_id,
                 'code' => $key,
                 'name' => ucfirst($submenu['name']),
                 'url' => base_url() . $submenu['name'] . '/',
                 'icon' => $submenu['icon'],
-            ]);
+            ];
+
+            if ($key == '13') {
+                $record['url'] = base_url() . 'stypes/';
+            }
+
+            $this->db->table('submenus')->insert($record);
         }
 
         // Ticket submenus
         $paymentSubmenus = [
+            '5' => [
+                'name' => 'tickets',
+                'icon' => 'bi bi-people'
+            ],
             '14' => [
-                'name' => 'types',
+                'name' => 'Types',
                 'icon' => 'bi bi-braces'
             ],
             '15' => [
@@ -232,13 +238,19 @@ class DatabaseSeeder extends Seeder
         foreach ($paymentSubmenus as $key => $submenu) {
             $menu_id = $this->db->table('menus')->where('name', 'Ticket')->get()->getRow()->id;
 
-            $this->db->table('submenus')->insert([
+            $record = [
                 'menu_id' => $menu_id,
                 'code' => $key,
                 'name' => ucfirst($submenu['name']),
                 'url' => base_url() . $submenu['name'] . '/',
                 'icon' => $submenu['icon'],
-            ]);
+            ];
+
+            if ($key == '14') {
+                $record['url'] = base_url() . 'ttypes/';
+            }
+
+            $this->db->table('submenus')->insert($record);
         }
 
 
