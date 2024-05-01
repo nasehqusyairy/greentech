@@ -8,9 +8,20 @@ use App\Models\Status;
 class Statuses extends BaseController
 {
     protected $rule = [
-      'store'=> [],
+      'store'=> [
+        'code' => 'required|is_unique[statuses.code]',
+        'text' => 'required',
+        'color' => 'required',
+        'name' => 'required',
+        'type_id' => 'required|is_not_unique[stypes.id]',
+      ],
       'update'=> [
-        'id' => 'required|is_not_unique[statuss.id]',
+        'id' => 'required|is_not_unique[statuses.id]',        
+        'code' => 'required|is_unique[statuses.code,statuses.id,{id}]',
+        'text' => 'required',
+        'color' => 'required',
+        'name' => 'required',
+        'type_id' => 'required|is_not_unique[stypes.id]',
       ],
     ];
 
@@ -23,12 +34,12 @@ class Statuses extends BaseController
     public function index()
     {
       // main view
-      // return view('statuses/index',[
-      //   'statuss' => Status::all(),
-      //   'message' => $this->session->has('message') ? $this->session->get('message') : '',
-      //   'title' => 'Statuss'
-      // ]);
-      dd(Status::all()->toArray());
+      return view('statuses/index',[
+        'statuses' => Status::with("stype")->get(),
+        'message' => $this->session->has('message') ? $this->session->get('message') : '',
+        'deleted' => Status::onlyTrashed()->get(),
+        'title' => 'statuses'
+      ]);      
     }
 
     public function create()
