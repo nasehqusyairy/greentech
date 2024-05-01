@@ -85,7 +85,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($abstractSubmenus as $key => $submenu) {
-            $menu_id = $this->db->table('menus')->where('name', 'Super')->get()->getRow()->id;
+            $menu_id = $this->db->table('menus')->where('name', 'Abstract')->get()->getRow()->id;
 
             $this->db->table('submenus')->insert([
                 'menu_id' => $menu_id,
@@ -114,7 +114,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($usersSubmenus as $key => $submenu) {
-            $menu_id = $this->db->table('menus')->where('name', 'Admin')->get()->getRow()->id;
+            $menu_id = $this->db->table('menus')->where('name', 'User')->get()->getRow()->id;
 
             $this->db->table('submenus')->insert([
                 'menu_id' => $menu_id,
@@ -172,7 +172,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($statusSubmenus as $key => $submenu) {
-            $menu_id = $this->db->table('menus')->where('name', 'Reference')->get()->getRow()->id;
+            $menu_id = $this->db->table('menus')->where('name', 'Status')->get()->getRow()->id;
 
             $this->db->table('submenus')->insert([
                 'menu_id' => $menu_id,
@@ -188,7 +188,7 @@ class DatabaseSeeder extends Seeder
             '9' => [
                 'name'=>'tickets',
                 'url'=>'tickets',
-                'icon'=>'bi bi-braces'
+                'icon'=>'bi bi-ticket'
             ],
             '10' => [
                 'name'=>'types',
@@ -226,22 +226,22 @@ class DatabaseSeeder extends Seeder
 
         // setting's submenus
         $settingSubmenus = [
-            '5' => [
+            '14' => [
                 'name' => 'permissions',
                 'url'  => 'permissions',
                 'icon' => 'bi bi-key'
             ],
-            '6' => [
+            '15' => [
                 'name' => 'menus',
                 'url'  => 'menus',
                 'icon' => 'bi bi-menu-button-wide'
             ],
-            '7' => [
+            '16' => [
                 'name' => 'submenus',
                 'url'  => 'submenus',
                 'icon' => 'bi bi-menu-button-wide'
             ],
-            '8' => [
+            '17' => [
                 'name' => 'systems',
                 'url' => 'systems',
                 'icon' => 'bi bi-gear'
