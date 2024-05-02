@@ -16,7 +16,7 @@ if (!empty($message)) : ?>
 <div class="card">
   <div class="card-body">
     <div class="mb-3">
-      <a href="/stypes/create" class="btn btn-primary"><i class="bi bi-plus"></i>New stype</a>
+      <a href="/stypes/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Type</a>
     </div>
     <ul class="nav nav-tabs" id="tab">
       <li class="nav-item">
