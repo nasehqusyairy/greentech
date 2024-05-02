@@ -106,7 +106,7 @@ class DatabaseSeeder extends Seeder
 
             '3' => [
                 'name' => 'roles',
-                'icon' => 'bi bi-building-gear',
+                'icon' => 'bi bi-person-gear',
                 'url' => 'roles',
             ],
 
@@ -136,7 +136,7 @@ class DatabaseSeeder extends Seeder
             '5' => [
                 'name' => 'abstracts',
                 'url' => '',
-                'icon' => 'bi bi-journals'
+                'icon' => 'bi bi-file-earmark-text'
             ],
             '6' => [
                 'name' => 'full Papers',
@@ -198,7 +198,7 @@ class DatabaseSeeder extends Seeder
             '11' => [
                 'name' => 'roles',
                 'url' => 'troles',
-                'icon' => 'bi bi-building-gear'
+                'icon' => 'bi bi-person-gear'
             ],
             '12' => [
                 'name' => 'states',
