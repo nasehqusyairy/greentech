@@ -110,7 +110,7 @@ class DatabaseSeeder extends Seeder
                 'url' => 'roles',
             ],
 
-            
+
         ];
 
         foreach ($usersSubmenus as $key => $submenu) {
@@ -129,19 +129,19 @@ class DatabaseSeeder extends Seeder
         // Payment submenus
         $paymentSubmenus = [
             '4' => [
-                'name'=>'conferences',
-                'url' =>'',
-                'icon'=>'bi bi-building'
+                'name' => 'conferences',
+                'url' => '',
+                'icon' => 'bi bi-building'
             ],
             '5' => [
-                'name'=>'abstracts',
-                'url'=>'',
-                'icon'=>'bi bi-journals'
+                'name' => 'abstracts',
+                'url' => '',
+                'icon' => 'bi bi-journals'
             ],
             '6' => [
-                'name'=>'full Papers',
-                'url'=>'',
-                'icon'=>'bi bi-journals'
+                'name' => 'full Papers',
+                'url' => '',
+                'icon' => 'bi bi-journals'
             ],
         ];
 
@@ -160,14 +160,14 @@ class DatabaseSeeder extends Seeder
         // Refeerence submenus
         $statusSubmenus = [
             '7' => [
-                'name'=>'statuses',
-                'icon'=>'bi bi-clipboard',
-                'url'=>'statuses',
+                'name' => 'statuses',
+                'icon' => 'bi bi-clipboard',
+                'url' => 'statuses',
             ],
             '8' => [
-                'name'=>"types",
-                'icon'=>'bi bi-braces',
-                'url'=>'stypes'
+                'name' => "types",
+                'icon' => 'bi bi-braces',
+                'url' => 'stypes'
             ],
         ];
 
@@ -186,29 +186,29 @@ class DatabaseSeeder extends Seeder
         // Ticket submenus
         $ticketSubmenus = [
             '9' => [
-                'name'=>'tickets',
-                'url'=>'tickets',
-                'icon'=>'bi bi-ticket'
+                'name' => 'tickets',
+                'url' => 'tickets',
+                'icon' => 'bi bi-ticket'
             ],
             '10' => [
-                'name'=>'types',
-                'url'=>'ttypes',
-                'icon'=>'bi bi-braces'
+                'name' => 'types',
+                'url' => 'ttypes',
+                'icon' => 'bi bi-braces'
             ],
             '11' => [
-                'name'=>'roles',
-                'url'=>'troles',
-                'icon'=>'bi bi-building-gear'
+                'name' => 'roles',
+                'url' => 'troles',
+                'icon' => 'bi bi-building-gear'
             ],
             '12' => [
-                'name'=>'states',
-                'url'=>'states',
-                'icon'=>'bi bi-airplane'
+                'name' => 'states',
+                'url' => 'states',
+                'icon' => 'bi bi-airplane'
             ],
             '13' => [
-                'name'=>'graduation',
-                'url'=>'studies',
-                'icon'=>'bi bi-mortarboard'
+                'name' => 'Studies',
+                'url' => 'studies',
+                'icon' => 'bi bi-mortarboard'
             ],
         ];
 
@@ -260,9 +260,9 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        
 
-        
+
+
 
 
 
