@@ -8,9 +8,14 @@ use App\Models\Stype;
 class Stypes extends BaseController
 {
     protected $rule = [
-      'store'=> [],
+      'store'=> [
+        'code' => 'required|is_unique[stypes.code]',
+        'name' => 'required|alpha_numeric_punct',
+      ],
       'update'=> [
         'id' => 'required|is_not_unique[stypes.id]',
+        'code' => 'required|is_unique[stypes.code,stypes.id,{id}]',
+        'name' => 'required|alpha_numeric_punct',
       ],
     ];
 
@@ -23,12 +28,13 @@ class Stypes extends BaseController
     public function index()
     {
       // main view
-      // return view('stypes/index',[
-      //   'stypes' => Stype::all(),
-      //   'message' => $this->session->has('message') ? $this->session->get('message') : '',
-      //   'title' => 'Stypes'
-      // ]);
-      dd(Stype::all()->toArray());
+      return view('stypes/index',[
+        'title' => 'Stypes',                
+        'stypes' => Stype::all(),
+        'deleted' => Stype::onlyTrashed()->get(),    
+        'message' => $this->session->has('message') ? $this->session->get('message') : '',  
+      ]);
+     
     }
 
     public function create()
