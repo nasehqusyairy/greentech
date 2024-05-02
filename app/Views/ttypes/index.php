@@ -16,7 +16,7 @@ if (!empty($message)) : ?>
 <div class="card">
   <div class="card-body">
     <div class="mb-3">
-      <a href="/ttypes/create" class="btn btn-primary"><i class="bi bi-plus"></i>New ttype</a>
+      <a href="/ttypes/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Type</a>
     </div>
     <ul class="nav nav-tabs" id="tab">
       <li class="nav-item">
