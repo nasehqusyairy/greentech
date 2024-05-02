@@ -7,121 +7,126 @@ use App\Models\Ttype;
 
 class Ttypes extends BaseController
 {
-    protected $rule = [
-      'store'=> [],
-      'update'=> [
-        'id' => 'required|is_not_unique[ttypes.id]',
-      ],
-    ];
+  protected $rule = [
+    'store' => [
+      'code' => 'required|is_unique[ttypes.code]',
+      'name' => 'required|alpha_numeric_punct',
+    ],
+    'update' => [
+      'id' => 'required|is_not_unique[ttypes.id]',
+      'code' => 'required|is_unique[ttypes.code,id,{id}]',
+      'name' => 'required|alpha_numeric_punct',
+    ],
+  ];
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->isNeedLogin();
-    }
+  public function __construct()
+  {
+    parent::__construct();
+    $this->isNeedLogin();
+  }
 
-    public function index()
-    {
-      // main view
-      // return view('ttypes/index',[
-      //   'ttypes' => Ttype::all(),
-      //   'message' => $this->session->has('message') ? $this->session->get('message') : '',
-      //   'title' => 'Ttypes'
-      // ]);
-      dd(Ttype::all()->toArray());
-    }
+  public function index()
+  {
+    // main view
+    return view('ttypes/index', [
+      'ttypes' => Ttype::all(),
+      'message' => $this->session->has('message') ? $this->session->get('message') : '',
+      'title' => 'Ttypes',
+      'deleted' => Ttype::onlyTrashed()->get()
+    ]);
+  }
 
-    public function create()
-    {
-      // create form
-      return view('ttypes/create',[
-        'title' => 'New Ttype'
-      ]);
-    }
+  public function create()
+  {
+    // create form
+    return view('ttypes/create', [
+      'title' => 'New Ttype'
+    ]);
+  }
 
-    public function store()
-    {
-      // check if the request is POST
-      $this->isPostRequest();
+  public function store()
+  {
+    // check if the request is POST
+    $this->isPostRequest();
 
-      // set validation rules
-      $this->validator->setRules($this->rule['store']);
+    // set validation rules
+    $this->validator->setRules($this->rule['store']);
 
-      // validated input
-      $validInput = $this->validInput();
+    // validated input
+    $validInput = $this->validInput();
 
-      // return response if the input is invalid
-      if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+    // return response if the input is invalid
+    if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
 
-      // manipulate data here
-      Ttype::create($validInput);
+    // manipulate data here
+    Ttype::create($validInput);
 
-      // redirect
-      return redirect()->to('/ttypes/')->with('message', 'Ttype data has been saved successfully');
-    }
+    // redirect
+    return redirect()->to('/ttypes/')->with('message', 'Ttype data has been saved successfully');
+  }
 
-    public function edit($id)
-    {
-      // find data
-      $ttype = Ttype::find($id);
+  public function edit($id)
+  {
+    // find data
+    $ttype = Ttype::find($id);
 
-      // throw error if the data is not found
-      if ($id == null || !$ttype) throw new PageNotFoundException();
+    // throw error if the data is not found
+    if ($id == null || !$ttype) throw new PageNotFoundException();
 
-      // return view
-      return view('ttypes/edit',[
-        'ttype'=>$ttype,
-        'title' => 'Edit Ttype'
-      ]);
-    }
+    // return view
+    return view('ttypes/edit', [
+      'ttype' => $ttype,
+      'title' => 'Edit Ttype'
+    ]);
+  }
 
-    public function update()
-    {
-       // check if the request is POST
-      $this->isPostRequest();
+  public function update()
+  {
+    // check if the request is POST
+    $this->isPostRequest();
 
-      // set validation rules
-      $this->validator->setRules($this->rule['update']);
+    // set validation rules
+    $this->validator->setRules($this->rule['update']);
 
-      // validated input
-      $validInput = $this->validInput();
+    // validated input
+    $validInput = $this->validInput();
 
-      // return response if the input is invalid
-      if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+    // return response if the input is invalid
+    if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
 
-      // manipulate data here
-      $ttype = Ttype::find($validInput['id']);
-      $ttype->update($validInput);
+    // manipulate data here
+    $ttype = Ttype::find($validInput['id']);
+    $ttype->update($validInput);
 
-      // redirect
-      return redirect()->to('/ttypes/')->with('message', 'Ttype data has been updated successfully');
-    }
-    
-    public function delete($id)
-    {
-        // find data
-        $ttype = Ttype::find($id);
+    // redirect
+    return redirect()->to('/ttypes/')->with('message', 'Ttype data has been updated successfully');
+  }
 
-        // throw error if the data is not found
-        if (!$ttype) throw new PageNotFoundException();
+  public function delete($id)
+  {
+    // find data
+    $ttype = Ttype::find($id);
 
-        // delete data
-        $ttype->delete();
+    // throw error if the data is not found
+    if (!$ttype) throw new PageNotFoundException();
 
-        // redirect
-        return redirect()->to('/ttypes/')->with('message', 'Ttype data has been deleted successfully');
-    }
-    public function restore($id = null)
-    {
-      $ttype = Ttype::withTrashed()->find($id);
+    // delete data
+    $ttype->delete();
 
-      // throw error if the ttype is not found
-      if (!$ttype) throw new PageNotFoundException();
+    // redirect
+    return redirect()->to('/ttypes/')->with('message', 'Ttype data has been deleted successfully');
+  }
+  public function restore($id = null)
+  {
+    $ttype = Ttype::withTrashed()->find($id);
 
-      // restore data
-      $ttype->restore();
+    // throw error if the ttype is not found
+    if (!$ttype) throw new PageNotFoundException();
 
-      // redirect
-      return redirect()->to('/ttypes/')->with('message', 'Ttype data has been restored successfully');
-    }
+    // restore data
+    $ttype->restore();
+
+    // redirect
+    return redirect()->to('/ttypes/')->with('message', 'Ttype data has been restored successfully');
+  }
 }
