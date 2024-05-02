@@ -8,9 +8,14 @@ use App\Models\State;
 class States extends BaseController
 {
     protected $rule = [
-      'store'=> [],
+      'store'=> [
+        'code' => 'required|is_unique[states.code]',
+        'name' => 'required|alpha_numeric_punct',
+      ],
       'update'=> [
         'id' => 'required|is_not_unique[states.id]',
+        'code' => 'required|is_unique[states.code,states.id,{id}]',
+        'name' => 'required|alpha_numeric_punct',
       ],
     ];
 
@@ -23,12 +28,12 @@ class States extends BaseController
     public function index()
     {
       // main view
-      // return view('states/index',[
-      //   'states' => State::all(),
-      //   'message' => $this->session->has('message') ? $this->session->get('message') : '',
-      //   'title' => 'States'
-      // ]);
-      dd(State::all()->toArray());
+      return view('states/index',[
+        'states' => State::all(),
+        'message' => $this->session->has('message') ? $this->session->get('message') : '',
+        'title' => 'States',
+        'deleted' => State::onlyTrashed()->get(),
+      ]);
     }
 
     public function create()
