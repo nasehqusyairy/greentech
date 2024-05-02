@@ -12,7 +12,6 @@ class Statuses extends BaseController
         'code' => 'required|is_unique[statuses.code]',
         'text' => 'required',
         'color' => 'required',
-        'name' => 'required',
         'stype_id' => 'required|is_not_unique[stypes.id]',
       ],
       'update'=> [
@@ -20,7 +19,6 @@ class Statuses extends BaseController
         'code' => 'required|is_unique[statuses.code,statuses.id,{id}]',
         'text' => 'required',
         'color' => 'required',
-        'name' => 'required',
         'stype_id' => 'required|is_not_unique[stypes.id]',
       ],
     ];

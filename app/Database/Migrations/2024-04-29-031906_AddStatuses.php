@@ -12,8 +12,7 @@ class AddStatuses extends Blueprint
             $table->id();
             $table->integer('code');
             $table->string('text');
-            $table->string('color');
-            $table->string('name');            
+            $table->string('color');           
             $table->foreignId('stype_id')->constrained('stypes')->cascadeOnDelete()->add();      
             $table->timestamps();
             $table->softDelete();

@@ -36,7 +36,6 @@ if (!empty($message)) : ?>
                 <th>Code</th>
                 <th>Text</th>
                 <th>Color</th>
-                <th>Name</th>
                 <th>Type</th>
                 <th>Actions</th>
               </tr>
@@ -50,7 +49,6 @@ if (!empty($message)) : ?>
                   <td><?= $status->code ?></td>
                   <td><?= $status->text ?></td>
                   <td><?= $status->color ?></td>
-                  <td><?= $status->name ?></td>
                   <td><?= $status->stype->name ?></td>
                   <td>
                   <a href="/statuses/edit/<?= $status->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>

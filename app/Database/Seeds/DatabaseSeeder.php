@@ -260,12 +260,6 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-
-
-
-
-
-
         // menu_role
         $menuRoles = [
             ['role' => 'Super Admin', 'menu' => $menus[0]],
@@ -327,6 +321,138 @@ class DatabaseSeeder extends Seeder
             $this->db->table('permission_role')->insert([
                 'role_id' => $role_id,
                 'permission_id' => $permission_id,
+            ]);
+        }
+
+        // Add stypes
+        $stypes = [
+            'payment',
+            'acceptence',
+            'paper',
+        ];
+
+        foreach ($stypes as $key => $stype) {
+            $this->db->table('stypes')->insert([
+                'name' => $stype,
+                'code' => ++$key,
+            ]);
+        }
+
+        // Add statuses
+        $statuses = [
+            ['text' => 'Unavailable', 'color' => 'secondary', 'stype' => $stypes[0]],
+            ['text' => 'Unpaid', 'color' => 'warning', 'stype' => $stypes[0]],
+            ['text' => 'Paid', 'color' => 'success', 'stype' => $stypes[0]],
+            ['text' => 'Unsigned', 'color' => 'secondary', 'stype' => $stypes[1]],
+            ['text' => 'Reviewing', 'color' => 'info', 'stype' => $stypes[1]],
+            ['text' => 'Accepted', 'color' => 'success', 'stype' => $stypes[1]],
+            ['text' => 'Rejected', 'color' => 'danger', 'stype' => $stypes[1]],
+            ['text' => 'Comfirmed', 'color' => 'success', 'stype' => $stypes[2]],
+            ['text' => 'Rejected', 'color' => 'danger', 'stype' => $stypes[2]],
+            ['text' => 'Waiting', 'color' => 'info', 'stype' => $stypes[2]],
+        ];
+
+        foreach ($statuses as $key => $status) {
+            $stype_id = $this->db->table('stypes')->where('name', $status['stype'])->get()->getRow()->id;
+
+            $this->db->table('statuses')->insert([
+                'text' => $status['text'],
+                'color' => $status['color'],
+                'code' => ++$key,
+                'stype_id' => $stype_id,
+            ]);
+        }
+
+        // Add ticket roles
+        $troles = [
+            'Presenter',
+            'Listener',
+        ];
+
+        foreach ($troles as $key => $trole) {
+            $this->db->table('troles')->insert([
+                'name' => $trole,
+                'code' => ++$key,
+            ]);
+        }
+
+        // Add ttypes 
+        $ttypes = [
+            'Early Bird',
+            'Regular',
+        ];
+
+        foreach ($ttypes as $key => $ttype) {
+            $this->db->table('ttypes')->insert([
+                'name' => $ttype,
+                'code' => ++$key,
+            ]);
+        }
+
+        // Add states 
+        $states = [
+            'Local',
+            'International',
+            'National'
+        ];
+
+        foreach ($states as $key => $state) {
+            $this->db->table('states')->insert([
+                'name' => $state,
+                'code' => ++$key,
+            ]);
+        }
+
+        // Add studies 
+        $studies = [
+            'Not a Student',
+            'Undergraduate Student',
+            'Master and Doctoral Student',
+            'Postgraduate Student'
+        ];
+
+        foreach ($studies as $key => $studie) {
+            $this->db->table('studies')->insert([
+                'name' => $studie,
+                'code' => ++$key,
+            ]);
+        }
+
+        // Add tickets 
+        $tickets = [
+            ['name' => 'Ticket1', 'attendance' => 'online', 'price' => 400000, 'type' => $ttypes[0], 'role' => $troles[0], 'state' => $states[0], 'study' => $studies[0]],
+            ['name' => 'Ticket2', 'attendance' => 'offline', 'price' => 800000, 'type' => $ttypes[1], 'role' => $troles[1], 'state' => $states[1], 'study' => $studies[3]],
+        ];
+
+        foreach ($tickets as $key => $ticket) {
+            $type_id = $this->db->table('ttypes')->where('name', $ticket['type'])->get()->getRow()->id;
+            $role_id = $this->db->table('troles')->where('name', $ticket['role'])->get()->getRow()->id;
+            $state_id = $this->db->table('states')->where('name', $ticket['state'])->get()->getRow()->id;
+            $study_id = $this->db->table('studies')->where('name', $ticket['study'])->get()->getRow()->id;
+
+            $this->db->table('tickets')->insert([
+                'name' => $ticket['name'],
+                'attendance' => $ticket['attendance'],
+                'price' => $ticket['price'],
+                'type_id' => $type_id,
+                'role_id' => $role_id,
+                'state_id' => $state_id,
+                'study_id' => $study_id,
+            ]);
+        }
+
+        // Add publications 
+        $publications = [
+            'IOP Earth and Environmental Science (Scopus Indexed)',
+            'Proceedings of the International Conference on Green Technology',
+            'JIA (Journal of Islamic Architecture) ** (Scopus Indexed)',
+            'Jurnal Neutrino: Jurnal Fisika dan Aplikasinya (Accredited SINTA-3)',
+            'El-Hayah: Journal of Biology (Accredited SINTA-3)',
+        ];
+
+        foreach ($publications as $key => $publication) {
+            $this->db->table('publications')->insert([
+                'name' => $publication,
             ]);
         }
     }

@@ -12,7 +12,6 @@ class Status extends Model
         'code',
         'text',
         'color',
-        'name',
         'stype_id'
     ];
     public function stype()
