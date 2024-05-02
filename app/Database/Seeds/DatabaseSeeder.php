@@ -239,7 +239,7 @@ class DatabaseSeeder extends Seeder
             '16' => [
                 'name' => 'submenus',
                 'url'  => 'submenus',
-                'icon' => 'bi bi-menu-button-wide'
+                'icon' => 'bi bi-menu-down'
             ],
             '17' => [
                 'name' => 'systems',
