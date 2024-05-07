@@ -191,12 +191,12 @@ class DatabaseSeeder extends Seeder
                 'icon' => 'bi bi-ticket'
             ],
             '10' => [
-                'name' => 'types',
+                'name' => 'ticket Types',
                 'url' => 'ttypes',
                 'icon' => 'bi bi-braces'
             ],
             '11' => [
-                'name' => 'roles',
+                'name' => 'Ticket Roles',
                 'url' => 'troles',
                 'icon' => 'bi bi-person-gear'
             ],
@@ -393,7 +393,6 @@ class DatabaseSeeder extends Seeder
         $states = [
             'Local',
             'International',
-            'National'
         ];
 
         foreach ($states as $key => $state) {
@@ -408,7 +407,6 @@ class DatabaseSeeder extends Seeder
             'Not a Student',
             'Undergraduate Student',
             'Master and Doctoral Student',
-            'Postgraduate Student'
         ];
 
         foreach ($studies as $key => $studie) {
@@ -421,7 +419,7 @@ class DatabaseSeeder extends Seeder
         // Add tickets 
         $tickets = [
             ['name' => 'Ticket1', 'attendance' => 'online', 'price' => 400000, 'type' => $ttypes[0], 'role' => $troles[0], 'state' => $states[0], 'study' => $studies[0]],
-            ['name' => 'Ticket2', 'attendance' => 'offline', 'price' => 800000, 'type' => $ttypes[1], 'role' => $troles[1], 'state' => $states[1], 'study' => $studies[3]],
+            ['name' => 'Ticket2', 'attendance' => 'offline', 'price' => 800000, 'type' => $ttypes[1], 'role' => $troles[1], 'state' => $states[1], 'study' => $studies[2]],
         ];
 
         foreach ($tickets as $key => $ticket) {
@@ -434,8 +432,8 @@ class DatabaseSeeder extends Seeder
                 'name' => $ticket['name'],
                 'attendance' => $ticket['attendance'],
                 'price' => $ticket['price'],
-                'type_id' => $type_id,
-                'role_id' => $role_id,
+                'ttype_id' => $type_id,
+                'trole_id' => $role_id,
                 'state_id' => $state_id,
                 'study_id' => $study_id,
             ]);

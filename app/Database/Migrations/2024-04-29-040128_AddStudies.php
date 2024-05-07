@@ -10,7 +10,7 @@ class AddStudies extends Blueprint
     {
         $this->create('studies', function (Blueprint $table) {
             $table->id();
-            $table->integer('code');
+            $table->string('code');
             $table->string('name');
             $table->timestamps();
             $table->softDelete();

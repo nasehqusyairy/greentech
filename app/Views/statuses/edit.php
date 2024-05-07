@@ -6,7 +6,6 @@
 $this->extend('components/layout');
 $this->section('content');
 
-$name = !old('name') ? $status->name : old('name');
 $code = !old('code') ? $status->code : old('code');
 $text = !old('text') ? $status->text : old('text');
 $color = !old('color') ? $status->color : old('color');
@@ -51,12 +50,8 @@ if (session()->has('errors')) : ?>
           <option value="dark" <?= $color == 'dark' ? 'selected' : ''; ?>>Dark</option>
         </select>
       </div>
+      <!-- Type Drop down -->
       <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control" id="name" name="name" value="<?= $name ?>">
-      </div>
-       <!-- Type Drop down -->
-       <div class="mb-3">
         <label for="stype_id" class="form-label">Type</label>
         <select class="form-select" id="stype_id" name="stype_id">
           <option value="">Select Type</option>
@@ -74,4 +69,17 @@ if (session()->has('errors')) : ?>
 
 </form>
 
-<?= $this->endSection() ?>
+<?php $this->endSection();
+$this->section('footer');
+?>
+<script>
+  $('#color').select2({
+    theme: 'bootstrap-5',
+    width: '100%',
+  });
+  $('#stype_id').select2({
+    theme: 'bootstrap-5',
+    width: '100%',
+  });
+</script>
+<?php $this->endSection(); ?>

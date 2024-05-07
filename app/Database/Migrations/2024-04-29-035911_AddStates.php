@@ -10,7 +10,7 @@ class AddStates extends Blueprint
     {
         $this->create('states', function (Blueprint $table) {
             $table->id();
-            $table->integer('code');
+            $table->string('code');
             $table->string('name');
             $table->timestamps();
             $table->softDelete();

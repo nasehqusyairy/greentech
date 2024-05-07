@@ -31,7 +31,7 @@ class Troles extends BaseController
     return view('troles/index', [
       'troles' => Trole::all(),
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
-      'title' => 'Troles',
+      'title' => 'Ticket Roles',
       'deleted' => Trole::onlyTrashed()->get()
     ]);
   }
@@ -40,7 +40,7 @@ class Troles extends BaseController
   {
     // create form
     return view('troles/create', [
-      'title' => 'New Trole'
+      'title' => 'New Ticket Role'
     ]);
   }
 
@@ -76,7 +76,7 @@ class Troles extends BaseController
     // return view
     return view('troles/edit', [
       'trole' => $trole,
-      'title' => 'Edit Trole'
+      'title' => 'Edit Ticket Role'
     ]);
   }
 

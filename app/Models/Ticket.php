@@ -12,25 +12,25 @@ class Ticket extends Model
         'name',
         'attendance',
         'price',
-        'type_id',
-        'role_id',
+        'ttype_id',
+        'trole_id',
         'state_id',
         'study_id',
     ];
 
-    public function type()
+    public function ttype()
     {
-        return $this->belongsTo(Ttype::class);        
+        return $this->belongsTo(Ttype::class);
     }
 
-    public function role()
+    public function trole()
     {
         return $this->belongsTo(Trole::class);
     }
 
     public function state()
     {
-        return $this->belongsTo(Status::class);
+        return $this->belongsTo(State::class);
     }
 
     public function study()

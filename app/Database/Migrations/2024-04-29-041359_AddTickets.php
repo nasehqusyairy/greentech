@@ -13,8 +13,8 @@ class AddTickets extends Blueprint
             $table->string('name');
             $table->string('attendance');
             $table->integer('price');
-            $table->foreignId('type_id')->constrained('ttypes')->cascadeOnDelete()->add();
-            $table->foreignId('role_id')->constrained('troles')->cascadeOnDelete()->add();
+            $table->foreignId('ttype_id')->constrained('ttypes')->cascadeOnDelete()->add();
+            $table->foreignId('trole_id')->constrained('troles')->cascadeOnDelete()->add();
             $table->foreignId('state_id')->constrained('states')->cascadeOnDelete()->add();
             $table->foreignId('study_id')->constrained('studies')->cascadeOnDelete()->add();
             $table->timestamps();

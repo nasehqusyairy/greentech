@@ -10,7 +10,7 @@ class AddTtypes extends Blueprint
     {
         $this->create('ttypes', function (Blueprint $table) {
             $table->id();
-            $table->integer('code');
+            $table->string('code');
             $table->string('name');
             $table->timestamps();
             $table->softDelete();

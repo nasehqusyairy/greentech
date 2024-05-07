@@ -10,7 +10,7 @@ class AddTroles extends Blueprint
     {
         $this->create('troles', function (Blueprint $table) {
             $table->id();
-            $table->integer('code');
+            $table->string('code');
             $table->string('name');
             $table->timestamps();
             $table->softDelete();

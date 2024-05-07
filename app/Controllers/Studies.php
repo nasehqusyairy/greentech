@@ -7,128 +7,127 @@ use App\Models\Study;
 
 class Studies extends BaseController
 {
-    protected $rule = [
-      'store' => [
-        'code' => 'required|is_unique[roles.code]',
-        'name' => 'required|alpha_numeric_punct',
-      ],
-      'update' => [
-        'id' => 'required|is_not_unique[roles.id]',
-        'code' => 'required|is_unique[roles.code,roles.id,{id}]',
-        'name' => 'required|alpha_numeric_punct',
-      ],
-    ];
+  protected $rule = [
+    'store' => [
+      'code' => 'required|is_unique[studies.code]',
+      'name' => 'required|alpha_numeric_punct',
+    ],
+    'update' => [
+      'id' => 'required|is_not_unique[studies.id]',
+      'code' => 'required|is_unique[studies.code,studies.id,{id}]',
+      'name' => 'required|alpha_numeric_punct',
+    ],
+  ];
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->isNeedLogin();
-    }
+  public function __construct()
+  {
+    parent::__construct();
+    $this->isNeedLogin();
+  }
 
-    public function index()
-    {
-      // main view
-      return view('studies/index',[
-        'studies' => Study::all(),
-        'deleted' => Study::onlyTrashed()->get(),
-        'message' => $this->session->has('message') ? $this->session->get('message') : '',
-        'title' => 'studies'
-        
-      ]);
-      dd(Study::all()->toArray());
-    }
+  public function index()
+  {
+    // main view
+    return view('studies/index', [
+      'studies' => Study::all(),
+      'deleted' => Study::onlyTrashed()->get(),
+      'message' => $this->session->has('message') ? $this->session->get('message') : '',
+      'title' => 'Studies'
 
-    public function create()
-    {
-      // create form
-      return view('studies/create',[
-        'title' => 'New Study'
-      ]);
-    }
+    ]);
+  }
 
-    public function store()
-    {
-      // check if the request is POST
-      $this->isPostRequest();
+  public function create()
+  {
+    // create form
+    return view('studies/create', [
+      'title' => 'New Study'
+    ]);
+  }
 
-      // set validation rules
-      $this->validator->setRules($this->rule['store']);
+  public function store()
+  {
+    // check if the request is POST
+    $this->isPostRequest();
 
-      // validated input
-      $validInput = $this->validInput();
+    // set validation rules
+    $this->validator->setRules($this->rule['store']);
 
-      // return response if the input is invalid
-      if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+    // validated input
+    $validInput = $this->validInput();
 
-      // manipulate data here
-      Study::create($validInput);
+    // return response if the input is invalid
+    if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
 
-      // redirect
-      return redirect()->to('/studies/')->with('message', 'Study data has been saved successfully');
-    }
+    // manipulate data here
+    Study::create($validInput);
 
-    public function edit($id)
-    {
-      // find data
-      $study = Study::find($id);
+    // redirect
+    return redirect()->to('/studies/')->with('message', 'Study data has been saved successfully');
+  }
 
-      // throw error if the data is not found
-      if ($id == null || !$study) throw new PageNotFoundException();
+  public function edit($id)
+  {
+    // find data
+    $study = Study::find($id);
 
-      // return view
-      return view('studies/edit',[
-        'study'=>$study,
-        'title' => 'Edit Study'
-      ]);
-    }
+    // throw error if the data is not found
+    if ($id == null || !$study) throw new PageNotFoundException();
 
-    public function update()
-    {
-       // check if the request is POST
-      $this->isPostRequest();
+    // return view
+    return view('studies/edit', [
+      'study' => $study,
+      'title' => 'Edit Study'
+    ]);
+  }
 
-      // set validation rules
-      $this->validator->setRules($this->rule['update']);
+  public function update()
+  {
+    // check if the request is POST
+    $this->isPostRequest();
 
-      // validated input
-      $validInput = $this->validInput();
+    // set validation rules
+    $this->validator->setRules($this->rule['update']);
 
-      // return response if the input is invalid
-      if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+    // validated input
+    $validInput = $this->validInput();
 
-      // manipulate data here
-      $study = Study::find($validInput['id']);
-      $study->update($validInput);
+    // return response if the input is invalid
+    if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
 
-      // redirect
-      return redirect()->to('/studies/')->with('message', 'Study data has been updated successfully');
-    }
-    
-    public function delete($id)
-    {
-        // find data
-        $study = Study::find($id);
+    // manipulate data here
+    $study = Study::find($validInput['id']);
+    $study->update($validInput);
 
-        // throw error if the data is not found
-        if (!$study) throw new PageNotFoundException();
+    // redirect
+    return redirect()->to('/studies/')->with('message', 'Study data has been updated successfully');
+  }
 
-        // delete data
-        $study->delete();
+  public function delete($id)
+  {
+    // find data
+    $study = Study::find($id);
 
-        // redirect
-        return redirect()->to('/studies/')->with('message', 'Study data has been deleted successfully');
-    }
-    public function restore($id = null)
-    {
-      $study = Study::withTrashed()->find($id);
+    // throw error if the data is not found
+    if (!$study) throw new PageNotFoundException();
 
-      // throw error if the study is not found
-      if (!$study) throw new PageNotFoundException();
+    // delete data
+    $study->delete();
 
-      // restore data
-      $study->restore();
+    // redirect
+    return redirect()->to('/studies/')->with('message', 'Study data has been deleted successfully');
+  }
+  public function restore($id = null)
+  {
+    $study = Study::withTrashed()->find($id);
 
-      // redirect
-      return redirect()->to('/studies/')->with('message', 'Study data has been restored successfully');
-    }
+    // throw error if the study is not found
+    if (!$study) throw new PageNotFoundException();
+
+    // restore data
+    $study->restore();
+
+    // redirect
+    return redirect()->to('/studies/')->with('message', 'Study data has been restored successfully');
+  }
 }

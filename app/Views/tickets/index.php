@@ -8,7 +8,7 @@ $this->section('content');
 ?>
 <?php
 if (!empty($message)) : ?>
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <div class="alert alert-success alert-dismissible fade show">
     <?= $message ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
@@ -16,7 +16,7 @@ if (!empty($message)) : ?>
 <div class="card">
   <div class="card-body">
     <div class="mb-3">
-      <a href="/ttypes/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Ticket Type</a>
+      <a href="/tickets/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Ticket</a>
     </div>
     <ul class="nav nav-tabs" id="tab">
       <li class="nav-item">
@@ -34,21 +34,31 @@ if (!empty($message)) : ?>
               <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Code</th>
+                <th>Attendence</th>
+                <th>Type</th>
+                <th>Role</th>
+                <th>State</th>
+                <th>Study</th>
+                <th>Price</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               <?php
               $i = 1;
-              foreach ($ttypes as $ttype) : ?>
+              foreach ($tickets as $ticket) : ?>
                 <tr>
                   <td><?= $i++; ?></td>
-                  <td><?= $ttype->name ?></td>
-                  <td><?= $ttype->code ?></td>
+                  <td><?= $ticket->name ?></td>
+                  <td><?= $ticket->attendance ?></td>
+                  <td><?= $ticket->ttype->name ?></td>
+                  <td><?= $ticket->trole->name ?></td>
+                  <td><?= $ticket->state->name ?></td>
+                  <td><?= $ticket->study->name ?></td>
+                  <td>Rp. <?= $ticket->price ?></td>
                   <td>
-                    <a href="/ttypes/edit/<?= $ttype->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
-                    <button onclick="handleDelete(<?= $ttype->id; ?>)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <a href="/tickets/edit/<?= $ticket->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
+                    <button onclick="handleDelete(<?= $ticket->id; ?>)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -63,20 +73,30 @@ if (!empty($message)) : ?>
               <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Code</th>
+                <th>Attendence</th>
+                <th>Type</th>
+                <th>Role</th>
+                <th>State</th>
+                <th>Study</th>
+                <th>Price</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               <?php
               $i = 1;
-              foreach ($deleted as $ttype) : ?>
+              foreach ($deleted as $ticket) : ?>
                 <tr>
                   <td><?= $i++; ?></td>
-                  <td><?= $ttype->name ?></td>
-                  <td><?= $ttype->code ?></td>
+                  <td><?= $ticket->name ?></td>
+                  <td><?= $ticket->attendance ?></td>
+                  <td><?= $ticket->ttype->name ?></td>
+                  <td><?= $ticket->trole->name ?></td>
+                  <td><?= $ticket->state->name ?></td>
+                  <td><?= $ticket->study->name ?></td>
+                  <td>Rp. <?= $ticket->price ?></td>
                   <td>
-                    <a href="<?= base_url('ttypes/restore/' . $ttype->id); ?>" class="btn btn-secondary">
+                    <a href="<?= base_url('tickets/restore/' . $ticket->id); ?>" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
                     </a>
                   </td>
@@ -113,7 +133,7 @@ $this->endSection();
 $this->section('footer');
 ?>
 <script>
-  const handleDelete = (id) => document.querySelector('#deleteModal .modal-footer a').href = '<?= base_url(); ?>' + 'ttypes/delete/' + id;
+  const handleDelete = (id) => document.querySelector('#deleteModal .modal-footer a').href = '<?= base_url(); ?>' + 'tickets/delete/' + id;
   // DataTables
   const table = new DataTable('#available');
   const table_deleted = new DataTable('#deleted');

@@ -31,7 +31,7 @@ class Ttypes extends BaseController
     return view('ttypes/index', [
       'ttypes' => Ttype::all(),
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
-      'title' => 'Ttypes',
+      'title' => 'Ticket Types',
       'deleted' => Ttype::onlyTrashed()->get()
     ]);
   }
@@ -40,7 +40,7 @@ class Ttypes extends BaseController
   {
     // create form
     return view('ttypes/create', [
-      'title' => 'New Ttype'
+      'title' => 'New Ticket Type'
     ]);
   }
 
@@ -62,7 +62,7 @@ class Ttypes extends BaseController
     Ttype::create($validInput);
 
     // redirect
-    return redirect()->to('/ttypes/')->with('message', 'Ttype data has been saved successfully');
+    return redirect()->to('/ttypes/')->with('message', 'Ticket type data has been saved successfully');
   }
 
   public function edit($id)
@@ -76,7 +76,7 @@ class Ttypes extends BaseController
     // return view
     return view('ttypes/edit', [
       'ttype' => $ttype,
-      'title' => 'Edit Ttype'
+      'title' => 'Edit Ticket Type'
     ]);
   }
 
@@ -99,7 +99,7 @@ class Ttypes extends BaseController
     $ttype->update($validInput);
 
     // redirect
-    return redirect()->to('/ttypes/')->with('message', 'Ttype data has been updated successfully');
+    return redirect()->to('/ttypes/')->with('message', 'Ticket type data has been updated successfully');
   }
 
   public function delete($id)
@@ -114,7 +114,7 @@ class Ttypes extends BaseController
     $ttype->delete();
 
     // redirect
-    return redirect()->to('/ttypes/')->with('message', 'Ttype data has been deleted successfully');
+    return redirect()->to('/ttypes/')->with('message', 'Ticket type data has been deleted successfully');
   }
   public function restore($id = null)
   {
@@ -127,6 +127,6 @@ class Ttypes extends BaseController
     $ttype->restore();
 
     // redirect
-    return redirect()->to('/ttypes/')->with('message', 'Ttype data has been restored successfully');
+    return redirect()->to('/ttypes/')->with('message', 'Ticket type data has been restored successfully');
   }
 }
