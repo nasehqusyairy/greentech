@@ -418,8 +418,16 @@ class DatabaseSeeder extends Seeder
 
         // Add tickets 
         $tickets = [
-            ['name' => 'Ticket1', 'attendance' => 'online', 'price' => 400000, 'type' => $ttypes[0], 'role' => $troles[0], 'state' => $states[0], 'study' => $studies[0]],
-            ['name' => 'Ticket2', 'attendance' => 'offline', 'price' => 800000, 'type' => $ttypes[1], 'role' => $troles[1], 'state' => $states[1], 'study' => $studies[2]],
+            [
+                'name' => 'Ticket1', 'attendance' => 'online', 'price' => 400000, 'type' => $ttypes[0], 'role' => $troles[0], 'state' => $states[0],
+                'currency' => 'IDR',
+                'study' => $studies[0]
+            ],
+            [
+                'name' => 'Ticket2', 'attendance' => 'offline', 'price' => 800000, 'type' => $ttypes[1], 'role' => $troles[1], 'state' => $states[1],
+                'currency' => 'IDR',
+                'study' => $studies[2]
+            ],
         ];
 
         foreach ($tickets as $key => $ticket) {

@@ -20,6 +20,7 @@ class Tickets extends BaseController
       'state_id' => 'required|is_not_unique[states.id]',
       'study_id' => 'required|is_not_unique[studies.id]',
       'price' => 'required|numeric',
+      'currency' => 'required|alpha',
     ],
     'update' => [
       'id' => 'required|is_not_unique[tickets.id]',
@@ -30,6 +31,7 @@ class Tickets extends BaseController
       'state_id' => 'required|is_not_unique[states.id]',
       'study_id' => 'required|is_not_unique[studies.id]',
       'price' => 'required|numeric',
+      'currency' => 'required|alpha',
     ],
   ];
 

@@ -68,6 +68,13 @@ if (session()->has('errors')) : ?>
         <label for="price" class="form-label">Price</label>
         <input type="number" class="form-control" id="price" name="price" value="<?= old('price'); ?>">
       </div>
+      <div class="mb-3">
+        <label for="currency" class="form-label">Currency</label>
+        <select name="currency" id="currency" class="form-select">
+          <option value="IDR" <?= old('currency') == 'IDR' ? 'selected' : ''; ?>>IDR</option>
+          <option value="USD" <?= old('currency') == 'USD' ? 'selected' : ''; ?>>USD</option>
+        </select>
+      </div>
       <div class="d-grid d-lg-block gap-2">
         <button type="submit" class="btn btn-primary">Save</button>
         <a href="<?= base_url('roles'); ?>" class="btn btn-secondary">Cancel</a>

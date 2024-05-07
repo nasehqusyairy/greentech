@@ -12,6 +12,7 @@ class Ticket extends Model
         'name',
         'attendance',
         'price',
+        'currency',
         'ttype_id',
         'trole_id',
         'state_id',
