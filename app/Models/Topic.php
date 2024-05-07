@@ -9,6 +9,7 @@ class Topic extends Model
 {
     use SoftDeletes;
     protected $fillable = [
-        'name'
+        'name',
+        'description',
     ];
 }

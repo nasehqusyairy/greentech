@@ -20,10 +20,14 @@ if (session()->has('errors')) : ?>
 <form action="<?= base_url('topics/store'); ?>" method="post">
   <?= csrf_field(); ?>
   <div class="card mb-3">
-    <div class="card-body">      
+    <div class="card-body">
       <div class="mb-3">
         <label for="name" class="form-label">Name</label>
         <input type="text" class="form-control" id="name" name="name" value="<?= old('name'); ?>">
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="3"><?= old('description'); ?></textarea>
       </div>
       <div class="d-grid d-lg-block gap-2">
         <button type="submit" class="btn btn-primary">Save</button>

@@ -461,5 +461,21 @@ class DatabaseSeeder extends Seeder
                 'name' => $publication,
             ]);
         }
+
+        // Add topics
+        $topics = [
+            ['name' => 'Renewable Energy', 'description' => 'Renewable energy is energy that is collected from renewable resources, which are naturally replenished on a human timescale, such as sunlight, wind, rain, tides, waves, and geothermal heat.'],
+            ['name' => 'Green Building', 'description' => 'Green building (also known as green construction or sustainable building) refers to both a structure and the application of processes that are environmentally responsible and resource-efficient throughout a building\'s life-cycle: from planning to design, construction, operation, maintenance, renovation, and demolition.'],
+            ['name' => 'Waste Management', 'description' => 'Waste management (or waste disposal) includes the activities and actions required to manage waste from its inception to its final disposal.'],
+            ['name' => 'Climate Change', 'description' => 'Climate change includes both global warming driven by human-induced emissions of greenhouse gases and the resulting large-scale shifts in weather patterns.'],
+            ['name' => 'Sustainable Agriculture', 'description' => 'Sustainable agriculture is farming in sustainable ways meeting society\'s present food and textile needs, without compromising the ability for current or future generations to meet their needs.'],
+        ];
+
+        foreach ($topics as $key => $topic) {
+            $this->db->table('topics')->insert([
+                'name' => $topic['name'],
+                'description' => $topic['description'],
+            ]);
+        }
     }
 }

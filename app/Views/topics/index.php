@@ -34,6 +34,7 @@ if (!empty($message)) : ?>
               <tr>
                 <th>#</th>
                 <th>Name</th>
+                <th>Description</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -44,6 +45,7 @@ if (!empty($message)) : ?>
                 <tr>
                   <td><?= $i++; ?></td>
                   <td><?= $topic->name ?></td>
+                  <td><?= $topic->description ?></td>
                   <td>
                     <a href="/topics/edit/<?= $topic->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
                     <button onclick="handleDelete(<?= $topic->id; ?>)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
@@ -60,7 +62,8 @@ if (!empty($message)) : ?>
             <thead>
               <tr>
                 <th>#</th>
-                <th>Name</th>                
+                <th>Name</th>
+                <th>Description</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -70,7 +73,8 @@ if (!empty($message)) : ?>
               foreach ($deleted as $topic) : ?>
                 <tr>
                   <td><?= $i++; ?></td>
-                  <td><?= $topic->name ?></td>                  
+                  <td><?= $topic->name ?></td>
+                  <td><?= $topic->description ?></td>
                   <td>
                     <a href="<?= base_url('topics/restore/' . $topic->id); ?>" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>

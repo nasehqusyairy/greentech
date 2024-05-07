@@ -10,10 +10,12 @@ class Topics extends BaseController
   protected $rule = [
     'store' => [
       'name' => 'required|alpha_numeric_punct',
+      'description' => 'string'
     ],
     'update' => [
       'id' => 'required|is_not_unique[topics.id]',
       'name' => 'required|alpha_numeric_punct',
+      'description' => 'string'
     ],
   ];
 

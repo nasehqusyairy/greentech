@@ -11,6 +11,7 @@ class AddTopics extends Blueprint
         $this->create('topics', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDelete();
         });
