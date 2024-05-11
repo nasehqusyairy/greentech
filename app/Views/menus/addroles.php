@@ -116,7 +116,6 @@ $this->section('footer');
 <script>
   $('#role').select2({
     theme: 'bootstrap-5',
-    placeholder: 'Select...',
     width: '100%'
   });
 

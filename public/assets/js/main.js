@@ -109,5 +109,6 @@ table = new DataTable('#table');
 // Select2
 $('#userFormModal select').select2({
   dropdownParent: $('#userFormModal'),
-  theme: 'bootstrap-5'
+  theme: 'bootstrap-5',
+  width: '100%'
 });

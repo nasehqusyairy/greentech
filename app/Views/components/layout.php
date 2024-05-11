@@ -43,7 +43,7 @@
     <header class="bd-header shadow z-3">
       <!-- NAVBAR -->
       <nav class="bg-white p-3">
-        <h5 class="m-0">
+        <h5 class="m-0 text-truncate">
           <button class="btn btn-link d-inline-block d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
             <i class="bi bi-list"></i>
           </button>

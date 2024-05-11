@@ -9,7 +9,6 @@ document.getElementById('gender').querySelector(`option[value="${server.gender}"
 // Init select2 on gender select field
 $('#gender').select2({
   theme: 'bootstrap-5',
-  placeholder: 'Select...',
   width: '100%'
 });
 
@@ -45,7 +44,6 @@ fetch(url)
 
     countrySelectField.select2({
       theme: 'bootstrap-5',
-      placeholder: 'Select...',
       width: '100%'
     });
 

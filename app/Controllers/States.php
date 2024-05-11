@@ -7,126 +7,126 @@ use App\Models\State;
 
 class States extends BaseController
 {
-    protected $rule = [
-      'store'=> [
-        'code' => 'required|is_unique[states.code]',
-        'name' => 'required|alpha_numeric_punct',
-      ],
-      'update'=> [
-        'id' => 'required|is_not_unique[states.id]',
-        'code' => 'required|is_unique[states.code,states.id,{id}]',
-        'name' => 'required|alpha_numeric_punct',
-      ],
-    ];
+  protected $rule = [
+    'store' => [
+      'code' => 'required|is_unique[states.code]',
+      'name' => 'required|alpha_numeric_punct',
+    ],
+    'update' => [
+      'id' => 'required|is_not_unique[states.id]',
+      'code' => 'required|is_unique[states.code,states.id,{id}]',
+      'name' => 'required|alpha_numeric_punct',
+    ],
+  ];
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->isNeedLogin();
-    }
+  public function __construct()
+  {
+    parent::__construct();
+    $this->isNeedLogin();
+  }
 
-    public function index()
-    {
-      // main view
-      return view('states/index',[
-        'states' => State::all(),
-        'message' => $this->session->has('message') ? $this->session->get('message') : '',
-        'title' => 'States',
-        'deleted' => State::onlyTrashed()->get(),
-      ]);
-    }
+  public function index()
+  {
+    // main view
+    return view('states/index', [
+      'states' => State::all(),
+      'message' => $this->session->has('message') ? $this->session->get('message') : '',
+      'title' => 'States',
+      'deleted' => State::onlyTrashed()->get(),
+    ]);
+  }
 
-    public function create()
-    {
-      // create form
-      return view('states/create',[
-        'title' => 'New State'
-      ]);
-    }
+  public function create()
+  {
+    // create form
+    return view('states/create', [
+      'title' => 'New State'
+    ]);
+  }
 
-    public function store()
-    {
-      // check if the request is POST
-      $this->isPostRequest();
+  public function store()
+  {
+    // check if the request is POST
+    $this->isPostRequest();
 
-      // set validation rules
-      $this->validator->setRules($this->rule['store']);
+    // set validation rules
+    $this->validator->setRules($this->rule['store']);
 
-      // validated input
-      $validInput = $this->validInput();
+    // validated input
+    $validInput = $this->validInput();
 
-      // return response if the input is invalid
-      if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+    // return response if the input is invalid
+    if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
 
-      // manipulate data here
-      State::create($validInput);
+    // manipulate data here
+    State::create($validInput);
 
-      // redirect
-      return redirect()->to('/states/')->with('message', 'State data has been saved successfully');
-    }
+    // redirect
+    return redirect()->to('/states/')->with('message', 'State data has been saved successfully');
+  }
 
-    public function edit($id)
-    {
-      // find data
-      $state = State::find($id);
+  public function edit($id = null)
+  {
+    // find data
+    $state = State::find($id);
 
-      // throw error if the data is not found
-      if ($id == null || !$state) throw new PageNotFoundException();
+    // throw error if the data is not found
+    if ($id == null || !$state) throw new PageNotFoundException();
 
-      // return view
-      return view('states/edit',[
-        'state'=>$state,
-        'title' => 'Edit State'
-      ]);
-    }
+    // return view
+    return view('states/edit', [
+      'state' => $state,
+      'title' => 'Edit State'
+    ]);
+  }
 
-    public function update()
-    {
-       // check if the request is POST
-      $this->isPostRequest();
+  public function update()
+  {
+    // check if the request is POST
+    $this->isPostRequest();
 
-      // set validation rules
-      $this->validator->setRules($this->rule['update']);
+    // set validation rules
+    $this->validator->setRules($this->rule['update']);
 
-      // validated input
-      $validInput = $this->validInput();
+    // validated input
+    $validInput = $this->validInput();
 
-      // return response if the input is invalid
-      if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+    // return response if the input is invalid
+    if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
 
-      // manipulate data here
-      $state = State::find($validInput['id']);
-      $state->update($validInput);
+    // manipulate data here
+    $state = State::find($validInput['id']);
+    $state->update($validInput);
 
-      // redirect
-      return redirect()->to('/states/')->with('message', 'State data has been updated successfully');
-    }
-    
-    public function delete($id)
-    {
-        // find data
-        $state = State::find($id);
+    // redirect
+    return redirect()->to('/states/')->with('message', 'State data has been updated successfully');
+  }
 
-        // throw error if the data is not found
-        if (!$state) throw new PageNotFoundException();
+  public function delete($id = null)
+  {
+    // find data
+    $state = State::find($id);
 
-        // delete data
-        $state->delete();
+    // throw error if the data is not found
+    if (!$state) throw new PageNotFoundException();
 
-        // redirect
-        return redirect()->to('/states/')->with('message', 'State data has been deleted successfully');
-    }
-    public function restore($id = null)
-    {
-      $state = State::withTrashed()->find($id);
+    // delete data
+    $state->delete();
 
-      // throw error if the state is not found
-      if (!$state) throw new PageNotFoundException();
+    // redirect
+    return redirect()->to('/states/')->with('message', 'State data has been deleted successfully');
+  }
+  public function restore($id = null)
+  {
+    $state = State::withTrashed()->find($id);
 
-      // restore data
-      $state->restore();
+    // throw error if the state is not found
+    if (!$state) throw new PageNotFoundException();
 
-      // redirect
-      return redirect()->to('/states/')->with('message', 'State data has been restored successfully');
-    }
+    // restore data
+    $state->restore();
+
+    // redirect
+    return redirect()->to('/states/')->with('message', 'State data has been restored successfully');
+  }
 }

@@ -60,7 +60,7 @@ class {controllerName} extends BaseController
       return redirect()->to('/{segment}/')->with('message', '{modelName} data has been saved successfully');
     }
 
-    public function edit($id)
+    public function edit($id = null)
     {
       // find data
       ${modelVar} = {modelName}::find($id);
@@ -97,7 +97,7 @@ class {controllerName} extends BaseController
       return redirect()->to('/{segment}/')->with('message', '{modelName} data has been updated successfully');
     }
     
-    public function delete($id)
+    public function delete($id = null)
     {
         // find data
         ${modelVar} = {modelName}::find($id);

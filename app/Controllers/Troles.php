@@ -65,7 +65,7 @@ class Troles extends BaseController
     return redirect()->to('/troles/')->with('message', 'Trole data has been saved successfully');
   }
 
-  public function edit($id)
+  public function edit($id = null)
   {
     // find data
     $trole = Trole::find($id);
@@ -102,7 +102,7 @@ class Troles extends BaseController
     return redirect()->to('/troles/')->with('message', 'Trole data has been updated successfully');
   }
 
-  public function delete($id)
+  public function delete($id = null)
   {
     // find data
     $trole = Trole::find($id);

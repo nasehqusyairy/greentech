@@ -71,7 +71,7 @@ class Menus extends BaseController
     return redirect()->to('/menus/')->with('message', 'Menu data has been saved successfully');
   }
 
-  public function edit($id)
+  public function edit($id = null)
   {
     // find data
     /** @disregard */
@@ -110,7 +110,7 @@ class Menus extends BaseController
     return redirect()->to('/menus/')->with('message', 'Menu data has been updated successfully');
   }
 
-  public function delete($id)
+  public function delete($id = null)
   {
     // find data
     /** @disregard */

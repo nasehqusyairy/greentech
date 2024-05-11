@@ -10,8 +10,8 @@ class Review extends Model
     use SoftDeletes;
     protected $fillable = [
         'file',
-        'comment',        
-        'abstract_id',
+        'comment',
+        'abstrac_id',
         'status_id'
     ];
     public function abstract()

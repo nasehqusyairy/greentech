@@ -2,126 +2,187 @@
 
 namespace App\Controllers;
 
+use App\Models\Review;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use App\Models\Abstrac;
+use App\Models\Topic;
+use App\Models\User;
 
 class Abstracs extends BaseController
 {
-    protected $rule = [
-      'store'=> [],
-      'update'=> [
-        'id' => 'required|is_not_unique[abstracs.id]',
-      ],
-    ];
+  protected $rule = [
+    'store' => [
+      'topic_id' => 'required|is_not_unique[topics.id]',
+      'title' => 'required|string',
+      'authors' => 'required|string',
+      'emails' => 'required|valid_emails',
+      'text' => 'required|string',
+      'file' => 'uploaded[file]|ext_in[file,pdf,doc,docx]|max_size[file,5120]',
+      'creator_id' => 'required|is_not_unique[users.id]',
+    ],
+    'update' => [
+      'id' => 'required|is_not_unique[abstracs.id]',
+      'topic_id' => 'required|is_not_unique[topics.id]',
+      'title' => 'required|string',
+      'authors' => 'required|string',
+      'emails' => 'required|valid_emails',
+      'text' => 'required|string',
+      'file' => 'permit_empty|uploaded[file]|ext_in[file,pdf,doc,docx]|max_size[file,5120]',
+      'reviewer_id' => 'permit_empty|is_not_unique[users.id]',
+    ],
+  ];
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->isNeedLogin();
+  public function __construct()
+  {
+    parent::__construct();
+    $this->isNeedLogin();
+  }
+
+  public function tes()
+  {
+
+    Review::updateOrCreate([
+      'abstrac_id' => 1
+    ], [
+      'comment' => 'tes',
+      'file' => 'tes',
+      'status_id' => 1
+    ]);
+    dd(Abstrac::find(1)->load('review')->toArray());
+  }
+
+  public function index()
+  {
+    // main view
+    return view('abstracs/index', [
+      'abstracts' => Abstrac::with('creator', 'topic', 'reviewer')->get()->sortBy('topic_id'),
+      'message' => $this->session->has('message') ? $this->session->get('message') : '',
+      'title' => 'Abstracts',
+      'deleted' => Abstrac::onlyTrashed()->with('creator', 'topic', 'reviewer')->get()->sortBy('topic_id')
+    ]);
+  }
+
+  public function create()
+  {
+    // create form
+    return view('abstracs/create', [
+      'title' => 'New Abstract',
+      'topics' => Topic::all()
+    ]);
+  }
+
+  public function store()
+  {
+    // check if the request is POST
+    $this->isPostRequest();
+
+    // set validation rules
+    $this->validator->setRules($this->rule['store']);
+
+    // validated input
+    $validInput = $this->validInput(['file']);
+
+    // return response if the input is invalid
+    if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+
+    // manipulate data here
+    $files = $this->upload(['file']);
+    if (!isset($files['file'])) {
+      unset($validInput['file']);
+    } else {
+      $validInput['file'] = $files['file'];
     }
 
-    public function index()
-    {
-      // main view
-      // return view('abstracs/index',[
-      //   'abstracs' => Abstrac::all(),
-      //   'message' => $this->session->has('message') ? $this->session->get('message') : '',
-      //   'title' => 'Abstracs'
-      // ]);
-      dd(Abstrac::all()->toArray());
+    $validInput['status_id'] = 4;
+    Abstrac::create($validInput);
+
+    // redirect
+    return redirect()->to('/abstracs/')->with('message', 'Abstract data has been saved successfully');
+  }
+
+  public function edit($id = null)
+  {
+    // find data
+    $abstrac = Abstrac::find($id);
+
+    // throw error if the data is not found
+    if ($id == null || !$abstrac) throw new PageNotFoundException();
+
+    // return view
+    return view('abstracs/edit', [
+      'abstract' => $abstrac,
+      'topics' => Topic::all(),
+      'reviewers' => User::with('role')->whereHas('role', function ($query) {
+        $query->where('code', 2);
+      })->get(),
+      'title' => 'Edit Abstract'
+    ]);
+  }
+
+  public function update()
+  {
+    // check if the request is POST
+    $this->isPostRequest();
+
+    // set validation rules
+    $this->validator->setRules($this->rule['update']);
+
+    // validated input
+    $validInput = $this->validInput(['file']);
+
+    // return response if the input is invalid
+    if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+
+    // manipulate data here
+    $abstrac = Abstrac::find($validInput['id']);
+    $files = $this->upload(['file']);
+
+    // delete old file
+    if (!isset($files['file'])) {
+      unset($validInput['file']);
+    } else {
+      if ($abstrac->file && str_contains($abstrac->file, base_url())) {
+        unlink(FCPATH . str_replace('/', '\\', str_replace(base_url(), '', $abstrac->file)));
+      }
+      $validInput['file'] = $files['file'];
     }
 
-    public function create()
-    {
-      // create form
-      return view('abstracs/create',[
-        'title' => 'New Abstrac'
-      ]);
-    }
+    // remove reviewer_id if not set
+    if (empty($validInput['reviewer_id'])) unset($validInput['reviewer_id']);
 
-    public function store()
-    {
-      // check if the request is POST
-      $this->isPostRequest();
+    $validInput['status_id'] = isset($validInput['reviewer_id']) ? 5 : 4;
 
-      // set validation rules
-      $this->validator->setRules($this->rule['store']);
+    $abstrac->update($validInput);
 
-      // validated input
-      $validInput = $this->validInput();
+    // redirect
+    return redirect()->to('/abstracs/')->with('message', 'Abstrac data has been updated successfully');
+  }
 
-      // return response if the input is invalid
-      if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+  public function delete($id = null)
+  {
+    // find data
+    $abstrac = Abstrac::find($id);
 
-      // manipulate data here
-      Abstrac::create($validInput);
+    // throw error if the data is not found
+    if (!$abstrac) throw new PageNotFoundException();
 
-      // redirect
-      return redirect()->to('/abstracs/')->with('message', 'Abstrac data has been saved successfully');
-    }
+    // delete data
+    $abstrac->delete();
 
-    public function edit($id)
-    {
-      // find data
-      $abstrac = Abstrac::find($id);
+    // redirect
+    return redirect()->to('/abstracs/')->with('message', 'Abstrac data has been deleted successfully');
+  }
+  public function restore($id = null)
+  {
+    $abstrac = Abstrac::withTrashed()->find($id);
 
-      // throw error if the data is not found
-      if ($id == null || !$abstrac) throw new PageNotFoundException();
+    // throw error if the abstrac is not found
+    if (!$abstrac) throw new PageNotFoundException();
 
-      // return view
-      return view('abstracs/edit',[
-        'abstrac'=>$abstrac,
-        'title' => 'Edit Abstrac'
-      ]);
-    }
+    // restore data
+    $abstrac->restore();
 
-    public function update()
-    {
-       // check if the request is POST
-      $this->isPostRequest();
-
-      // set validation rules
-      $this->validator->setRules($this->rule['update']);
-
-      // validated input
-      $validInput = $this->validInput();
-
-      // return response if the input is invalid
-      if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
-
-      // manipulate data here
-      $abstrac = Abstrac::find($validInput['id']);
-      $abstrac->update($validInput);
-
-      // redirect
-      return redirect()->to('/abstracs/')->with('message', 'Abstrac data has been updated successfully');
-    }
-    
-    public function delete($id)
-    {
-        // find data
-        $abstrac = Abstrac::find($id);
-
-        // throw error if the data is not found
-        if (!$abstrac) throw new PageNotFoundException();
-
-        // delete data
-        $abstrac->delete();
-
-        // redirect
-        return redirect()->to('/abstracs/')->with('message', 'Abstrac data has been deleted successfully');
-    }
-    public function restore($id = null)
-    {
-      $abstrac = Abstrac::withTrashed()->find($id);
-
-      // throw error if the abstrac is not found
-      if (!$abstrac) throw new PageNotFoundException();
-
-      // restore data
-      $abstrac->restore();
-
-      // redirect
-      return redirect()->to('/abstracs/')->with('message', 'Abstrac data has been restored successfully');
-    }
+    // redirect
+    return redirect()->to('/abstracs/')->with('message', 'Abstrac data has been restored successfully');
+  }
 }

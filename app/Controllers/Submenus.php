@@ -75,7 +75,7 @@ class Submenus extends BaseController
     return redirect()->to('/submenus/')->with('message', 'Submenu data has been saved successfully');
   }
 
-  public function edit($id)
+  public function edit($id = null)
   {
     // find data
     $submenu = Submenu::find($id);
@@ -115,7 +115,7 @@ class Submenus extends BaseController
     return redirect()->to('/submenus/')->with('message', 'Submenu data has been updated successfully');
   }
 
-  public function delete($id)
+  public function delete($id = null)
   {
     // find data
     $submenu = Submenu::find($id);

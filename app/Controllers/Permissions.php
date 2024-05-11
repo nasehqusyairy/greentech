@@ -63,7 +63,7 @@ class Permissions extends BaseController
     return redirect()->to('/permissions/')->with('message', 'Permission data has been saved successfully');
   }
 
-  public function edit($id)
+  public function edit($id = null)
   {
     // find data
     $permission = Permission::find($id);
@@ -100,7 +100,7 @@ class Permissions extends BaseController
     return redirect()->to('/permissions/')->with('message', 'Permission data has been updated successfully');
   }
 
-  public function delete($id)
+  public function delete($id = null)
   {
     // find data
     $permission = Permission::find($id);

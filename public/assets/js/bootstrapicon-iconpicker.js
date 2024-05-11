@@ -4331,7 +4331,7 @@
             title: "bi bi-record2-fill",
             searchTerms: []
         }, {
-            title: "bi bi-recycle",
+            title: "bi bi-arrow-repeat",
             searchTerms: []
         }, {
             title: "bi bi-reddit",

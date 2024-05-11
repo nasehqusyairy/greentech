@@ -10,9 +10,11 @@ class Abstrac extends Model
     use SoftDeletes;
     protected $fillable = [
         'title',
-        'author',
-        'email',
+        'authors',
+        'emails',
         'text',
+        'file',
+        'status_id',
         'creator_id',
         'topic_id',
         'reviewer_id',
@@ -30,5 +32,15 @@ class Abstrac extends Model
     public function reviewer()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function review()
+    {
+        return $this->hasOne(Review::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
     }
 }

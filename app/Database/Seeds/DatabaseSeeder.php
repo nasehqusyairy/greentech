@@ -334,7 +334,7 @@ class DatabaseSeeder extends Seeder
         foreach ($stypes as $key => $stype) {
             $this->db->table('stypes')->insert([
                 'name' => $stype,
-                'code' => ++$key,
+                'code' => $key++,
             ]);
         }
 
@@ -345,6 +345,7 @@ class DatabaseSeeder extends Seeder
             ['text' => 'Paid', 'color' => 'success', 'stype' => $stypes[0]],
             ['text' => 'Unsigned', 'color' => 'secondary', 'stype' => $stypes[1]],
             ['text' => 'Reviewing', 'color' => 'info', 'stype' => $stypes[1]],
+            ['text' => 'Need Revision', 'color' => 'warning', 'stype' => $stypes[1]],
             ['text' => 'Accepted', 'color' => 'success', 'stype' => $stypes[1]],
             ['text' => 'Rejected', 'color' => 'danger', 'stype' => $stypes[1]],
             ['text' => 'Comfirmed', 'color' => 'success', 'stype' => $stypes[2]],
@@ -476,6 +477,40 @@ class DatabaseSeeder extends Seeder
                 'name' => $topic['name'],
                 'description' => $topic['description'],
             ]);
+        }
+
+        // Add abstracts
+        $abstracts = [
+            [
+                'title' => 'The Role of Renewable Energy in Sustainable Development',
+                'authors' => $fake->name,
+                'emails' => $fake->email,
+                'text' => $fake->text,
+                'file' => base_url('uploads/jpg/1714203807_81cf61d0a2e6271dca3a.jpg'),
+                'status_id' => 1,
+                'creator_id' => 1,
+                'topic_id' => 1,
+                'reviewer_id' => 1,
+            ],
+        ];
+
+        foreach ($abstracts as $abstract) {
+            $this->db->table('abstracs')->insert($abstract);
+        }
+
+        // Add reviews
+        $reviews = [
+            [
+                'file' => base_url('uploads/jpg/1714203807_81cf61d0a2e6271dca3a.jpg'),
+                'comment' => $fake->text,
+                'abstrac_id' => 1,
+                'status_id' => 1,
+                'created_at' => date('Y-m-d H:i:s'),
+            ],
+        ];
+
+        foreach ($reviews as $review) {
+            $this->db->table('reviews')->insert($review);
         }
     }
 }

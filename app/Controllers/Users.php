@@ -120,7 +120,7 @@ class Users extends BaseController
     return redirect()->to('/users/index')->with('message', 'User data has been saved successfully');
   }
 
-  public function edit($id)
+  public function edit($id = null)
   {
     // find data
     $user = User::find($id);
@@ -196,7 +196,7 @@ class Users extends BaseController
     return redirect()->to('/users/index')->with('message', 'User data has been updated successfully');
   }
 
-  public function delete($id)
+  public function delete($id = null)
   {
     // find data
     $user = User::find($id)->load('role');

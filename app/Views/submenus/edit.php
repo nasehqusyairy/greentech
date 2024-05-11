@@ -82,7 +82,6 @@ $this->section('footer');
   });
   $('#menu_id').select2({
     theme: 'bootstrap-5',
-    placeholder: 'Select...',
     width: '100%'
   });
 </script>

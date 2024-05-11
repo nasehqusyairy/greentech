@@ -12,7 +12,7 @@ class AddReviews extends Blueprint
             $table->id();
             $table->string('file');
             $table->text('comment');
-            $table->foreignId('abstract_id')->constrained('abstracs')->cascadeOnDelete()->add();
+            $table->foreignId('abstrac_id')->constrained('abstracs')->cascadeOnDelete()->add();
             $table->foreignId('status_id')->constrained('statuses')->cascadeOnDelete()->add();
             $table->timestamps();
             $table->softDelete();

@@ -65,7 +65,7 @@ class Stypes extends BaseController
     return redirect()->to('/stypes/')->with('message', 'Stype data has been saved successfully');
   }
 
-  public function edit($id)
+  public function edit($id = null)
   {
     // find data
     $stype = Stype::find($id);
@@ -102,7 +102,7 @@ class Stypes extends BaseController
     return redirect()->to('/stypes/')->with('message', 'Stype data has been updated successfully');
   }
 
-  public function delete($id)
+  public function delete($id = null)
   {
     // find data
     $stype = Stype::find($id);

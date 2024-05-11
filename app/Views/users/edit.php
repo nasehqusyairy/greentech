@@ -107,7 +107,6 @@ if (session()->has('errors')) : ?>
   }
   $('#role').select2({
     theme: 'bootstrap-5',
-    placeholder: 'Select...',
     width: '100%'
   });
 </script>

@@ -10,13 +10,15 @@ class AddAbstracs extends Blueprint
     {
         $this->create('abstracs', function (Blueprint $table) {
             $table->id();
-            $table->text('title');
+            $table->foreignId('creator_id')->constrained('users')->cascadeOnDelete()->add();
+            $table->foreignId('topic_id')->constrained('topics')->cascadeOnDelete()->add();
+            $table->string('title');
             $table->string('authors');
             $table->text('emails');
             $table->text('text');
-            $table->foreignId('creator_id')->constrained('users')->cascadeOnDelete()->add();
-            $table->foreignId('topic_id')->constrained('topics')->cascadeOnDelete()->add();
-            $table->foreignId('reviewer_id')->constrained('users')->cascadeOnDelete()->add();
+            $table->string('file');
+            $table->foreignId('status_id')->constrained('statuses')->cascadeOnDelete()->add();
+            $table->foreignId('reviewer_id')->constrained('users')->cascadeOnDelete()->nulllable()->add();
             $table->timestamps();
             $table->softDelete();
         });

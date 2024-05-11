@@ -66,7 +66,7 @@ class Studies extends BaseController
     return redirect()->to('/studies/')->with('message', 'Study data has been saved successfully');
   }
 
-  public function edit($id)
+  public function edit($id = null)
   {
     // find data
     $study = Study::find($id);
@@ -103,7 +103,7 @@ class Studies extends BaseController
     return redirect()->to('/studies/')->with('message', 'Study data has been updated successfully');
   }
 
-  public function delete($id)
+  public function delete($id = null)
   {
     // find data
     $study = Study::find($id);

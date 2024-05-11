@@ -5,11 +5,12 @@ namespace App\Helpers\Migration;
 class ForeignColumnDefinition
 {
   protected $name;
-  protected $blueprint;
+  protected Blueprint $blueprint;
   protected $table;
   protected $columnName = 'id';
   protected $onDelete = 'RESTRICT';
   protected $onUpdate = 'RESTRICT';
+  protected $isNullable = false;
 
 
   public function __construct(Blueprint $blueprint, $name)
@@ -37,9 +38,18 @@ class ForeignColumnDefinition
     return $this;
   }
 
+  public function nulllable(): ForeignColumnDefinition
+  {
+    $this->isNullable = true;
+    return $this;
+  }
+
   public function add(): void
   {
     $column =  $this->blueprint->bigInteger($this->name)->unsigned();
+    if ($this->isNullable) {
+      $column->nullable();
+    }
     $column->getForge()->addForeignKey($column->getName(), $this->table, $this->columnName, $this->onUpdate, $this->onDelete);
   }
 }
