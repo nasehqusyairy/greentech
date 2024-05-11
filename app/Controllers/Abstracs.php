@@ -38,17 +38,38 @@ class Abstracs extends BaseController
     $this->isNeedLogin();
   }
 
-  public function tes()
-  {
+  // public function tes()
+  // {
 
-    Review::updateOrCreate([
-      'abstrac_id' => 1
-    ], [
-      'comment' => 'tes',
-      'file' => 'tes',
-      'status_id' => 1
+  //   Review::updateOrCreate([
+  //     'abstrac_id' => 1
+  //   ], [
+  //     'comment' => 'tes',
+  //     'file' => 'tes',
+  //     'status_id' => 1
+  //   ]);
+  //   dd(Abstrac::find(1)->load('review')->toArray());
+  // }
+
+  public function reviews($abstract_id)
+  {
+    $abstract = Abstrac::find($abstract_id);
+    if (!$abstract) throw new PageNotFoundException();
+
+    return view('reviews/index', [
+      // 'abstract_id' => $abstract->id,
     ]);
-    dd(Abstrac::find(1)->load('review')->toArray());
+  }
+
+  public function addReview()
+  {
+    // Review::updateOrCreate([
+    //   'abstrac_id' => 1
+    // ], [
+    //   'comment' => 'tes',
+    //   'file' => 'tes',
+    //   'status_id' => 1
+    // ]);
   }
 
   public function index()
