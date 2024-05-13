@@ -8,12 +8,20 @@ use App\Models\Setting;
 class Settings extends BaseController
 {
     protected $rule = [
-      'store'=> [
+      'store'=> [        
+        'category' => 'required|alpha_numeric_punct',
+        'title' => 'required|alpha_numeric_punct',
+        'description' => 'required|alpha_numeric_punct',
         'name' => 'required|alpha_numeric_punct',
+        'value' => 'required|alpha_numeric_punct',
       ],
       'update'=> [
         'name' => 'required|alpha_numeric_punct',
         'id' => 'required|is_not_unique[settings.id]',
+        'category' => 'required|alpha_numeric_punct',
+        'title' => 'required|alpha_numeric_punct',
+        'description' => 'required|alpha_numeric_punct',
+        'value' => 'required|alpha_numeric_punct',
       ],
     ];
 

@@ -33,7 +33,11 @@ if (!empty($message)) : ?>
             <thead>
               <tr>
                 <th>#</th>
-                <th>Name</th>                
+                <th>Category</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Name</th>
+                <th>Value</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -43,7 +47,11 @@ if (!empty($message)) : ?>
               foreach ($settings as $setting) : ?>
                 <tr>
                   <td><?= $i++; ?></td>
-                  <td><?= $setting->name ?></td>                  
+                  <td><?= $setting->category ?></td>
+                  <td><?= $setting->title ?></td>
+                  <td><?= $setting->description ?></td>
+                  <td><?= $setting->name ?></td>
+                  <td><?= $setting->value ?></td>                
                   <td>
                     <a href="/settings/edit/<?= $setting->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
                     <button onclick="handleDelete(<?= $setting->id; ?>)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
@@ -60,7 +68,11 @@ if (!empty($message)) : ?>
             <thead>
               <tr>
                 <th>#</th>
-                <th>Name</th>                
+                <th>Title</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Name</th>
+                <th>Value</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -70,7 +82,11 @@ if (!empty($message)) : ?>
               foreach ($deleted as $setting) : ?>
                 <tr>
                   <td><?= $i++; ?></td>
-                  <td><?= $setting->name ?></td>                  
+                  <td><?= $setting->name ?></td>
+                  <td><?= $setting->category ?></td>
+                  <td><?= $setting->description ?></td>
+                  <td><?= $setting->name ?></td>
+                  <td><?= $setting->value ?></td>
                   <td>
                     <a href="<?= base_url('settings/restore/' . $setting->id); ?>" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
