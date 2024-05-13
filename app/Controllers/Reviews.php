@@ -17,6 +17,9 @@ class Reviews extends BaseController
     ],
     'update' => [
       'id' => 'required|is_not_unique[reviews.id]',
+      'comment' => 'required|string',
+      'file' => 'uploaded[file]|ext_in[file,pdf,doc,docx]|max_size[file,5120]',
+      'status_id' => 'required|is_not_unique[statuses.id]',
     ],
   ];
 
@@ -103,11 +106,15 @@ class Reviews extends BaseController
     // return view
     return view('reviews/edit', [
       'review' => $review,
-      'title' => 'Edit Review'
+      'abstract' => $this->abstract,
+      'title' => 'Edit Review',
+      'statuses' => Status::whereHas('stype', function ($query) {
+        $query->where('code', 1);
+      })->get()
     ]);
   }
 
-  public function update()
+  public function update($id = null)
   {
     // check if the request is POST
     $this->isPostRequest();
@@ -122,6 +129,7 @@ class Reviews extends BaseController
     if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
 
     // manipulate data here
+
     $review = Review::find($validInput['id']);
     $review->update($validInput);
 

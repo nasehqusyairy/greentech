@@ -6,9 +6,6 @@
 $this->extend('components/layout');
 $this->section('content');
 
-$name = !old('name') ? $role->name : old('name');
-$code = !old('code') ? $role->code : old('code');
-
 if (session()->has('errors')) : ?>
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
     <ul class="m-0">
@@ -20,26 +17,51 @@ if (session()->has('errors')) : ?>
   </div>
 <?php endif ?>
 
-<form action="<?= base_url('roles/update'); ?>" method="post">
+<form action="<?= base_url("abstracs/$abstract->id/reviews/update/$review->id"); ?>" method="post" enctype="multipart/form-data">
   <?= csrf_field(); ?>
-  <input type="hidden" name="id" value="<?= $role->id ?>">
   <div class="card mb-3">
     <div class="card-body">
       <div class="mb-3">
-        <label for="code" class="form-label">Code</label>
-        <input type="text" class="form-control" id="code" name="code" value="<?= $code ?>">
+        <label for="title" class="form-label">Title</label>
+        <input class="form-control" type="text" name="title" id="title" disabled value="<?= $abstract->title; ?>">
+        <input class="form-control" type="hidden" name="id" id="id" value="<?= $review->id; ?>">
       </div>
       <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control" id="name" name="name" value="<?= $name ?>">
+        <label for="comment" class="form-label">Comment</label>
+        <textarea class="form-control" name="comment" id="comment" value="<?= $review->comment; ?>" rows="5"><?= old('comment'); ?></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="file" class="form-label">File</label>
+        <input class="form-control" type="file" name="file" id="file" value="<?= $review->file; ?>">
+      </div>
+      <div class="mb-3">
+        <label for="status" class="form-label">Status</label>
+        <select class="form-select" name="status_id" id="status">
+          <?php foreach ($statuses as $status) : ?>
+            <option value="<?= $status->id; ?>" <?= old('status', $review->status_id) == $status->id ? 'selected' : ''; ?>>
+              <?= $status->text; ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
       </div>
       <div class="d-grid d-lg-block gap-2">
         <button type="submit" class="btn btn-primary">Save</button>
-        <a href="<?= base_url('roles'); ?>" class="btn btn-secondary">Cancel</a>
+        <a href="<?= base_url("abstracs/$abstract->id/reviews/"); ?>" class="btn btn-secondary">Cancel</a>
       </div>
     </div>
   </div>
 
 </form>
 
-<?= $this->endSection() ?>
+<?php
+$this->endSection();
+$this->section('footer');
+?>
+<script>
+  // select2
+  $('#status').select2({
+    theme: 'bootstrap-5',
+    width: '100%',
+  });
+</script>
+<?php $this->endSection() ?>
