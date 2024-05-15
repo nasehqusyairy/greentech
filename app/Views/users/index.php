@@ -78,7 +78,7 @@ if (!empty($message)) : ?>
               <?php
               // $countries = json_decode(file_get_contents('https://restcountries.com/v3.1/all?fields=name,cca2'));
               $i = 1;
-              foreach ($users->whereNotNull(['role']) as $user) :
+              foreach ($users as $user) :
                 // lewati apabila kode role user = 0
                 if ($user->role->code == 0) continue;
                 // $country = array_values(array_filter($countries, fn ($c) => $c->cca2 == strtoupper($user->country)));
