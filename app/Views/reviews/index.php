@@ -55,8 +55,8 @@ $this->section('content');
             <thead>
               <tr>
                 <th>#</th>
-                <th>Created At</th>
-                <th>Updated At</th>
+                <!-- <th>Created At</th> -->
+                <th>Datetime</th>
                 <th>Comment</th>
                 <th>File</th>
                 <th>Status</th>
@@ -68,7 +68,7 @@ $this->section('content');
               foreach ($reviews as $review) : ?>
                 <tr>
                   <td><?= $i++; ?></td>
-                  <td><?= $review->created_at ?></td>
+                  <!-- <td><?= $review->created_at ?></td> -->
                   <td><?= $review->updated_at ?? $review->created_at ?></td>
                   <td>
                     <?= $review->comment ?>
@@ -93,8 +93,8 @@ $this->section('content');
             <thead>
               <tr>
                 <th>#</th>
-                <th>Created At</th>
-                <th>Updated At</th>
+                <!-- <th>Created At</th> -->
+                <th>Datetime</th>
                 <th>Comment</th>
                 <th>File</th>
                 <th>Status</th>
@@ -106,7 +106,7 @@ $this->section('content');
               foreach ($deleted as $review) : ?>
                 <tr>
                   <td><?= $i++; ?></td>
-                  <td><?= $review->created_at ?></td>
+                  <!-- <td><?= $review->created_at ?></td> -->
                   <td><?= $review->updated_at ?? $review->created_at ?></td>
                   <td>
                     <?= $review->comment ?>

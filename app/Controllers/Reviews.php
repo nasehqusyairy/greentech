@@ -18,7 +18,7 @@ class Reviews extends BaseController
     'update' => [
       'id' => 'required|is_not_unique[reviews.id]',
       'comment' => 'required|string',
-      'file' => 'uploaded[file]|ext_in[file,pdf,doc,docx]|max_size[file,5120]',
+      'file' => 'permit_empty|ext_in[file,pdf,doc,docx]|max_size[file,5120]',
       'status_id' => 'required|is_not_unique[statuses.id]',
     ],
   ];
@@ -41,10 +41,10 @@ class Reviews extends BaseController
   {
     // main view
     return view('reviews/index', [
-      'reviews' => $this->abstract->load('reviews')->reviews->sortByDesc('created_at'),
+      'reviews' => $this->abstract->load('reviews')->reviews->sortByDesc('created_at')->sortByDesc('updated_at'),
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
       'title' => 'Reviews for "' . $this->abstract->title . '"',
-      'deleted' => $this->abstract->reviews()->onlyTrashed()->get()->sortByDesc('created_at'),
+      'deleted' => $this->abstract->reviews()->onlyTrashed()->get()->sortByDesc('created_at')->sortByDesc('updated_at'),
       'abstract_id' => $this->abstract->id,
     ]);
   }
@@ -129,9 +129,11 @@ class Reviews extends BaseController
     if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
 
     // manipulate data here
-
     $review = Review::find($validInput['id']);
     $review->update($validInput);
+
+    $this->abstract->status_id = $validInput['status_id'];
+    $this->abstract->save();
 
     // redirect
     return redirect()->to("/abstracs/" . $this->abstract->id . "/reviews/")->with('message', 'Review data has been updated successfully');

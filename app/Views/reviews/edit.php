@@ -28,7 +28,7 @@ if (session()->has('errors')) : ?>
       </div>
       <div class="mb-3">
         <label for="comment" class="form-label">Comment</label>
-        <textarea class="form-control" name="comment" id="comment" value="<?= $review->comment; ?>" rows="5"><?= old('comment'); ?></textarea>
+        <textarea class="form-control" name="comment" id="comment" value="<?= $review->comment; ?>" rows="5"><?= old('comment', $review->comment); ?></textarea>
       </div>
       <div class="mb-3">
         <label for="file" class="form-label">File</label>
