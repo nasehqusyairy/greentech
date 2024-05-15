@@ -17,6 +17,6 @@ class Status extends Model
     ];
     public function stype()
     {
-        return $this->belongsTo(Stype::class);
+        return $this->belongsTo(Stype::class)->withTrashed();
     }
 }

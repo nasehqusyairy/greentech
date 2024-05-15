@@ -16,11 +16,11 @@ class Review extends Model
     ];
     public function abstract()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withTrashed();
     }
 
     public function status()
     {
-        return $this->belongsTo(Status::class);
+        return $this->belongsTo(Status::class)->withTrashed();
     }
 }

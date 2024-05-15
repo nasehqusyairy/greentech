@@ -19,22 +19,22 @@ class TicketUser extends Model
 
     public function abstrac()
     {
-        return $this->belongsTo(Abstrac::class);
+        return $this->belongsTo(Abstrac::class)->withTrashed();
     }
 
     public function status()
     {
-        return $this->belongsTo(Status::class);
+        return $this->belongsTo(Status::class)->withTrashed();
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withTrashed();
     }
 
     public function ticket()
     {
-        return $this->belongsTo(Ticket::class);
+        return $this->belongsTo(Ticket::class)->withTrashed();
     }
 
 
