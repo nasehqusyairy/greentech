@@ -51,7 +51,7 @@ $this->section('content');
                   <td>
                     <a href="<?= $abstract->file ?>" class="btn btn-primary" download><i class="bi bi-download"></i></a>
                   </td>
-                  <td><?= badge($abstract->status->text, $abstract->status->color) ?></td>
+                  <td><?= $abstract->status ? badge($abstract->status->text, $abstract->status->color) : badge('Unknown', 'secondary') ?></td>
                   <td class="text-nowrap">
                     <a href="/abstracs/<?= $abstract->id ?>/reviews/" class="btn btn-info mb-1"><i class="bi bi-chat-left-text"></i></a>
                     <a href="/abstracs/edit/<?= $abstract->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
@@ -88,7 +88,7 @@ $this->section('content');
                   <td>
                     <a href="<?= $abstract->file ?>" class="btn btn-primary" download><i class="bi bi-download"></i></a>
                   </td>
-                  <td><?= badge($abstract->status->text, $abstract->status->color) ?></td>
+                  <td><?= $abstract->status ? badge($abstract->status->text, $abstract->status->color) : badge('Unknown', 'secondary') ?></td>
                   <td>
                     <a href="<?= base_url('abstracs/restore/' . $abstract->id); ?>" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
