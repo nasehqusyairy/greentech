@@ -22,17 +22,17 @@ class Ticket extends Model
 
     public function ttype()
     {
-        return $this->belongsTo(Ttype::class);
+        return $this->belongsTo(Ttype::class)->withTrashed();
     }
 
     public function trole()
     {
-        return $this->belongsTo(Trole::class);
+        return $this->belongsTo(Trole::class)->withTrashed();
     }
 
     public function state()
     {
-        return $this->belongsTo(State::class);
+        return $this->belongsTo(Status::class)->withTrashed();
     }
 
     public function study()

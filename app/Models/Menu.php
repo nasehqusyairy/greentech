@@ -12,11 +12,11 @@ class Menu extends Model
 
     public function submenus()
     {
-        return $this->hasMany(Submenu::class);
+        return $this->hasMany(Submenu::class)->withTrashed();
     }
 
     public function roles()
     {
-        return $this->belongsToMany(Role::class);
+        return $this->belongsToMany(Role::class)->withTrashed();
     }
 }

@@ -13,6 +13,6 @@ class Submenu extends Model
     public function menu()
     {
         /**@disregard */
-        return $this->belongsTo(Menu::class);
+        return $this->belongsTo(Menu::class)->withTrashed();
     }
 }
