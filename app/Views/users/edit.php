@@ -16,7 +16,7 @@ $callingcode = old('callingcode') ?? $user->callingcode;
 $institution = old('institution') ?? $user->institution;
 $image = $user->image ?? base_url('assets/img/person-circle.svg');
 
-$gender = old('gender') ?? 0;
+$gender = old('gender', $user->gender);
 $country = old('country') ?? 'id';
 
 if (session()->has('errors')) : ?>

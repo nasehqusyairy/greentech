@@ -104,13 +104,13 @@ abstract class BaseController extends Controller
     }
 
     // function to get validated input from POST request
-    protected function validInput(array $files = null): bool|array
+    protected function validInput(array $files = null, bool $isClean = false): bool|array
     {
         // get input
         $input = $this->request->getPost();
 
         // clean input
-        $cleanedInput = clean_input($input);
+        $cleanedInput = !$isClean ? clean_input($input) : $input;
 
         // get files
         if ($files) {

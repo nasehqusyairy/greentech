@@ -40,7 +40,8 @@ class Profile extends BaseController
     $this->isPostRequest();
 
     // country must be matched with the cca2 country list from https://restcountries.com/v3.1/all?fields=name,cca2,idd
-    $this->rule['update']['country'] = $this->getCountryRules();
+    // $this->rule['update']['country'] = $this->getCountryRules();
+    $this->rule['update']['country'] = 'required|alpha';
 
     // set validation rules
     $this->validator->setRules($this->rule['update']);

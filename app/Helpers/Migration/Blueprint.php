@@ -140,7 +140,7 @@ class Blueprint extends Migration
 
   public function uuid($name = 'id')
   {
-    $this->char($name, 36)->nullable()->unique();
+    $this->char($name, 36)->unique();
     $this->forge->addPrimaryKey($name);
   }
 

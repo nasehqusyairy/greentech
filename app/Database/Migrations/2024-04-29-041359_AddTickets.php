@@ -9,7 +9,7 @@ class AddTickets extends Blueprint
     public function up()
     {
         $this->create('tickets', function (Blueprint $table) {
-            $table->id();
+            $table->uuid();
             $table->string('name');
             $table->string('attendance');
             $table->integer('price');

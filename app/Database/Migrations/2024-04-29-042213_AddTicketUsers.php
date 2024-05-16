@@ -15,7 +15,7 @@ class AddTicketUser extends Blueprint
             $table->foreignId('status_id')->constrained('statuses')->cascadeOnDelete()->add();
             $table->foreignId('abstrac_id')->constrained('abstracs')->cascadeOnDelete()->add();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->add();
-            $table->foreignId('ticket_id')->constrained('tickets')->cascadeOnDelete()->add();
+            $table->foreignUuid('ticket_id')->constrained('tickets')->cascadeOnDelete()->add();
             $table->timestamps();
             $table->softDelete();
         });

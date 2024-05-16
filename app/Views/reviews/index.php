@@ -37,6 +37,7 @@ $this->section('content');
 <div class="card">
   <div class="card-body">
     <div class="mb-3">
+      <a href="<?= base_url('abstracs'); ?>" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</a>
       <a href="<?= base_url("abstracs/$abstract_id/reviews/create"); ?>" class="btn btn-primary"><i class="bi bi-plus"></i> New Review</a>
     </div>
     <ul class="nav nav-tabs" id="tab">

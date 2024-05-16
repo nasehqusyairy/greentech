@@ -27,7 +27,7 @@ class Systems extends BaseController
     return view('systems/index', [
       'settings' => $settings,
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
-      'title' => 'Settings'
+      'title' => 'System'
     ]);
   }
 
@@ -37,24 +37,32 @@ class Systems extends BaseController
     // Check if the request is POST
     $this->isPostRequest();
 
-    // Get the settings data from the POST request
-    $settingsData = $this->request->getPost('settings');
+    // set validation rules
+    $this->validator->setRules([
+      'settings' => 'permit_empty',
+      'settings.*' => 'permit_empty|alpha_numeric',
+    ]);
 
-    foreach ($settingsData as $settingId => $settingValues) {
-      // Sanitize individual setting values if needed
-      $value = htmlspecialchars($settingValues['value']);
+    // validated input
+    $validInput = $this->validInput(null, true);
 
-      // Update the setting in your database
-      $setting = Setting::find($settingId);
-      if ($setting) {
-        $setting->update([          
-          'value' => $value,
-        ]);
-      } else {
-        // Handle error if setting with the given ID is not found
+    // // return response if the input is invalid
+    if ($validInput === false) return $this->invalidInputResponse($this->validator->getErrors());
+
+    // turn value of settings into null except the one that has value
+    Setting::all()->each(function ($setting) use ($validInput) {
+
+      // if the id of the setting is not in the input, set the value to null
+      $setting->value = null;
+      if (array_key_exists('settings', $validInput)) {
+        if (array_key_exists($setting->id, $validInput['settings'])) {
+          $setting->value = $validInput['settings'][$setting->id];
+        }
       }
-    }
-    return redirect()->to('/systems/')->with('message', 'Systems saved successfully');
-  }
+      $setting->save();
+    });
 
+    // return response
+    return redirect()->to('/systems/')->with('message', 'System saved successfully');
+  }
 }

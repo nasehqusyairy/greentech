@@ -13,7 +13,8 @@
         "php": "^7.4 || ^8.0",
         "codeigniter4/framework": "^4.0",
         "google/apiclient": "2.15.0",
-        "illuminate/database": "^11.3"
+        "illuminate/database": "^11.3",
+        "ramsey/uuid": "^4.7"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

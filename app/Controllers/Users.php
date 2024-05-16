@@ -13,7 +13,7 @@ class Users extends BaseController
       'name' => 'required|alpha_numeric_punct',
       'email' => 'required|valid_email|is_unique[users.email]',
       'password' => 'required|min_length[8]|max_length[255]',
-      'confirm_password' => 'required|matches[password]',
+      'confirm_password' => 'matches[password]',
       'role_id' => 'required|is_not_unique[roles.id]',
 
       'phone' => 'required|numeric',
@@ -27,7 +27,7 @@ class Users extends BaseController
       'name' => 'required|alpha_numeric_punct',
       'email' => 'required|valid_email|is_unique[users.email,id,{id}]',
       'password' => 'permit_empty|min_length[8]|max_length[255]',
-      'confirm_password' => 'permit_empty|matches[password]',
+      'confirm_password' => 'matches[password]',
       'role_id' => 'required|is_not_unique[roles.id]',
 
       'phone' => 'required|numeric',
@@ -71,7 +71,8 @@ class Users extends BaseController
     $this->isPostRequest();
 
     // country must be matched with the cca2 country list from https://restcountries.com/v3.1/all?fields=name,cca2,idd
-    $this->rule['store']['country'] = $this->getCountryRules();
+    // $this->rule['store']['country'] = $this->getCountryRules();
+    $this->rule['store']['country'] = 'required|alpha';
 
     // set validation rules
     $this->validator->setRules($this->rule['store']);
@@ -142,7 +143,8 @@ class Users extends BaseController
     $this->isPostRequest();
 
     // country must be matched with the cca2 country list from https://restcountries.com/v3.1/all?fields=name,cca2,idd
-    $this->rule['update']['country'] = $this->getCountryRules();
+    // $this->rule['update']['country'] = $this->getCountryRules();
+    $this->rule['update']['country'] = 'required|alpha';
 
     // set validation rules
     $this->validator->setRules($this->rule['update']);

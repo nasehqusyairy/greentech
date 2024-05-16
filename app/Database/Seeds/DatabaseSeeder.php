@@ -420,11 +420,13 @@ class DatabaseSeeder extends Seeder
         // Add tickets 
         $tickets = [
             [
+                'id' => $fake->uuid(),
                 'name' => 'Ticket1', 'attendance' => 'online', 'price' => 400000, 'type' => $ttypes[0], 'role' => $troles[0], 'state' => $states[0],
                 'currency' => 'IDR',
                 'study' => $studies[0]
             ],
             [
+                'id' => $fake->uuid(),
                 'name' => 'Ticket2', 'attendance' => 'offline', 'price' => 800000, 'type' => $ttypes[1], 'role' => $troles[1], 'state' => $states[1],
                 'currency' => 'IDR',
                 'study' => $studies[2]
@@ -438,6 +440,7 @@ class DatabaseSeeder extends Seeder
             $study_id = $this->db->table('studies')->where('name', $ticket['study'])->get()->getRow()->id;
 
             $this->db->table('tickets')->insert([
+                'id' => $ticket['id'],
                 'name' => $ticket['name'],
                 'attendance' => $ticket['attendance'],
                 'price' => $ticket['price'],
@@ -511,6 +514,24 @@ class DatabaseSeeder extends Seeder
 
         foreach ($reviews as $review) {
             $this->db->table('reviews')->insert($review);
+        }
+
+        // Add settings
+        $settings = [
+            [
+                'title' => 'Enable Abstract Submission',
+                'description' => 'Enable or disable abstract submission',
+                'value' => '1',
+            ],
+            [
+                'title' => 'Enable Payment',
+                'description' => 'Enable or disable payment',
+                'value' => '1',
+            ]
+        ];
+
+        foreach ($settings as $setting) {
+            $this->db->table('settings')->insert($setting);
         }
     }
 }
