@@ -15,6 +15,7 @@ class AddSubmenus extends Blueprint
             $table->string('name');
             $table->string('url');
             $table->string('icon');
+            $table->boolean('is_path')->default(true);
             $table->timestamps();
             $table->softDelete();
         });

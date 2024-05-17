@@ -52,11 +52,11 @@
                 <div class="list-group list-group-flush">
 
                   <?php
-                  $menu->submenus->each(function ($submenu) {
+                  $menu->submenus->where('deleted_at', null)->each(function ($submenu) {
                     $uri = new \CodeIgniter\HTTP\URI($submenu->url);
                     $firstSegment = $uri->getSegment(1);
                   ?>
-                    <a href="<?= $submenu->url ?>" class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark <?= current_url(true)->getSegment(1) == $firstSegment ? 'active' : ''; ?>" data-bs-placement="right" data-bs-title="<?= $submenu->name ?>">
+                    <a href="<?= $submenu->is_path ? base_url($submenu->url . '/') : $submenu->url ?>" class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark <?= current_url(true)->getSegment(1) == $firstSegment ? 'active' : ''; ?>" data-bs-placement="right" data-bs-title="<?= $submenu->name ?>">
                       <i class="<?= $submenu->icon ?> me-3"></i>
                       <span class="submenu-title"><?= $submenu->name ?></span>
                     </a>

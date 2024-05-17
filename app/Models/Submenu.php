@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Submenu extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['code', 'menu_id', 'name', 'url', 'icon'];
+    protected $fillable = ['code', 'menu_id', 'name', 'url', 'icon', 'is_path'];
 
     public function menu()
     {

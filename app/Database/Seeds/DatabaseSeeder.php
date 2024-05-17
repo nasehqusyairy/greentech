@@ -53,6 +53,17 @@ class DatabaseSeeder extends Seeder
             'role_id' => 1,
         ]);
 
+        // make 1 presenter
+        $this->db->table('users')->insert([
+            'name' => 'Presenter',
+            'email' => 'presenter@greentech.com',
+            'password' => password_hash('password', PASSWORD_DEFAULT),
+            'image' => null,
+            'isActive' => 1,
+            'gender' => 0,
+            'role_id' => 4,
+        ]);
+
         // menus
         $menus = [
             'Abstract',
@@ -91,7 +102,7 @@ class DatabaseSeeder extends Seeder
                 'menu_id' => $menu_id,
                 'code' => $key,
                 'name' => ucfirst($submenu['name']),
-                'url' => base_url() . $submenu['url'] . '/',
+                'url' => $submenu['url'],
                 'icon' => $submenu['icon'],
             ]);
         }
@@ -120,7 +131,7 @@ class DatabaseSeeder extends Seeder
                 'menu_id' => $menu_id,
                 'code' => $key,
                 'name' => ucfirst($submenu['name']),
-                'url' => base_url() . $submenu['url'] . '/',
+                'url' => $submenu['url'],
                 'icon' => $submenu['icon'],
             ]);
         }
@@ -130,17 +141,17 @@ class DatabaseSeeder extends Seeder
         $paymentSubmenus = [
             '4' => [
                 'name' => 'conferences',
-                'url' => '',
+                'url' => '/',
                 'icon' => 'bi bi-building'
             ],
             '5' => [
                 'name' => 'abstracts',
-                'url' => '',
+                'url' => '/',
                 'icon' => 'bi bi-file-earmark-text'
             ],
             '6' => [
                 'name' => 'full Papers',
-                'url' => '',
+                'url' => '/',
                 'icon' => 'bi bi-journals'
             ],
         ];
@@ -152,7 +163,7 @@ class DatabaseSeeder extends Seeder
                 'menu_id' => $menu_id,
                 'code' => $key,
                 'name' => ucfirst($submenu['name']),
-                'url' => base_url() . $submenu['url'] . '/',
+                'url' => $submenu['url'],
                 'icon' => $submenu['icon'],
             ]);
         }
@@ -178,7 +189,7 @@ class DatabaseSeeder extends Seeder
                 'menu_id' => $menu_id,
                 'code' => $key,
                 'name' => ucfirst($submenu['name']),
-                'url' => base_url() . $submenu['url'] . '/',
+                'url' => $submenu['url'],
                 'icon' => $submenu['icon'],
             ]);
         }
@@ -219,7 +230,7 @@ class DatabaseSeeder extends Seeder
                 'menu_id' => $menu_id,
                 'code' => $key,
                 'name' => ucfirst($submenu['name']),
-                'url' => base_url() . $submenu['url'] . '/',
+                'url' => $submenu['url'],
                 'icon' => $submenu['icon'],
             ]);
         }
@@ -255,7 +266,7 @@ class DatabaseSeeder extends Seeder
                 'menu_id' => $menu_id,
                 'code' => $key,
                 'name' => ucfirst($submenu['name']),
-                'url' => base_url() . $submenu['url'] . '/',
+                'url' => $submenu['url'],
                 'icon' => $submenu['icon'],
             ]);
         }
@@ -268,11 +279,19 @@ class DatabaseSeeder extends Seeder
             ['role' => 'Super Admin', 'menu' => $menus[3]],
             ['role' => 'Super Admin', 'menu' => $menus[4]],
             ['role' => 'Super Admin', 'menu' => $menus[5]],
+
             ['role' => 'Admin', 'menu' => $menus[1]],
             ['role' => 'Admin', 'menu' => $menus[2]],
             ['role' => 'Admin', 'menu' => $menus[3]],
             ['role' => 'Admin', 'menu' => $menus[4]],
             ['role' => 'Admin', 'menu' => $menus[5]],
+
+            // member
+            ['role' => 'Member', 'menu' => $menus[0]],
+            ['role' => 'Member', 'menu' => $menus[1]],
+            ['role' => 'Member', 'menu' => $menus[2]],
+            ['role' => 'Member', 'menu' => $menus[3]],
+            ['role' => 'Member', 'menu' => $menus[5]],
 
         ];
 
@@ -287,13 +306,7 @@ class DatabaseSeeder extends Seeder
         }
 
         // permissions
-        $permissions = [
-            'roles',
-            'users',
-            'permissions',
-            'menus',
-            'submenus',
-        ];
+        $permissions = [];
 
         foreach ($permissions as $key => $permission) {
             $this->db->table('permissions')->insert([
@@ -303,15 +316,15 @@ class DatabaseSeeder extends Seeder
 
         // permission_role
         $permissionRoles = [
-            ['role' => 'Super Admin', 'permission' => $permissions[0]],
-            ['role' => 'Super Admin', 'permission' => $permissions[1]],
-            ['role' => 'Super Admin', 'permission' => $permissions[2]],
-            ['role' => 'Super Admin', 'permission' => $permissions[3]],
-            ['role' => 'Super Admin', 'permission' => $permissions[4]],
-            ['role' => 'Admin', 'permission' => $permissions[1]],
-            ['role' => 'Admin', 'permission' => $permissions[2]],
-            ['role' => 'Admin', 'permission' => $permissions[3]],
-            ['role' => 'Admin', 'permission' => $permissions[4]],
+            // ['role' => 'Super Admin', 'permission' => $permissions[0]],
+            // ['role' => 'Super Admin', 'permission' => $permissions[1]],
+            // ['role' => 'Super Admin', 'permission' => $permissions[2]],
+            // ['role' => 'Super Admin', 'permission' => $permissions[3]],
+            // ['role' => 'Super Admin', 'permission' => $permissions[4]],
+            // ['role' => 'Admin', 'permission' => $permissions[1]],
+            // ['role' => 'Admin', 'permission' => $permissions[2]],
+            // ['role' => 'Admin', 'permission' => $permissions[3]],
+            // ['role' => 'Admin', 'permission' => $permissions[4]],
         ];
 
         foreach ($permissionRoles as $key => $permissionRole) {

@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Exceptions\HTTPException;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Models\Submenu;
 use App\Models\User;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
@@ -72,26 +73,45 @@ abstract class BaseController extends Controller
         $this->validator = Services::validation();
     }
 
+    private $isAllowed = false;
+
     private function authorize(): void
     {
+        $uri = service('uri');
         // Ambil path dari URL saat ini
-        $currentPath = service('uri')->getPath();
+        $currentPath = $uri->getPath();
 
         // $currentPath tidak boleh diawali maupun diakhiri dengan '/'
         $currentPath = trim($currentPath, '/');
 
-        // pisahkan path berdasarkan '/'
-        $pathParts = explode('/', $currentPath);
-
         // Ambil data user dari session
-        $user = User::find(session('user'))->load('role.permissions');
+        $user = User::find(session('user'))->load(['role.permissions', 'role.menus.submenus']);
 
         if ($user->role->code != 0) {
-            if (Permission::where('path', $pathParts[0])->first() && !$user->role->permissions->contains('path', $pathParts[0])) {
-                throw new HTTPException('You are not authorized to access this page', 403);
-            }
 
-            if (Permission::where('path', $currentPath)->first() && !$user->role->permissions->contains('path', $currentPath)) {
+            // cek apakah $currentPath ada di tabel submenu user
+            $user->role->menus->each(function ($menu) use ($currentPath) {
+                $menu->submenus->each(function ($submenu) use ($currentPath) {
+                    // submenu url mirip dengan currentPath
+                    if (strpos($currentPath, $submenu->url) !== false) {
+                        $this->isAllowed = true;
+                        return;
+                    }
+                });
+            });
+
+            // jika $currentPath tidak ada di tabel submenus
+            if (!$this->isAllowed && Submenu::whereRaw('? LIKE CONCAT("%", url, "%")', [$currentPath])->exists()) {
+                // dd(Submenu::whereRaw('? LIKE CONCAT("%", url, "%")', [$currentPath])->exists());
+
+                // jika $currentPath ada di tabel permissions dan role user memiliki permission tersebut
+                if (Permission::where('path', $currentPath)->exists()) {
+                    $permission = Permission::where('path', $currentPath)->first();
+                    if ($user->role->permissions->contains($permission)) {
+                        return;
+                    }
+                }
+
                 throw new HTTPException('You are not authorized to access this page', 403);
             }
         }

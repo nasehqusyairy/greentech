@@ -49,7 +49,7 @@ if (!empty($message)) : ?>
                   <td><?= $i++; ?></td>
                   <td><?= $submenu->name ?></td>
                   <td>
-                    <a href="<?= $submenu->url ?>"><?= $submenu->url ?></a>
+                    <a href="<?= $submenu->is_path ? base_url($submenu->url . '/') : $submenu->url ?>"><?= $submenu->is_path ? base_url($submenu->url . '/') : $submenu->url ?></a>
                   </td>
                   <td><?= $submenu->code; ?></td>
                   <td><?= $submenu->menu->name; ?></td>
@@ -90,7 +90,7 @@ if (!empty($message)) : ?>
                   <td><?= $i++; ?></td>
                   <td><?= $submenu->name ?></td>
                   <td>
-                    <a href="<?= $submenu->url ?>"><?= $submenu->url ?></a>
+                    <a href="<?= $submenu->is_path ? base_url($submenu->url . '/') : $submenu->url ?>"><?= $submenu->is_path ? base_url($submenu->url . '/') : $submenu->url ?></a>
                   </td>
                   <td><?= $submenu->code; ?></td>
                   <td><?= $submenu->menu->name; ?></td>

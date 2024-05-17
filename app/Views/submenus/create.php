@@ -49,8 +49,18 @@ if (session()->has('errors')) : ?>
         <input type="text" class="form-control" id="name" name="name" value="<?= old('name'); ?>">
       </div>
       <div class="mb-3">
+        <label for="is_path" class="form-label">Is Path</label>
+        <select class="form-select" id="is_path" name="is_path">
+          <option value="1" <?= old('is_path') == '1' ? 'selected' : ''; ?>>Yes</option>
+          <option value="0" <?= old('is_path') == '0' ? 'selected' : ''; ?>>No</option>
+        </select>
+      </div>
+      <div class="mb-3">
         <label for="url" class="form-label">URL</label>
-        <input type="url" class="form-control" id="url" name="url" value="<?= old('url'); ?>">
+        <div class="input-group">
+          <span class="input-group-text"><?= base_url(); ?></span>
+          <input type="text" class="form-control" id="url" name="url" value="<?= old('url'); ?>">
+        </div>
       </div>
       <div class="d-grid d-lg-block gap-2">
         <button type="submit" class="btn btn-primary">Save</button>
@@ -80,6 +90,26 @@ $this->section('footer');
   $('#menu_id').select2({
     theme: 'bootstrap-5',
     width: '100%'
+  });
+  $('#is_path').select2({
+    theme: 'bootstrap-5',
+    width: '100%'
+  });
+
+  // hilangkan input-group-text jika is_path = 0
+  $('#is_path').on('change', function() {
+    if ($(this).val() == 0) {
+      $('#url').val('');
+      const parent = $('#url').parent()
+      // hilangkan class input-group
+      parent.removeClass('input-group');
+      parent.find('.input-group-text').hide();
+    } else {
+      const parent = $('#url').parent()
+      // tambahkan class input-group
+      parent.addClass('input-group');
+      parent.find('.input-group-text').show();
+    }
   });
 </script>
 <?php $this->endSection() ?>
