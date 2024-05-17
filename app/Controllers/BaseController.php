@@ -93,26 +93,30 @@ abstract class BaseController extends Controller
             $user->role->menus->each(function ($menu) use ($currentPath) {
                 $menu->submenus->each(function ($submenu) use ($currentPath) {
                     // submenu url mirip dengan currentPath
-                    if (strpos($currentPath, $submenu->url) !== false) {
+                    if (strpos($currentPath, $submenu->url) !== false && $submenu->url != '' && $submenu->url != '/') {
+                        // dd($submenu->url, $currentPath);
                         $this->isAllowed = true;
                         return;
                     }
                 });
             });
 
+            // dd($this->isAllowed);
             // jika $currentPath tidak ada di tabel submenus
-            if (!$this->isAllowed && Submenu::whereRaw('? LIKE CONCAT("%", url, "%")', [$currentPath])->exists()) {
+            if (Submenu::whereRaw('? LIKE CONCAT("%", url, "%")', [$currentPath])->exists()) {
                 // dd(Submenu::whereRaw('? LIKE CONCAT("%", url, "%")', [$currentPath])->exists());
-
                 // jika $currentPath ada di tabel permissions dan role user memiliki permission tersebut
                 if (Permission::where('path', $currentPath)->exists()) {
+                    $this->isAllowed = false;
                     $permission = Permission::where('path', $currentPath)->first();
                     if ($user->role->permissions->contains($permission)) {
+                        // dd($user->role->permissions->contains($permission));
+                        $this->isAllowed = true;
                         return;
                     }
                 }
 
-                throw new HTTPException('You are not authorized to access this page', 403);
+                if (!$this->isAllowed) throw new HTTPException('You are not authorized to access this page', 403);
             }
         }
     }

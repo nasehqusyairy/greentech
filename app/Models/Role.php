@@ -17,7 +17,7 @@ class Role extends Model
 
     public function menus()
     {
-        return $this->belongsToMany(Menu::class)->withTrashed();
+        return $this->belongsToMany(Menu::class)->withTrashed()->orderBy('order');
     }
 
     public function permissions()

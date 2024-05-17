@@ -12,11 +12,13 @@ class Menus extends BaseController
     'store' => [
       'code' => 'required|alpha_numeric_punct|is_unique[menus.code]',
       'name' => 'required|alpha_numeric_punct',
+      'order' => 'required|numeric',
     ],
     'update' => [
       'id' => 'required|is_not_unique[menus.id]',
       'code' => 'required|alpha_numeric_punct|is_unique[menus.code,id,{id}]',
       'name' => 'required|alpha_numeric_punct',
+      'order' => 'required|numeric',
     ],
   ];
 
@@ -30,9 +32,9 @@ class Menus extends BaseController
   {
     // main view
     /** @disregard */
-    $menus = Menu::all();
+    $menus = Menu::orderBy('order')->get();
     /** @disregard */
-    $deleted = Menu::onlyTrashed()->get();
+    $deleted = Menu::onlyTrashed()->orderBy('order')->get();
     return view('menus/index', [
       'menus' => $menus,
       'deleted' => $deleted,

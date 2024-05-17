@@ -35,6 +35,7 @@ if (!empty($message)) : ?>
                 <th>#</th>
                 <th>Name</th>
                 <th>Code</th>
+                <th>Order</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -46,6 +47,7 @@ if (!empty($message)) : ?>
                   <td><?= $i++; ?></td>
                   <td><?= $menu->name ?></td>
                   <td><?= $menu->code; ?></td>
+                  <td><?= $menu->order; ?></td>
                   <td>
                     <a href="/menus/addroles/<?= $menu->id ?>" class="btn btn-info mb-1"><i class="bi bi-gear"></i></a>
                     <a href="/menus/edit/<?= $menu->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
@@ -65,6 +67,7 @@ if (!empty($message)) : ?>
                 <th>#</th>
                 <th>Name</th>
                 <th>Code</th>
+                <th>Order</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -76,6 +79,7 @@ if (!empty($message)) : ?>
                   <td><?= $i++; ?></td>
                   <td><?= $menu->name ?></td>
                   <td><?= $menu->code; ?></td>
+                  <td><?= $menu->order; ?></td>
                   <td>
                     <a href="<?= base_url('menus/restore/' . $menu->id); ?>" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>

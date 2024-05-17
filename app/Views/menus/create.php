@@ -29,6 +29,10 @@ if (session()->has('errors')) : ?>
         <label for="name" class="form-label">Name</label>
         <input type="text" class="form-control" id="name" name="name" value="<?= old('name'); ?>">
       </div>
+      <div class="mb-3">
+        <label for="order" class="form-label">Order</label>
+        <input type="number" class="form-control" id="order" name="order" value="<?= old('order'); ?>">
+      </div>
       <div class="d-grid d-lg-block gap-2">
         <button type="submit" class="btn btn-primary">Save</button>
         <a href="<?= base_url('menus'); ?>" class="btn btn-secondary">Cancel</a>
