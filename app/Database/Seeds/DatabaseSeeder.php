@@ -78,6 +78,7 @@ class DatabaseSeeder extends Seeder
             $this->db->table('menus')->insert([
                 'code' => $key,
                 'name' => strtoupper($menu),
+                'order' => $key + 1,
             ]);
         }
 
@@ -288,10 +289,7 @@ class DatabaseSeeder extends Seeder
 
             // member
             ['role' => 'Member', 'menu' => $menus[0]],
-            ['role' => 'Member', 'menu' => $menus[1]],
             ['role' => 'Member', 'menu' => $menus[2]],
-            ['role' => 'Member', 'menu' => $menus[3]],
-            ['role' => 'Member', 'menu' => $menus[5]],
 
         ];
 

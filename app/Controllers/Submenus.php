@@ -14,7 +14,7 @@ class Submenus extends BaseController
       'menu_id' => 'required|alpha_numeric_punct|is_not_unique[menus.id]',
       'icon' => 'required|alpha_numeric_punct',
       'name' => 'required|alpha_numeric_punct',
-      'url' => 'required|valid_url',
+      'url' => 'permit_empty|valid_url',
       'is_path' => 'required|in_list[0,1]',
     ],
     'update' => [
@@ -23,7 +23,7 @@ class Submenus extends BaseController
       'menu_id' => 'required|alpha_numeric_punct|is_not_unique[menus.id]',
       'icon' => 'required|alpha_numeric_punct',
       'name' => 'required|alpha_numeric_punct',
-      'url' => 'required|valid_url',
+      'url' => 'permit_empty|valid_url',
       'is_path' => 'required|in_list[0,1]',
     ],
   ];

@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 
 class Profile extends BaseController
@@ -16,6 +17,7 @@ class Profile extends BaseController
       'image' => 'permit_empty|max_size[image,3072]|is_image[image]',
       'gender' => 'required|in_list[0,1,2]',
       'callingcode' => 'required|alpha_numeric_punct',
+      'role_id' => 'required|is_not_unique[roles.id]',
     ],
   ];
 
@@ -30,7 +32,8 @@ class Profile extends BaseController
     // main view
     return view('profile/index', [
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
-      'title' => 'Profile'
+      'title' => 'Profile',
+      'roles' => Role::where('id', '!=', 1)->get(),
     ]);
   }
 

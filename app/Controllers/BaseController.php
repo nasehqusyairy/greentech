@@ -89,30 +89,42 @@ abstract class BaseController extends Controller
 
         if ($user->role->code != 0) {
 
-            // cek apakah $currentPath ada di tabel submenu user
-            $user->role->menus->each(function ($menu) use ($currentPath) {
-                $menu->submenus->each(function ($submenu) use ($currentPath) {
-                    // submenu url mirip dengan currentPath
-                    if (strpos($currentPath, $submenu->url) !== false && $submenu->url != '' && $submenu->url != '/') {
-                        // dd($submenu->url, $currentPath);
-                        $this->isAllowed = true;
-                        return;
-                    }
-                });
-            });
-
-            // dd($this->isAllowed);
             // jika $currentPath tidak ada di tabel submenus
-            if (Submenu::whereRaw('? LIKE CONCAT("%", url, "%")', [$currentPath])->exists()) {
-                // dd(Submenu::whereRaw('? LIKE CONCAT("%", url, "%")', [$currentPath])->exists());
+            if (Submenu::whereRaw('? LIKE CONCAT("%", url, "%") AND url!="/"', [$currentPath])->exists()) {
+
+                // cek apakah $currentPath ada di tabel submenu user
+                $user->role->menus->each(function ($menu) use ($currentPath) {
+                    $menu->submenus->each(function ($submenu) use ($currentPath) {
+                        // submenu url mirip dengan currentPath
+                        if (strpos($currentPath, $submenu->url) !== false && $submenu->url != '' && $submenu->url != '/') {
+                            // dd($submenu->url, $currentPath);
+                            $this->isAllowed = true;
+                            return;
+                        }
+                    });
+                });
+
                 // jika $currentPath ada di tabel permissions dan role user memiliki permission tersebut
-                if (Permission::where('path', $currentPath)->exists()) {
+                $permission = Permission::where('path', $currentPath)->orWhere('path', $uri->getSegment(1));
+                if ($permission->exists()) {
                     $this->isAllowed = false;
-                    $permission = Permission::where('path', $currentPath)->first();
+                    $permission = $permission->first();
                     if ($user->role->permissions->contains($permission)) {
                         // dd($user->role->permissions->contains($permission));
                         $this->isAllowed = true;
                         return;
+                    }
+                }
+
+                if (count($uri->getSegments()) > 1) {
+                    $permission = Permission::where('path', $uri->getSegment(1) . "/*");
+                    if ($permission->exists()) {
+                        $this->isAllowed = false;
+                        $permission = $permission->first();
+                        if ($user->role->permissions->contains($permission)) {
+                            $this->isAllowed = true;
+                            return;
+                        }
                     }
                 }
 

@@ -95,6 +95,15 @@ if (!empty($message)) :
               <option value="2">Female</option>
             </select>
           </div>
+          <div class="mb-3">
+            <label for="role" class="form-label">Role</label>
+            <!-- select -->
+            <select class="form-select" id="role" name="role_id">
+              <?php foreach ($roles as $role) : ?>
+                <option value="<?= $role->id; ?>" <?= $role->id == $user->role_id ? 'selected' : ''; ?>><?= $role->name; ?></option>
+              <?php endforeach  ?>
+            </select>
+          </div>
           <div class="d-grid d-lg-block gap-2">
             <button class="btn btn-primary">Save</button>
           </div>
@@ -113,6 +122,11 @@ if (!empty($message)) :
     gender: '<?= $gender; ?>',
     country: '<?= $country; ?>',
   }
+  // select2 role
+  $('#role').select2({
+    theme: 'bootstrap-5',
+    width: '100%'
+  });
 </script>
 <script src="<?= base_url('assets/js/profile-form.js'); ?>"></script>
 <?php $this->endSection() ?>
