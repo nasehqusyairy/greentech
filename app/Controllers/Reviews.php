@@ -11,6 +11,7 @@ class Reviews extends BaseController
 {
   protected $rule = [
     'store' => [
+      'abstrac_id' => 'required|is_not_unique[abstracs.id]',
       'comment' => 'required|string',
       'file' => 'uploaded[file]|ext_in[file,pdf,doc,docx]|max_size[file,5120]',
       'status_id' => 'required|is_not_unique[statuses.id]',
@@ -23,38 +24,53 @@ class Reviews extends BaseController
     ],
   ];
 
-  protected $abstract;
-
   public function __construct()
   {
     parent::__construct();
     $this->isNeedLogin();
 
     // if the first segment is not 'abstracs', return 404. else, set the abstract_id from the second segment
-    if (service('uri')->getSegment(1) != 'abstracs') throw new PageNotFoundException();
-    $abstract_id = service('uri')->getSegment(2);
-    $this->abstract = Abstrac::find($abstract_id);
-    if (!$this->abstract) throw new PageNotFoundException();
+    // if (service('uri')->getSegment(1) != 'abstracs') throw new PageNotFoundException();
+    // $abstract_id = service('uri')->getSegment(2);
+    // $abstract = Abstrac::find($abstract_id);
+    // if (!$abstract) throw new PageNotFoundException();
+  }
+
+  private function getAbstract()
+  {
+    $request = service('request');
+
+    // Mendapatkan nilai query string
+    $abstract_id = $request->getGet('abstract_id');
+    $abstract = Abstrac::find($abstract_id);
+    if (!$abstract) throw new PageNotFoundException();
+    return $abstract;
   }
 
   public function index()
   {
+
+    $abstract = $this->getAbstract();
+
     // main view
     return view('reviews/index', [
-      'reviews' => $this->abstract->load('reviews')->reviews->sortByDesc('created_at')->sortByDesc('updated_at'),
+      'reviews' => $abstract->load('reviews')->reviews->sortByDesc('created_at')->sortByDesc('updated_at'),
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
-      'title' => 'Reviews for "' . $this->abstract->title . '"',
-      'deleted' => $this->abstract->reviews()->onlyTrashed()->get()->sortByDesc('created_at')->sortByDesc('updated_at'),
-      'abstract_id' => $this->abstract->id,
+      'title' => 'Reviews for "' . $abstract->title . '"',
+      'deleted' => $abstract->reviews()->onlyTrashed()->get()->sortByDesc('created_at')->sortByDesc('updated_at'),
+      'abstract_id' => $abstract->id,
     ]);
   }
 
   public function create()
   {
+
+    $abstract = $this->getAbstract();
+
     // create form
     return view('reviews/create', [
       'title' => 'New Review',
-      'abstract' => $this->abstract,
+      'abstract' => $abstract,
       // status where stype.code is 1
       'statuses' => Status::whereHas('stype', function ($query) {
         $query->where('code', 1);
@@ -84,21 +100,23 @@ class Reviews extends BaseController
       $validInput['file'] = $files['file'];
     }
 
-    $validInput['abstrac_id'] = $this->abstract->id;
+    $abstract = Abstrac::find($validInput['abstrac_id']);
 
-    $this->abstract->status_id = $validInput['status_id'];
-    $this->abstract->save();
+    $abstract->status_id = $validInput['status_id'];
+    $abstract->save();
 
-    Review::create($validInput);
+    $review = Review::create($validInput);
 
     // redirect
-    return redirect()->to("/abstracs/" . $this->abstract->id . "/reviews/")->with('message', 'Review data has been saved successfully');
+    return redirect()->to("/reviews/?abstract_id=$review->abstrac_id")->with('message', 'Review data has been saved successfully');
   }
 
   public function edit($id = null)
   {
     // find data
-    $review = Review::find($id);
+    $review = Review::find($id)->load('abstrac');
+
+    // dd($review->toArray());
 
     // throw error if the data is not found
     if ($id == null || !$review) throw new PageNotFoundException();
@@ -106,7 +124,6 @@ class Reviews extends BaseController
     // return view
     return view('reviews/edit', [
       'review' => $review,
-      'abstract' => $this->abstract,
       'title' => 'Edit Review',
       'statuses' => Status::whereHas('stype', function ($query) {
         $query->where('code', 1);
@@ -114,7 +131,7 @@ class Reviews extends BaseController
     ]);
   }
 
-  public function update($id = null)
+  public function update()
   {
     // check if the request is POST
     $this->isPostRequest();
@@ -123,20 +140,27 @@ class Reviews extends BaseController
     $this->validator->setRules($this->rule['update']);
 
     // validated input
-    $validInput = $this->validInput();
+    $validInput = $this->validInput(['file']);
 
     // return response if the input is invalid
     if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
 
     // manipulate data here
-    $review = Review::find($validInput['id']);
+    $files = $this->upload(['file']);
+    if (!isset($files['file'])) {
+      unset($validInput['file']);
+    } else {
+      $validInput['file'] = $files['file'];
+    }
+
+    $review = Review::find($validInput['id'])->load('abstrac');
     $review->update($validInput);
 
-    $this->abstract->status_id = $validInput['status_id'];
-    $this->abstract->save();
+    $review->abstrac->status_id = $validInput['status_id'];
+    $review->abstrac->save();
 
     // redirect
-    return redirect()->to("/abstracs/" . $this->abstract->id . "/reviews/")->with('message', 'Review data has been updated successfully');
+    return redirect()->to("/reviews/?abstract_id=" . $review->abstrac->id)->with('message', 'Review data has been updated successfully');
   }
 
   public function delete($id = null)
@@ -151,7 +175,7 @@ class Reviews extends BaseController
     $review->delete();
 
     // redirect
-    return redirect()->to("/abstracs/" . $this->abstract->id . "/reviews/")->with('message', 'Review data has been deleted successfully');
+    return redirect()->to("/reviews/?abstract_id=" . $review->abstrac_id)->with('message', 'Review data has been deleted successfully');
   }
   public function restore($id = null)
   {
@@ -164,6 +188,6 @@ class Reviews extends BaseController
     $review->restore();
 
     // redirect
-    return redirect()->to("/abstracs/" . $this->abstract->id . "/reviews/")->with('message', 'Review data has been restored successfully');
+    return redirect()->to("/reviews/?abstract_id=" . $review->abstrac_id)->with('message', 'Review data has been restored successfully');
   }
 }

@@ -38,7 +38,7 @@ $this->section('content');
   <div class="card-body">
     <div class="mb-3">
       <a href="<?= base_url('abstracs'); ?>" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</a>
-      <a href="<?= base_url("abstracs/$abstract_id/reviews/create"); ?>" class="btn btn-primary"><i class="bi bi-plus"></i> New Review</a>
+      <a href="<?= base_url("/reviews/create/?abstract_id=$abstract_id"); ?>" class="btn btn-primary"><i class="bi bi-plus"></i> New Review</a>
     </div>
     <ul class="nav nav-tabs" id="tab">
       <li class="nav-item">
@@ -117,7 +117,7 @@ $this->section('content');
                   </td>
                   <td><?= badge($review->status->text, $review->status->color) ?></td>
                   <td>
-                    <a href="<?= base_url('abstracs/' . $abstract_id . '/reviews/restore/' . $review->id); ?>" class="btn btn-secondary">
+                    <a href="<?= base_url('/reviews/restore/' . $review->id); ?>" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
                     </a>
                   </td>
@@ -157,7 +157,7 @@ $this->endSection();
 $this->section('footer');
 ?>
 <script>
-  const handleDelete = (id) => document.querySelector('#deleteModal .modal-footer a').href = '<?= base_url(); ?>' + 'abstracs/<?= $abstract_id; ?>/reviews/delete/' + id;
+  const handleDelete = (id) => document.querySelector('#deleteModal .modal-footer a').href = '<?= base_url(); ?>' + 'reviews/delete/' + id;
   // DataTables
   const table = new DataTable('#reviewsTable');
   const table_deleted = new DataTable('#deleted');
