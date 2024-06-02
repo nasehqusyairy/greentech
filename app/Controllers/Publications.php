@@ -8,9 +8,12 @@ use App\Models\Publication;
 class Publications extends BaseController
 {
   protected $rule = [
-    'store' => [],
+    'store' => [
+      'name' => 'required|alpha_numeric_punct',
+    ],
     'update' => [
       'id' => 'required|is_not_unique[publications.id]',
+      'name' => 'required|alpha_numeric_punct',
     ],
   ];
 
@@ -23,12 +26,12 @@ class Publications extends BaseController
   public function index()
   {
     // main view
-    // return view('publications/index',[
-    //   'publications' => Publication::all(),
-    //   'message' => $this->session->has('message') ? $this->session->get('message') : '',
-    //   'title' => 'Publications'
-    // ]);
-    dd(Publication::all()->toArray());
+    return view('publications/index',[
+      'publications' => Publication::all(),
+      'message' => $this->session->has('message') ? $this->session->get('message') : '',
+      'title' => 'Publications',
+      'deleted' => Publication::onlyTrashed()->get()
+    ]);
   }
 
   public function create()

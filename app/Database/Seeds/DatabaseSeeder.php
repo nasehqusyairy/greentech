@@ -94,6 +94,11 @@ class DatabaseSeeder extends Seeder
                 'url' => 'topics',
                 'icon' => 'bi bi-list-ul'
             ],
+            '2' => [
+                'name' => 'publications',
+                'url' => 'publications',
+                'icon' => 'bi bi-arrow-up-circle-fill'
+            ],
         ];
 
         foreach ($abstractSubmenus as $key => $submenu) {
@@ -110,13 +115,13 @@ class DatabaseSeeder extends Seeder
 
         // user's submenus
         $usersSubmenus = [
-            '2' => [
+            '3' => [
                 'name' => 'users',
                 'icon' => 'bi bi-people',
                 'url' => 'users',
             ],
 
-            '3' => [
+            '4' => [
                 'name' => 'roles',
                 'icon' => 'bi bi-person-gear',
                 'url' => 'roles',
@@ -140,17 +145,17 @@ class DatabaseSeeder extends Seeder
 
         // Payment submenus
         $paymentSubmenus = [
-            '4' => [
+            '5' => [
                 'name' => 'conferences',
                 'url' => '/',
                 'icon' => 'bi bi-building'
             ],
-            '5' => [
+            '6' => [
                 'name' => 'abstracts',
                 'url' => '/',
                 'icon' => 'bi bi-file-earmark-text'
             ],
-            '6' => [
+            '7' => [
                 'name' => 'full Papers',
                 'url' => '/',
                 'icon' => 'bi bi-journals'
@@ -171,12 +176,12 @@ class DatabaseSeeder extends Seeder
 
         // Refeerence submenus
         $statusSubmenus = [
-            '7' => [
+            '8' => [
                 'name' => 'statuses',
                 'icon' => 'bi bi-clipboard',
                 'url' => 'statuses',
             ],
-            '8' => [
+            '9' => [
                 'name' => "types",
                 'icon' => 'bi bi-braces',
                 'url' => 'stypes'
@@ -197,27 +202,27 @@ class DatabaseSeeder extends Seeder
 
         // Ticket submenus
         $ticketSubmenus = [
-            '9' => [
+            '10' => [
                 'name' => 'tickets',
                 'url' => 'tickets',
                 'icon' => 'bi bi-ticket'
             ],
-            '10' => [
+            '11' => [
                 'name' => 'ticket Types',
                 'url' => 'ttypes',
                 'icon' => 'bi bi-braces'
             ],
-            '11' => [
+            '12' => [
                 'name' => 'Ticket Roles',
                 'url' => 'troles',
                 'icon' => 'bi bi-person-gear'
             ],
-            '12' => [
+            '13' => [
                 'name' => 'states',
                 'url' => 'states',
                 'icon' => 'bi bi-airplane'
             ],
-            '13' => [
+            '14' => [
                 'name' => 'Studies',
                 'url' => 'studies',
                 'icon' => 'bi bi-mortarboard'
@@ -238,22 +243,22 @@ class DatabaseSeeder extends Seeder
 
         // setting's submenus
         $settingSubmenus = [
-            '14' => [
+            '15' => [
                 'name' => 'permissions',
                 'url'  => 'permissions',
                 'icon' => 'bi bi-key'
             ],
-            '15' => [
+            '16' => [
                 'name' => 'menus',
                 'url'  => 'menus',
                 'icon' => 'bi bi-menu-button-wide'
             ],
-            '16' => [
+            '17' => [
                 'name' => 'submenus',
                 'url'  => 'submenus',
                 'icon' => 'bi bi-menu-down'
             ],
-            '17' => [
+            '18' => [
                 'name' => 'systems',
                 'url' => 'systems',
                 'icon' => 'bi bi-gear'
