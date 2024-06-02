@@ -47,8 +47,8 @@ if (!empty($message)) : ?>
                   <td><?= $ttype->name ?></td>
                   <td><?= $ttype->code ?></td>
                   <td>
-                    <a href="/ttypes/edit/<?= $ttype->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
-                    <button onclick="handleDelete(<?= $ttype->id; ?>)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <a href="/ttypes/edit/<?= $ttype->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
+                    <button onclick="handleDelete(<?= $ttype->id; ?>)" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -76,7 +76,7 @@ if (!empty($message)) : ?>
                   <td><?= $ttype->name ?></td>
                   <td><?= $ttype->code ?></td>
                   <td>
-                    <a href="<?= base_url('ttypes/restore/' . $ttype->id); ?>" class="btn btn-secondary">
+                    <a href="<?= base_url('ttypes/restore/' . $ttype->id); ?>" title="Restore" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
                     </a>
                   </td>

@@ -16,6 +16,9 @@ use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 use Psr\Log\LoggerInterface;
 
+
+
+
 /**
  * Class BaseController
  *
@@ -72,7 +75,6 @@ abstract class BaseController extends Controller
         $this->session = Services::session();
         $this->validator = Services::validation();
     }
-
     private $isAllowed = false;
 
     private function authorize(): void
@@ -137,6 +139,11 @@ abstract class BaseController extends Controller
     {
         if (!session()->has('user')) throw new RedirectException('/auth');
         $this->authorize();
+    }
+
+    protected function getUser()
+    {
+        return User::find(session('user'))->load('role');
     }
 
     // function to get validated input from POST request

@@ -99,8 +99,8 @@ if (!empty($message)) : ?>
                   <td><?= $user->role->name ?></td>
                   <td><?= badge($user->isActive ? 'Active' : 'Inactive', $user->isActive ? 'success' : 'danger') ?></td>
                   <td>
-                    <a href="<?= base_url('users/edit/' . $user->id); ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
-                    <button class="btn btn-danger mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="handleDelete(<?= $user->id ?>)"><i class="bi bi-trash"></i></button>
+                    <a href="<?= base_url('users/edit/' . $user->id); ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
+                    <button class="btn btn-danger mb-1" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="handleDelete(<?= $user->id ?>)"><i class="bi bi-trash"></i></button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -149,7 +149,7 @@ if (!empty($message)) : ?>
                   <td><?= $user->role->name ?></td>
                   <td><?= badge($user->isActive ? 'Active' : 'Inactive', $user->isActive ? 'success' : 'danger') ?></td>
                   <td>
-                    <a href="<?= base_url('users/restore/' . $user->id); ?>" class="btn btn-secondary"><i class="bi bi-arrow-repeat"></i></a>
+                    <a href="<?= base_url('users/restore/' . $user->id); ?>" title="Restore" class="btn btn-secondary"><i class="bi bi-arrow-repeat"></i></a>
                   </td>
                 </tr>
               <?php endforeach; ?>

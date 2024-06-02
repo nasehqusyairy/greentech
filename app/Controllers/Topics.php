@@ -29,6 +29,7 @@ class Topics extends BaseController
   {
     // main view
     return view('topics/index', [
+      'user' => $this->getUser(),
       'topics' => Topic::all(),
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
       'title' => 'Topics',

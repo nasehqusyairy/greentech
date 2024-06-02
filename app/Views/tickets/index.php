@@ -57,8 +57,8 @@ if (!empty($message)) : ?>
                   <td><?= $ticket->study->name ?></td>
                   <td><?= $ticket->currency . ' ' . $ticket->price ?></td>
                   <td>
-                    <a href="/tickets/edit/<?= $ticket->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
-                    <button onclick="handleDelete('<?= $ticket->id; ?>')" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <a href="/tickets/edit/<?= $ticket->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
+                    <button onclick="handleDelete('<?= $ticket->id; ?>')" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -96,7 +96,7 @@ if (!empty($message)) : ?>
                   <td><?= $ticket->study->name ?></td>
                   <td><?= $ticket->currency . ' ' . $ticket->price ?></td>
                   <td>
-                    <a href="<?= base_url('tickets/restore/' . $ticket->id); ?>" class="btn btn-secondary">
+                    <a href="<?= base_url('tickets/restore/' . $ticket->id); ?>" title="Restore" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
                     </a>
                   </td>

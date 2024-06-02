@@ -76,10 +76,11 @@ class Abstracs extends BaseController
   {
     // main view
     return view('abstracs/index', [
+      'user' => $this->getUser(),
       'abstracts' => Abstrac::with('creator', 'topic', 'reviewer')->get()->sortBy('topic_id'),
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
       'title' => 'Abstracts',
-      'deleted' => Abstrac::onlyTrashed()->with('creator', 'topic', 'reviewer')->get()->sortBy('topic_id')
+      'deleted' => Abstrac::onlyTrashed()->with('creator', 'topic', 'reviewer')->get()->sortBy('topic_id'),
     ]);
   }
 

@@ -53,8 +53,8 @@ if (!empty($message)) : ?>
                   <td><?= $setting->name ?></td>
                   <td><?= $setting->value ?></td>                
                   <td>
-                    <a href="/settings/edit/<?= $setting->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
-                    <button onclick="handleDelete(<?= $setting->id; ?>)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <a href="/settings/edit/<?= $setting->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
+                    <button onclick="handleDelete(<?= $setting->id; ?>)" title="Restore" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -88,7 +88,7 @@ if (!empty($message)) : ?>
                   <td><?= $setting->name ?></td>
                   <td><?= $setting->value ?></td>
                   <td>
-                    <a href="<?= base_url('settings/restore/' . $setting->id); ?>" class="btn btn-secondary">
+                    <a href="<?= base_url('settings/restore/' . $setting->id); ?>" title="Restore" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
                     </a>
                   </td>

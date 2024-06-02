@@ -27,6 +27,7 @@ class Publications extends BaseController
   {
     // main view
     return view('publications/index',[
+      'user' => $this->getUser(),
       'publications' => Publication::all(),
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
       'title' => 'Publications',

@@ -47,8 +47,8 @@ if (!empty($message)) : ?>
                   <td><?= $stype->name ?></td>
                   <td><?= $stype->code ?></td>
                   <td>
-                    <a href="/stypes/edit/<?= $stype->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
-                    <button onclick="handleDelete(<?= $stype->id; ?>)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <a href="/stypes/edit/<?= $stype->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
+                    <button onclick="handleDelete(<?= $stype->id; ?>)" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -76,7 +76,7 @@ if (!empty($message)) : ?>
                   <td><?= $stype->name ?></td>
                   <td><?= $stype->code ?></td>
                   <td>
-                    <a href="<?= base_url('stypes/restore/' . $stype->id); ?>" class="btn btn-secondary">
+                    <a href="<?= base_url('stypes/restore/' . $stype->id); ?>" title="Restore" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
                     </a>
                   </td>

@@ -47,8 +47,8 @@ if (!empty($message)) : ?>
                   <td><?= $trole->name ?></td>
                   <td><?= $trole->code ?></td>
                   <td>
-                    <a href="/troles/edit/<?= $trole->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
-                    <button onclick="handleDelete(<?= $trole->id; ?>)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <a href="/troles/edit/<?= $trole->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
+                    <button onclick="handleDelete(<?= $trole->id; ?>)" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -76,7 +76,7 @@ if (!empty($message)) : ?>
                   <td><?= $trole->name ?></td>
                   <td><?= $trole->code ?></td>
                   <td>
-                    <a href="<?= base_url('troles/restore/' . $trole->id); ?>" class="btn btn-secondary">
+                    <a href="<?= base_url('troles/restore/' . $trole->id); ?>" title="Restore" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
                     </a>
                   </td>

@@ -5,25 +5,33 @@
  */
 $this->extend('components/layout');
 $this->section('content');
+$user = $user->role->code;
 ?>
-<?php if (!empty($message)) : ?>
+<?php if (!empty($message)): ?>
   <div class="alert alert-success alert-dismissible fade show">
     <?= $message ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 <?php endif ?>
+
 <div class="card">
   <div class="card-body">
-    <div class="mb-3">
-      <a href="/abstracs/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Abstract</a>
-    </div>
+    <?php if ($user == '0' || $user == '1'): ?>
+      <div class="mb-3">
+        <a href="/abstracs/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Abstract</a>
+      </div>
+    <?php endif ?>
+
     <ul class="nav nav-tabs" id="tab">
       <li class="nav-item">
-        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#available-tab-pane" type="button">Available</button>
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#available-tab-pane"
+          type="button">Available</button>
       </li>
-      <li class="nav-item">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#deleted-tab-pane" type="button">Deleted</button>
-      </li>
+      <?php if ($user == '0' || $user == '1'): ?>
+        <li class="nav-item">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#deleted-tab-pane" type="button">Deleted</button>
+        </li>
+      <?php endif ?>
     </ul>
     <div class="tab-content" id="tabContent">
       <div class="tab-pane fade show active" id="available-tab-pane">
@@ -42,20 +50,33 @@ $this->section('content');
             </thead>
             <tbody>
               <?php $i = 1;
-              foreach ($abstracts as $abstract) : ?>
+              foreach ($abstracts as $abstract): ?>
                 <tr>
                   <td><?= $i++; ?></td>
                   <td><?= $abstract->topic->name ?></td>
                   <td><?= $abstract->title ?></td>
                   <td><?= $abstract->reviewer->name ?? '-' ?></td>
                   <td>
-                    <a href="<?= $abstract->file ?>" class="btn btn-primary" download><i class="bi bi-download"></i></a>
+                    <a href="<?= $abstract->file ?>" title="Download" class="btn btn-primary" download><i
+                        class="bi bi-download"></i></a>
                   </td>
-                  <td><?= $abstract->status ? badge($abstract->status->text, $abstract->status->color) : badge('Unknown', 'secondary') ?></td>
+                  <td>
+                    <?= $abstract->status ? badge($abstract->status->text, $abstract->status->color) : badge('Unknown', 'secondary') ?>
+                  </td>
                   <td class="text-nowrap">
-                    <a href="/abstracs/<?= $abstract->id ?>/reviews/" class="btn btn-info mb-1"><i class="bi bi-chat-left-text"></i></a>
-                    <a href="/abstracs/edit/<?= $abstract->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
-                    <button onclick="handleDelete(<?= $abstract->id; ?>)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <?php if ($user == '0' || $user == '1' || $user == '2'): ?>
+                      <a href="<?= base_url("/reviews/?abstract_id=$abstract->id"); ?>" title="Review" class="btn btn-info mb-1"><i
+                          class="bi bi-chat-left-text"></i></a>
+                    <?php endif ?>
+                    <?php if ($user == '3'): ?>
+                      <a href="/abstracs/edit/<?= $abstract->id ?>" title="Edit" class="btn btn-warning mb-1"><i
+                          class="bi bi-pencil"></i></a>
+                    <?php endif ?>
+                    <?php if ($user == '0' || $user == '1'): ?>
+                      <button onclick="handleDelete(<?= $abstract->id; ?>)" title="Delete" class="btn btn-danger"
+                        data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <?php endif ?>
+
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -79,7 +100,7 @@ $this->section('content');
             </thead>
             <tbody>
               <?php $i = 1;
-              foreach ($deleted as $abstract) : ?>
+              foreach ($deleted as $abstract): ?>
                 <tr>
                   <td><?= $i++; ?></td>
                   <td><?= $abstract->topic->name ?></td>
@@ -88,9 +109,12 @@ $this->section('content');
                   <td>
                     <a href="<?= $abstract->file ?>" class="btn btn-primary" download><i class="bi bi-download"></i></a>
                   </td>
-                  <td><?= $abstract->status ? badge($abstract->status->text, $abstract->status->color) : badge('Unknown', 'secondary') ?></td>
                   <td>
-                    <a href="<?= base_url('abstracs/restore/' . $abstract->id); ?>" class="btn btn-secondary">
+                    <?= $abstract->status ? badge($abstract->status->text, $abstract->status->color) : badge('Unknown', 'secondary') ?>
+                  </td>
+                  <td>
+                    <a href="<?= base_url('abstracs/restore/' . $abstract->id); ?>" title="Restore"
+                      class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
                     </a>
                   </td>

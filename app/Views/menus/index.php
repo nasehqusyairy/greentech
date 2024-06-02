@@ -49,9 +49,9 @@ if (!empty($message)) : ?>
                   <td><?= $menu->code; ?></td>
                   <td><?= $menu->order; ?></td>
                   <td>
-                    <a href="/menus/addroles/<?= $menu->id ?>" class="btn btn-info mb-1"><i class="bi bi-gear"></i></a>
-                    <a href="/menus/edit/<?= $menu->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
-                    <button onclick="handleDelete(<?= $menu->id; ?>)" class="btn btn-danger mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <a href="/menus/addroles/<?= $menu->id ?>" title="Add Roles" class="btn btn-info mb-1"><i class="bi bi-gear"></i></a>
+                    <a href="/menus/edit/<?= $menu->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
+                    <button onclick="handleDelete(<?= $menu->id; ?>)" title="Delete" class="btn btn-danger mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -81,7 +81,7 @@ if (!empty($message)) : ?>
                   <td><?= $menu->code; ?></td>
                   <td><?= $menu->order; ?></td>
                   <td>
-                    <a href="<?= base_url('menus/restore/' . $menu->id); ?>" class="btn btn-secondary">
+                    <a href="<?= base_url('menus/restore/' . $menu->id); ?>" title="Restore" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
                     </a>
                   </td>

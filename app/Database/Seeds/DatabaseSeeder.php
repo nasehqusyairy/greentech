@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
             'Super Admin',
             'Admin',
             'Reviewer',
-            'Member',
+            'Presenter',
         ];
 
 
@@ -63,6 +63,18 @@ class DatabaseSeeder extends Seeder
             'gender' => 0,
             'role_id' => 4,
         ]);
+
+        // make 1 reviewer
+        $this->db->table('users')->insert([
+            'name' => 'Reviewer',
+            'email' => 'reviewer@greentech.com',
+            'password' => password_hash('password', PASSWORD_DEFAULT),
+            'image' => null,
+            'isActive' => 1,
+            'gender' => 0,
+            'role_id' => 3,
+        ]);
+
 
         // menus
         $menus = [
@@ -292,10 +304,12 @@ class DatabaseSeeder extends Seeder
             ['role' => 'Admin', 'menu' => $menus[4]],
             ['role' => 'Admin', 'menu' => $menus[5]],
 
-            // member
-            ['role' => 'Member', 'menu' => $menus[0]],
-            ['role' => 'Member', 'menu' => $menus[2]],
+            // presenter
+            ['role' => 'Presenter', 'menu' => $menus[0]],
+            ['role' => 'Presenter', 'menu' => $menus[2]],
 
+            // reviewer
+            ['role' => 'Reviewer', 'menu' => $menus[0]],
         ];
 
         foreach ($menuRoles as $key => $menuRole) {

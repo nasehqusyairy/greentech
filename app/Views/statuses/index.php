@@ -49,8 +49,8 @@ if (!empty($message)) : ?>
                   <td><?= badge($status->text, $status->color) ?></td>
                   <td><?= $status->code ?></td>
                   <td>
-                    <a href="/statuses/edit/<?= $status->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
-                    <button onclick="handleDelete(<?= $status->id; ?>)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <a href="/statuses/edit/<?= $status->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
+                    <button onclick="handleDelete(<?= $status->id; ?>)" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -80,7 +80,7 @@ if (!empty($message)) : ?>
                   <td><?= badge($status->text, $status->color) ?></td>
                   <td><?= $status->code ?></td>
                   <td>
-                    <a href="<?= base_url('statuses/restore/' . $status->id); ?>" class="btn btn-secondary">
+                    <a href="<?= base_url('statuses/restore/' . $status->id); ?>" title="Restore" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
                     </a>
                   </td>

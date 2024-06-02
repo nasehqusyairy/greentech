@@ -79,8 +79,8 @@ $this->section('content');
                   </td>
                   <td><?= badge($review->status->text, $review->status->color) ?></td>
                   <td class="text-nowrap">
-                    <a href="edit/<?= $review->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
-                    <button onclick="handleDelete(<?= $review->id; ?>)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <a href="edit/<?= $review->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
+                    <button onclick="handleDelete(<?= $review->id; ?>)" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -117,7 +117,7 @@ $this->section('content');
                   </td>
                   <td><?= badge($review->status->text, $review->status->color) ?></td>
                   <td>
-                    <a href="<?= base_url('abstracs/' . $abstract_id . '/reviews/restore/' . $review->id); ?>" class="btn btn-secondary">
+                    <a href="<?= base_url('abstracs/' . $abstract_id . '/reviews/restore/' . $review->id); ?>" title="Restore" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
                     </a>
                   </td>

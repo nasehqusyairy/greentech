@@ -59,8 +59,8 @@ if (!empty($message)) : ?>
                     </button>
                   </td>
                   <td>
-                    <a href="/submenus/edit/<?= $submenu->id ?>" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
-                    <button onclick="handleDelete(<?= $submenu->id; ?>)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <a href="/submenus/edit/<?= $submenu->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
+                    <button onclick="handleDelete(<?= $submenu->id; ?>)" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -100,7 +100,7 @@ if (!empty($message)) : ?>
                     </button>
                   </td>
                   <td>
-                    <a href="<?= base_url('submenus/restore/' . $submenu->id); ?>" class="btn btn-secondary">
+                    <a href="<?= base_url('submenus/restore/' . $submenu->id); ?>" title="Restore" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
                     </a>
                   </td>
