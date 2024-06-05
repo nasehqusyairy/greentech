@@ -10,6 +10,7 @@ use App\Models\User;
 
 class Abstracs extends BaseController
 {
+
   protected $rule = [
     'store' => [
       'topic_id' => 'required|is_not_unique[topics.id]',
@@ -20,16 +21,7 @@ class Abstracs extends BaseController
       'file' => 'uploaded[file]|ext_in[file,pdf,doc,docx]|max_size[file,5120]',
       'creator_id' => 'required|is_not_unique[users.id]',
     ],
-    'update' => [
-      'id' => 'required|is_not_unique[abstracs.id]',
-      'topic_id' => 'required|is_not_unique[topics.id]',
-      'title' => 'required|string',
-      'authors' => 'required|string',
-      'emails' => 'required|valid_emails',
-      'text' => 'required|string',
-      'file' => 'permit_empty|uploaded[file]|ext_in[file,pdf,doc,docx]|max_size[file,5120]',
-      'reviewer_id' => 'permit_empty|is_not_unique[users.id]',
-    ],
+
   ];
 
   public function __construct()
@@ -133,6 +125,7 @@ class Abstracs extends BaseController
     // return view
     return view('abstracs/edit', [
       'abstract' => $abstrac,
+      'user' => $this->getUser(),
       'topics' => Topic::all(),
       'reviewers' => User::with('role')->whereHas('role', function ($query) {
         $query->where('code', 2);
@@ -146,35 +139,48 @@ class Abstracs extends BaseController
     // check if the request is POST
     $this->isPostRequest();
 
-    // set validation rules
+    $user = $this->getUser();
+
+    $this->rule['update'] = $user->role->code == '3' ?[
+      'id' => 'required|is_not_unique[abstracs.id]',
+      'topic_id' => 'required|is_not_unique[topics.id]',
+      'title' => 'required|string',
+      'authors' => 'required|string',
+      'emails' => 'required|valid_emails',
+      'text' => 'required|string',
+      'file' => 'permit_empty|uploaded[file]|ext_in[file,pdf,doc,docx]|max_size[file,5120]',
+    ]:[
+      'reviewer_id' => 'permit_empty|is_not_unique[users.id]',
+      'id' => 'required|is_not_unique[abstracs.id]',
+    ];
     $this->validator->setRules($this->rule['update']);
-
-    // validated input
-    $validInput = $this->validInput(['file']);
-
+    $validInput = $this->validInput($user->role->code == '3'?['file']:null);
+    
     // return response if the input is invalid
     if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
-
-    // manipulate data here
-    $abstrac = Abstrac::find($validInput['id']);
-    $files = $this->upload(['file']);
-
-    // delete old file
-    if (!isset($files['file'])) {
-      unset($validInput['file']);
-    } else {
-      if ($abstrac->file && str_contains($abstrac->file, base_url())) {
-        unlink(FCPATH . str_replace('/', '\\', str_replace(base_url(), '', $abstrac->file)));
-      }
-      $validInput['file'] = $files['file'];
-    }
-
+    
     // remove reviewer_id if not set
     if (empty($validInput['reviewer_id'])) unset($validInput['reviewer_id']);
 
     $validInput['status_id'] = isset($validInput['reviewer_id']) ? 5 : 4;
 
+    $abstrac = Abstrac::find($validInput['id']);
+    
+    if($user->role->code == '3'){
+      $files = $this->upload(['file']);
+      // delete old file
+      if (!isset($files['file'])) {
+        unset($validInput['file']);
+      } else {
+        if ($abstrac->file && str_contains($abstrac->file, base_url())) {
+          unlink(FCPATH . str_replace('/', '\\', str_replace(base_url(), '', $abstrac->file)));
+        }
+        $validInput['file'] = $files['file'];
+      }
+    }
+    
     $abstrac->update($validInput);
+
 
     // redirect
     return redirect()->to('/abstracs/')->with('message', 'Abstrac data has been updated successfully');

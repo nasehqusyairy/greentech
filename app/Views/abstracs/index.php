@@ -16,7 +16,7 @@ $user = $user->role->code;
 
 <div class="card">
   <div class="card-body">
-    <?php if ($user == '0' || $user == '1'): ?>
+    <?php if ($user == '3'): ?>
       <div class="mb-3">
         <a href="/abstracs/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Abstract</a>
       </div>
@@ -68,11 +68,11 @@ $user = $user->role->code;
                       <a href="<?= base_url("/reviews/?abstract_id=$abstract->id"); ?>" title="Review" class="btn btn-info mb-1"><i
                           class="bi bi-chat-left-text"></i></a>
                     <?php endif ?>
-                    <?php if ($user == '3'): ?>
+                    <?php if ($user == '3' || $user == '0'): ?>
                       <a href="/abstracs/edit/<?= $abstract->id ?>" title="Edit" class="btn btn-warning mb-1"><i
                           class="bi bi-pencil"></i></a>
                     <?php endif ?>
-                    <?php if ($user == '0' || $user == '1'): ?>
+                    <?php if ($user == '1'): ?>
                       <button onclick="handleDelete(<?= $abstract->id; ?>)" title="Delete" class="btn btn-danger"
                         data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                     <?php endif ?>
