@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Ticket;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use App\Models\TicketUser;
 
@@ -24,9 +25,10 @@ class ConferencePayments extends BaseController
   {
     // main view
     return view('conferencepayments/index', [
-      'ticketUsers' => TicketUser::all(),
+      'ticketUsers' => TicketUser::with('abstrac', 'status', 'user', 'ticket')->get(),
+      'deleted' => TicketUser::onlyTrashed()->get(),
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
-      'title' => 'TicketUsers'
+      'title' => 'Conference Payments'
     ]);
     // dd(TicketUser::all()->toArray());
   }
@@ -35,6 +37,7 @@ class ConferencePayments extends BaseController
   {
     // create form
     return view('conferencepayments/create', [
+      'tickets' => Ticket::all(),
       'title' => 'New TicketUser'
     ]);
   }
