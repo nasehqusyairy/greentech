@@ -14,9 +14,9 @@ class Review extends Model
         'abstrac_id',
         'status_id'
     ];
-    public function abstract()
+    public function abstrac()
     {
-        return $this->belongsTo(User::class)->withTrashed();
+        return $this->belongsTo(Abstrac::class)->withTrashed();
     }
 
     public function status()

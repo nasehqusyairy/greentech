@@ -17,13 +17,14 @@ if (session()->has('errors')) : ?>
   </div>
 <?php endif ?>
 
-<form action="<?= base_url("abstracs/$abstract->id/reviews/store"); ?>" method="post" enctype="multipart/form-data">
+<form action="<?= base_url("/reviews/store"); ?>" method="post" enctype="multipart/form-data">
   <?= csrf_field(); ?>
   <div class="card mb-3">
     <div class="card-body">
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input class="form-control" type="text" name="title" id="title" disabled value="<?= $abstract->title; ?>">
+        <input class="form-control" type="hidden" name="abstrac_id" id="abstract_id" value="<?= $abstract->id; ?>">
       </div>
       <div class="mb-3">
         <label for="comment" class="form-label">Comment</label>
@@ -45,7 +46,7 @@ if (session()->has('errors')) : ?>
       </div>
       <div class="d-grid d-lg-block gap-2">
         <button type="submit" class="btn btn-primary">Save</button>
-        <a href="<?= base_url("abstracs/$abstract->id/reviews/"); ?>" class="btn btn-secondary">Cancel</a>
+        <a href="<?= base_url("/reviews/?abstract_id=$abstract->id"); ?>" class="btn btn-secondary">Cancel</a>
       </div>
     </div>
   </div>
