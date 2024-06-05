@@ -18,6 +18,7 @@ class Abstrac extends Model
         'creator_id',
         'topic_id',
         'reviewer_id',
+        'ticket_id'
     ];
     public function creator()
     {
