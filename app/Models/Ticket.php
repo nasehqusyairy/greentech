@@ -20,6 +20,11 @@ class Ticket extends Model
         'study_id',
     ];
 
+    public function user()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
     public function ttype()
     {
         return $this->belongsTo(Ttype::class)->withTrashed();

@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TicketUser extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasUuids;
     protected $fillable = [
-        'file',
-        'student_card',
+        'proof',
+        'attachment',
         'status_id',
-        'abstract_id',
         'user_id',
-        'ticket_id'        
+        'ticket_id'
     ];
 
     public function abstrac()
@@ -36,6 +36,4 @@ class TicketUser extends Model
     {
         return $this->belongsTo(Ticket::class)->withTrashed();
     }
-
-
 }
