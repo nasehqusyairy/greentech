@@ -23,12 +23,12 @@ class ConferencePayments extends BaseController
   public function index()
   {
     // main view
-    // return view('conferencepayments/index',[
-    //   'ticketUsers' => TicketUser::all(),
-    //   'message' => $this->session->has('message') ? $this->session->get('message') : '',
-    //   'title' => 'TicketUsers'
-    // ]);
-    dd(TicketUser::all()->toArray());
+    return view('conferencepayments/index', [
+      'ticketUsers' => TicketUser::all(),
+      'message' => $this->session->has('message') ? $this->session->get('message') : '',
+      'title' => 'TicketUsers'
+    ]);
+    // dd(TicketUser::all()->toArray());
   }
 
   public function create()

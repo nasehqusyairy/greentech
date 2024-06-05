@@ -17,6 +17,8 @@ class TicketUser extends Model
         'ticket_id'
     ];
 
+    protected $table = 'ticket_user';
+
     public function abstrac()
     {
         return $this->belongsTo(Abstrac::class)->withTrashed();
