@@ -27,6 +27,11 @@ $user = $user->role->code;
         <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#available-tab-pane"
           type="button">Available</button>
       </li>
+      <?php //if ($user == '0' || $user == '1'): ?>
+        <li class="nav-item">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#deleted-tab-pane" type="button">Deleted</button>
+        </li>
+      <?php //endif ?>
     </ul>
     <div class="tab-content" id="tabContent">
       <div class="tab-pane fade show active" id="available-tab-pane">
@@ -35,9 +40,8 @@ $user = $user->role->code;
             <thead>
               <tr>
                 <th>#</th>
-                <th>Topic</th>
                 <th>Title</th>
-                <th>Reviewer</th>
+                <th>Ticket</th>
                 <th>File</th>
                 <th>Status</th>
                 <th>Actions</th>
@@ -45,26 +49,25 @@ $user = $user->role->code;
             </thead>
             <tbody>
               <?php $i = 1;
-              foreach ($abstracts as $abstract): ?>
+              foreach ($ticketUsers as $ticketUser): ?>
                 <tr>
                   <td><?= $i++; ?></td>
-                  <td><?= $abstract->topic->name ?></td>
-                  <td><?= $abstract->title ?></td>
-                  <td><?= $abstract->reviewer->name ?? '-' ?></td>
+                  <td><?= $ticketUser->abstrac->title ?></td>
+                  <td><?= $ticketUser->ticket->name ?></td>
                   <td>
-                    <a href="<?= $abstract->file ?>" title="Download" class="btn btn-primary" download><i
+                    <a href="<?= $ticketUser->file ?>" title="Download" class="btn btn-primary" download><i
                         class="bi bi-download"></i></a>
                   </td>
                   <td>
-                    <?= $abstract->status ? badge($abstract->status->text, $abstract->status->color) : badge('Unknown', 'secondary') ?>
+                    <?= $ticketUser->status ? badge($ticketUser->status->text, $ticketUser->status->color) : badge('Unknown', 'secondary') ?>
                   </td>
                   <td class="text-nowrap">
                     <?php //if ($user == '3'): ?>
-                      <a href="/abstractpayments/pay/<?= $abstract->id ?>" title="Edit" class="btn btn-primary mb-1"><i
+                      <a href="/abstractpayments/pay/<?= $ticketUser->id ?>" title="Edit" class="btn btn-primary mb-1"><i
                           class="bi bi-wallet2"></i></a>
                     <?php //endif ?>
                     <?php //if ($user == '1' || $user == '2'): ?>
-                      <button onclick="handleDelete(<?= $abstract->id; ?>)" title="Delete" class="btn btn-danger"
+                      <button onclick="handleDelete(<?= $ticketUser->id; ?>)" title="Delete" class="btn btn-danger"
                         data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                     <?php //endif ?>
 
@@ -81,9 +84,8 @@ $user = $user->role->code;
             <thead>
               <tr>
                 <th>#</th>
-                <th>Topic</th>
                 <th>Title</th>
-                <th>Reviewer</th>
+                <th>Ticket</th>
                 <th>File</th>
                 <th>Status</th>
                 <th>Actions</th>
@@ -91,20 +93,19 @@ $user = $user->role->code;
             </thead>
             <tbody>
               <?php $i = 1;
-              foreach ($deleted as $abstract): ?>
+              foreach ($deleted as $ticketUser): ?>
                 <tr>
                   <td><?= $i++; ?></td>
-                  <td><?= $abstract->topic->name ?></td>
-                  <td><?= $abstract->title ?></td>
-                  <td><?= $abstract->reviewer->name ?? '-' ?></td>
+                  <td><?= $ticketUser->abstrac->title ?></td>
+                  <td><?= $ticketUser->ticket->name ?></td>
                   <td>
-                    <a href="<?= $abstract->file ?>" class="btn btn-primary" download><i class="bi bi-download"></i></a>
+                    <a href="<?= $ticketUser->file ?>" class="btn btn-primary" download><i class="bi bi-download"></i></a>
                   </td>
                   <td>
-                    <?= $abstract->status ? badge($abstract->status->text, $abstract->status->color) : badge('Unknown', 'secondary') ?>
+                    <?= $ticketUser->status ? badge($ticketUser->status->text, $ticketUser->status->color) : badge('Unknown', 'secondary') ?>
                   </td>
                   <td>
-                    <a href="<?= base_url('abstracs/restore/' . $abstract->id); ?>" title="Restore"
+                    <a href="<?= base_url('abstracs/restore/' . $ticketUser->id); ?>" title="Restore"
                       class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
                     </a>

@@ -82,6 +82,7 @@ class Abstracs extends BaseController
     }else if($user->role->code == 2){
       $abstract = $abstract->where('reviewer_id', $user->id);
     }
+    
     // main view
     return view('abstracs/index', [
       'user' => $user,

@@ -10,7 +10,7 @@ class AddTicketUser extends Blueprint
     {
         $this->create('ticket_users', function (Blueprint $table) {
             $table->id();
-            $table->text('fiile');
+            $table->text('file');
             $table->text('student_card');
             $table->foreignId('status_id')->constrained('statuses')->cascadeOnDelete()->add();
             $table->foreignId('abstrac_id')->constrained('abstracs')->cascadeOnDelete()->add();
