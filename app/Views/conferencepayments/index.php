@@ -8,7 +8,7 @@ $this->section('content');
 ?>
 <?php
 if (!empty($message)) : ?>
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <div class="alert alert-success alert-dismissible fade show">
     <?= $message ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
@@ -16,7 +16,7 @@ if (!empty($message)) : ?>
 <div class="card">
   <div class="card-body">
     <div class="mb-3">
-      <a href="/roles/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Payment</a>
+      <a href="/conferencepayments/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Payment</a>
     </div>
     <ul class="nav nav-tabs" id="tab">
       <li class="nav-item">
@@ -35,20 +35,26 @@ if (!empty($message)) : ?>
                 <th>#</th>
                 <th>Name</th>
                 <th>Ticket</th>
+                <th>Proof</th>
+                <th>Attachment</th>
+                <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               <?php
               $i = 1;
-              foreach ($roles as $role) : ?>
+              foreach ($ticketUsers as $ticketUser) : ?>
                 <tr>
                   <td><?= $i++; ?></td>
-                  <td><?= $role->name ?></td>
-                  <td><?= $role->code ?></td>
+                  <td><?= $ticketuser->user->name ?></td>
+                  <td><?= $ticketuser->ticket->name ?></td>
+                  <td><?= $ticketUser->proof ?></td>
+                  <td><?= $ticketUser->attachment ?></td>
+                  <td><?= $ticketUser->status->name ?></td>
                   <td>
-                    <a href="/roles/edit/<?= $role->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
-                    <button onclick="handleDelete(<?= $role->id; ?>)" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <a href="/conferencepayments/edit/<?= $ticketUser->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
+                    <button onclick="handleDelete(<?= $ticketUser->id; ?>)" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -63,20 +69,26 @@ if (!empty($message)) : ?>
               <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Code</th>
+                <th>Ticket</th>
+                <th>Proof</th>
+                <th>Attachment</th>
+                <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               <?php
               $i = 1;
-              foreach ($deleted as $role) : ?>
+              foreach ($deleted as $ticketUser) : ?>
                 <tr>
                   <td><?= $i++; ?></td>
-                  <td><?= $role->name ?></td>
-                  <td><?= $role->code ?></td>
+                  <td><?= $ticketuser->user->name ?></td>
+                  <td><?= $ticketuser->ticket->name ?></td>
+                  <td><?= $ticketUser->proof ?></td>
+                  <td><?= $ticketUser->attachment ?></td>
+                  <td><?= $ticketUser->status->name ?></td>
                   <td>
-                    <a href="<?= base_url('roles/restore/' . $role->id); ?>" title="Restore" class="btn btn-secondary">
+                    <a href="<?= base_url('conferencepayments/restore/' . $ticketUser->id); ?>" title="Restore" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
                     </a>
                   </td>
@@ -113,7 +125,7 @@ $this->endSection();
 $this->section('footer');
 ?>
 <script>
-  const handleDelete = (id) => document.querySelector('#deleteModal .modal-footer a').href = '<?= base_url(); ?>' + 'roles/delete/' + id;
+  const handleDelete = (id) => document.querySelector('#deleteModal .modal-footer a').href = '<?= base_url(); ?>' + 'conferencepayments/delete/' + id;
   // DataTables
   const table = new DataTable('#available');
   const table_deleted = new DataTable('#deleted');
