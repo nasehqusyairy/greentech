@@ -11,6 +11,7 @@ class AddPublications extends Blueprint
         $this->create('publications', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('price');
             $table->timestamps();
             $table->softDelete();
         });

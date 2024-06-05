@@ -74,10 +74,18 @@ class Abstracs extends BaseController
 
   public function index()
   {
+    $abstract = Abstrac::with('creator', 'topic', 'reviewer');
+
+    $user = $this->getUser();
+    if($user->role->code == 3){
+      $abstract = $abstract->where('creator_id', $user->id);
+    }else if($user->role->code == 2){
+      $abstract = $abstract->where('reviewer_id', $user->id);
+    }
     // main view
     return view('abstracs/index', [
-      'user' => $this->getUser(),
-      'abstracts' => Abstrac::with('creator', 'topic', 'reviewer')->get()->sortBy('topic_id'),
+      'user' => $user,
+      'abstracts' => $abstract->get()->sortBy('topic_id'),
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
       'title' => 'Abstracts',
       'deleted' => Abstrac::onlyTrashed()->with('creator', 'topic', 'reviewer')->get()->sortBy('topic_id'),
