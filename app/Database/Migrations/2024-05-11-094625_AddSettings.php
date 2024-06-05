@@ -12,7 +12,7 @@ class AddSettings extends Blueprint
             $table->id();
             $table->string('title')->unique();
             $table->string('description');
-            $table->string('value');
+            $table->string('value')->nullable();
             $table->timestamps();
             $table->softDelete();
         });

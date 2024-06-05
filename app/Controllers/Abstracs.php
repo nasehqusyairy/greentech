@@ -7,6 +7,7 @@ use CodeIgniter\Exceptions\PageNotFoundException;
 use App\Models\Abstrac;
 use App\Models\Topic;
 use App\Models\User;
+use App\Models\Setting;
 
 class Abstracs extends BaseController
 {
@@ -68,7 +69,7 @@ class Abstracs extends BaseController
   {
     // main view
     return view('abstracs/index', [
-      'user' => $this->getUser(),
+      'user' => $this->getUser(),      
       'abstracts' => Abstrac::with('creator', 'topic', 'reviewer')->get()->sortBy('topic_id'),
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
       'title' => 'Abstracts',
@@ -78,15 +79,21 @@ class Abstracs extends BaseController
 
   public function create()
   {
+    $setting = Setting::where('title','Enable Abstract Submission')->first()->value;
+    if ($setting != '1') {
+      $statusCode = 422;
+      $message = 'Submission has been closed';
+      return redirect()->setStatusCode($statusCode)->back()->withInput()->with('errors', [$message]);
+    }
     // create form
     return view('abstracs/create', [
-      'title' => 'New Abstract',
+      'title' => 'New Abstract',      
       'topics' => Topic::all()
     ]);
   }
 
   public function store()
-  {
+  {    
     // check if the request is POST
     $this->isPostRequest();
 
@@ -112,6 +119,7 @@ class Abstracs extends BaseController
 
     // redirect
     return redirect()->to('/abstracs/')->with('message', 'Abstract data has been saved successfully');
+
   }
 
   public function edit($id = null)
