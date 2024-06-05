@@ -18,8 +18,14 @@ class Abstrac extends Model
         'creator_id',
         'topic_id',
         'reviewer_id',
-        'ticket_id'
+        'ticket_user_id'
     ];
+
+    public function ticketUser()
+    {
+        return $this->belongsTo(TicketUser::class)->withTrashed();
+    }
+
     public function creator()
     {
         return $this->belongsTo(User::class)->withTrashed();
