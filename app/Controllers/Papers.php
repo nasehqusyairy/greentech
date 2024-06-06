@@ -2,15 +2,28 @@
 
 namespace App\Controllers;
 
+use App\Models\Abstrac;
+use App\Models\Publication;
+use App\Models\Status;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use App\Models\Paper;
 
 class Papers extends BaseController
 {
   protected $rule = [
-    'store' => [],
+    'store' => [
+      'file' => 'uploaded[file]|ext_in[file,pdf,doc,docx]|max_size[file,5120]',
+      'provement' => 'uploaded[file]|ext_in[file,pdf,jpg,png]|max_size[file,5120]',
+      'abstrac_id' => 'required|is_not_unique[abstracs.id]',
+      'publication_id' => 'required|is_not_unique[publications.id]',
+    ],
     'update' => [
       'id' => 'required|is_not_unique[papers.id]',
+      'file' => 'permit_empty|uploaded[file]|ext_in[file,pdf,doc,docx]|max_size[file,5120]',
+      'provement' => 'permit_empty|uploaded[file]|ext_in[file,pdf,doc,docx]|max_size[file,5120]',
+      'status_id' => 'permit_empty|is_not_unique[statuses.id]',
+      'abstrac_id' => 'permit_empty|is_not_unique[abstracs.id]',
+      'publication_id' => 'permit_empty|is_not_unique[publications.id]',
     ],
   ];
 
@@ -22,19 +35,33 @@ class Papers extends BaseController
 
   public function index()
   {
+    $papers = Paper::with('status', 'abstrac', 'publication');
+
+    $user = $this->getUser();
+
+    if($user->role->code == 3){
+      $papers = $papers->whereHas('abstrac', function($query) use ($user) {
+        $query->where('creator_id', $user->id);
+    });
+    }
+
     // main view
-    // return view('papers/index',[
-    //   'papers' => Paper::all(),
-    //   'message' => $this->session->has('message') ? $this->session->get('message') : '',
-    //   'title' => 'Papers'
-    // ]);
-    dd(Paper::all()->toArray());
+    return view('papers/index',[
+      'user' => $user,
+      'papers' => $papers->get()->sortBy('created_at'),
+      'message' => $this->session->has('message') ? $this->session->get('message') : '',
+      'title' => 'Papers',
+      'deleted' => Paper::onlyTrashed()->with('status', 'abstrac', 'publication')->get()->sortBy('created_at'),
+    ]);
+
   }
 
   public function create()
   {
     // create form
     return view('papers/create', [
+      'abstracs' => Abstrac::all(),
+      'publications' => Publication::all(),
       'title' => 'New Paper'
     ]);
   }
@@ -54,6 +81,21 @@ class Papers extends BaseController
     if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
 
     // manipulate data here
+    $files = $this->upload(['file']);
+    if (!isset($files['file'])) {
+      unset($validInput['file']);
+    } else {
+      $validInput['file'] = $files['file'];
+    }
+
+    $provement = $this->upload(['provement']);
+    if (!isset($provement['provement'])) {
+      unset($validInput['provement']);
+    } else {
+      $validInput['provement'] = $provement['provement'];
+    }
+
+    $validInput['status_id'] = 11;
     Paper::create($validInput);
 
     // redirect
@@ -65,12 +107,18 @@ class Papers extends BaseController
     // find data
     $paper = Paper::find($id);
 
+    $user = $this->getUser();
+
     // throw error if the data is not found
     if ($id == null || !$paper) throw new PageNotFoundException();
 
     // return view
     return view('papers/edit', [
+      'user' => $user->role->code,
       'paper' => $paper,
+      'abstracs' => Abstrac::all(),
+      'publications' => Publication::all(),
+      'statuses' => Status::all(),
       'title' => 'Edit Paper'
     ]);
   }
