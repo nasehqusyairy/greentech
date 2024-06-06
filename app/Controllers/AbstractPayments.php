@@ -2,15 +2,17 @@
 
 namespace App\Controllers;
 
-use CodeIgniter\Exceptions\PageNotFoundException;
 use App\Models\TicketUser;
+use CodeIgniter\Exceptions\PageNotFoundException;
+use App\Models\Abstrac;
 
 class AbstractPayments extends BaseController
 {
   protected $rule = [
     'store' => [],
     'update' => [
-      'id' => 'required|is_not_unique[ticketUsers.id]',
+      'id' => 'required|is_not_unique[abstracs.id]',
+      'ticket_user_id' => 'permit_empty|is_not_unique[ticket_user.id]',
     ],
   ];
 
@@ -22,29 +24,32 @@ class AbstractPayments extends BaseController
 
   public function index()
   {
-    $ticketUser = TicketUser::with('status', 'abstrac', 'user', 'ticket');
+    // main view
+    $abstract = Abstrac::with('ticketUser');
 
     $user = $this->getUser();
 
-    if ($user->role->code == 3 || $user->role->code == 4) {
-      $ticketUser = $ticketUser->where('user', $user->id);
+    if ($user->role->code == 3) {
+      $abstract = $abstract->where('creator_id', $user->id);
     }
 
-    // main view
     return view('abstractpayments/index', [
+      'abstracs' => $abstract->whereHas('status', function ($query) {
+        $query->where('text', 'accepted');
+      })->get()->sortBy('topic_id'),
       'user' => $user,
-      'ticketUsers' => $ticketUser->get()->sortBy('created_at'),
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
-      'title' => 'Abstract Payment',
-      'deleted' => TicketUser::onlyTrashed()->with('status', 'abstrac', 'user', 'ticket')->get()->sortBy('created_at'),
+      'deleted' => Abstrac::onlyTrashed()->with('creator', 'topic', 'reviewer')->get()->sortBy('topic_id'),
+      'title' => 'Abstracs Payments'
     ]);
+
   }
 
   public function create()
   {
     // create form
     return view('abstractpayments/create', [
-      'title' => 'New TicketUser'
+      'title' => 'New Abstrac'
     ]);
   }
 
@@ -64,25 +69,34 @@ class AbstractPayments extends BaseController
       return $this->invalidInputResponse($this->validator->getErrors());
 
     // manipulate data here
-    TicketUser::create($validInput);
+    Abstrac::create($validInput);
 
     // redirect
-    return redirect()->to('/abstractpayments/')->with('message', 'TicketUser data has been saved successfully');
+    return redirect()->to('/abstractpayments/')->with('message', 'Abstrac data has been saved successfully');
   }
 
-  public function edit($id = null)
+  public function pay($id = null)
   {
     // find data
-    $ticketUser = TicketUser::find($id);
+    $abstrac = Abstrac::find($id);
 
     // throw error if the data is not found
-    if ($id == null || !$ticketUser)
+    if ($id == null || !$abstrac)
       throw new PageNotFoundException();
 
+    $ticketUsers = TicketUser::all();
+    $usedTicketUser = Abstrac::pluck('ticket_user_id')->toArray();
+
+    // Menghapus TicketUser yang digunakan di tabel Tickets
+    $ticketUsers = $ticketUsers->reject(function ($ticketUser) use ($usedTicketUser) {
+      return in_array($ticketUser->id, $usedTicketUser);
+    });
+
     // return view
-    return view('abstractpayments/edit', [
-      'ticketUser' => $ticketUser,
-      'title' => 'Edit TicketUser'
+    return view('abstractpayments/pay', [
+      'abstract' => $abstrac,
+      'ticketUsers' => $ticketUsers,
+      'title' => 'Payment Abstrac'
     ]);
   }
 
@@ -102,40 +116,40 @@ class AbstractPayments extends BaseController
       return $this->invalidInputResponse($this->validator->getErrors());
 
     // manipulate data here
-    $ticketUser = TicketUser::find($validInput['id']);
-    $ticketUser->update($validInput);
+    $abstrac = Abstrac::find($validInput['id']);
+    $abstrac->update($validInput);
 
     // redirect
-    return redirect()->to('/abstractpayments/')->with('message', 'TicketUser data has been updated successfully');
+    return redirect()->to('/abstractpayments/')->with('message', 'Abstrac Payments data has been updated successfully');
   }
 
   public function delete($id = null)
   {
     // find data
-    $ticketUser = TicketUser::find($id);
+    $abstrac = Abstrac::find($id);
 
     // throw error if the data is not found
-    if (!$ticketUser)
+    if (!$abstrac)
       throw new PageNotFoundException();
 
     // delete data
-    $ticketUser->delete();
+    $abstrac->update(['ticket_user_id' => null]);
 
     // redirect
-    return redirect()->to('/abstractpayments/')->with('message', 'TicketUser data has been deleted successfully');
+    return redirect()->to('/abstractpayments/')->with('message', 'Abstract Ticket has been deleted successfully');
   }
   public function restore($id = null)
   {
-    $ticketUser = TicketUser::withTrashed()->find($id);
+    $abstrac = Abstrac::withTrashed()->find($id);
 
-    // throw error if the ticketUser is not found
-    if (!$ticketUser)
+    // throw error if the abstrac is not found
+    if (!$abstrac)
       throw new PageNotFoundException();
 
     // restore data
-    $ticketUser->restore();
+    $abstrac->restore();
 
     // redirect
-    return redirect()->to('/abstractpayments/')->with('message', 'TicketUser data has been restored successfully');
+    return redirect()->to('/abstractpayments/')->with('message', 'Abstrac data has been restored successfully');
   }
 }
