@@ -35,7 +35,7 @@ class AbstractPayments extends BaseController
 
     return view('abstractpayments/index', [
       'abstracs' => $abstract->whereHas('status', function ($query) {
-        $query->where('text', 'accepted');
+        $query->where('code', '7');
       })->get()->sortBy('topic_id'),
       'user' => $user,
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
