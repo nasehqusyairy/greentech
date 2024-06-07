@@ -484,11 +484,11 @@ class DatabaseSeeder extends Seeder
 
         // Add publications 
         $publications = [
-            ['name'=>'IOP Earth and Environmental Science (Scopus Indexed)', 'price'=> 1000000],
-            ['name'=>'Proceedings of the International Conference on Green Technology', 'price'=> 1000000],
-            ['name'=>'JIA (Journal of Islamic Architecture) ** (Scopus Indexed)', 'price'=> 1000000],
-            ['name'=>'Jurnal Neutrino: Jurnal Fisika dan Aplikasinya (Accredited SINTA-3)', 'price'=> 1000000],
-            ['name'=>'El-Hayah: Journal of Biology (Accredited SINTA-3)', 'price'=> 1000000],
+            ['name' => 'IOP Earth and Environmental Science (Scopus Indexed)', 'price' => 1000000],
+            ['name' => 'Proceedings of the International Conference on Green Technology', 'price' => 1000000],
+            ['name' => 'JIA (Journal of Islamic Architecture) ** (Scopus Indexed)', 'price' => 1000000],
+            ['name' => 'Jurnal Neutrino: Jurnal Fisika dan Aplikasinya (Accredited SINTA-3)', 'price' => 1000000],
+            ['name' => 'El-Hayah: Journal of Biology (Accredited SINTA-3)', 'price' => 1000000],
         ];
 
         foreach ($publications as $key => $publication) {
@@ -551,12 +551,12 @@ class DatabaseSeeder extends Seeder
         // Add settings
         $settings = [
             [
-                'title' => 'Enable Abstract Submission',
+                'title' => 'Abstract Submission',
                 'description' => 'Enable or disable abstract submission',
                 'value' => '1',
             ],
             [
-                'title' => 'Enable Payment',
+                'title' => 'Payment',
                 'description' => 'Enable or disable payment',
                 'value' => '1',
             ]
