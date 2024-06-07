@@ -49,7 +49,7 @@ class ConferencePayments extends BaseController
       'statuses' => Status::whereHas('stype', function ($query) {
         $query->where('code', 0);
       })->get(),
-      'title' => 'New TicketUser'
+      'title' => 'New Payment'
     ]);
   }
 
@@ -73,12 +73,12 @@ class ConferencePayments extends BaseController
     $validInput['attachment'] = $files['attachment'];
     $validInput['user_id'] = $this->getUser()->id;
 
-    $validInput['status_id'] = Status::where('text', 'unpaid')->first()->id;
+    $validInput['status_id'] = Status::where('code', '4')->first()->id;
 
     TicketUser::create($validInput);
 
     // redirect
-    return redirect()->to('/conferencepayments/')->with('message', 'Conference Payment data has been saved successfully');
+    return redirect()->to('/conferencepayments/')->with('message', 'Payment data has been saved successfully');
   }
 
   public function edit($id = null)
@@ -116,7 +116,7 @@ class ConferencePayments extends BaseController
     $ticketUser->update($validInput);
 
     // redirect
-    return redirect()->to('/conferencepayments/')->with('message', 'Conference Payment data has been updated successfully');
+    return redirect()->to('/conferencepayments/')->with('message', 'Payment data has been updated successfully');
   }
 
   public function delete($id = null)
@@ -131,7 +131,7 @@ class ConferencePayments extends BaseController
     $ticketUser->delete();
 
     // redirect
-    return redirect()->to('/conferencepayments/')->with('message', 'Conference Payment data has been deleted successfully');
+    return redirect()->to('/conferencepayments/')->with('message', 'Payment data has been deleted successfully');
   }
   public function restore($id = null)
   {
@@ -144,6 +144,6 @@ class ConferencePayments extends BaseController
     $ticketUser->restore();
 
     // redirect
-    return redirect()->to('/conferencepayments/')->with('message', 'Conference Payment data has been restored successfully');
+    return redirect()->to('/conferencepayments/')->with('message', 'Payment data has been restored successfully');
   }
 }
