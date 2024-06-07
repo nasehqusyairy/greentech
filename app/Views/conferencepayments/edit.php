@@ -6,9 +6,6 @@
 $this->extend('components/layout');
 $this->section('content');
 
-$name = !old('name') ? $role->name : old('name');
-$code = !old('code') ? $role->code : old('code');
-
 if (session()->has('errors')) : ?>
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
     <ul class="m-0">
@@ -20,26 +17,50 @@ if (session()->has('errors')) : ?>
   </div>
 <?php endif ?>
 
-<form action="<?= base_url('roles/update'); ?>" method="post">
+<form action="<?= base_url('conferencepayments/store'); ?>" method="post" enctype="multipart/form-data">
   <?= csrf_field(); ?>
-  <input type="hidden" name="id" value="<?= $role->id ?>">
   <div class="card mb-3">
     <div class="card-body">
       <div class="mb-3">
-        <label for="code" class="form-label">Code</label>
-        <input type="text" class="form-control" id="code" name="code" value="<?= $code ?>">
+        <label for="ticket" class="form-label">Ticket</label>
+        <select name="ticket_id" id="ticket" class="form-select">
+          <option value="">Select Ticket</option>
+          <?php foreach ($tickets as $ticket) : ?>
+            <option value="<?= $ticket->id; ?>" <?= $ticket->id == old('ticket_id') ? 'selected' : ''; ?>><?= $ticket->name; ?></option>
+          <?php endforeach; ?>
+        </select>
       </div>
       <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control" id="name" name="name" value="<?= $name ?>">
+        <label for="proof" class="form-label">Proof</label>
+        <input type="file" name="proof" id="proof" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="attachment" class="form-label">Attachment</label>
+        <input type="file" name="attachment" id="attachment" class="form-control">
       </div>
       <div class="d-grid d-lg-block gap-2">
         <button type="submit" class="btn btn-primary">Save</button>
-        <a href="<?= base_url('roles'); ?>" class="btn btn-secondary">Cancel</a>
+        <a href="<?= base_url('conferencepayments'); ?>" class="btn btn-secondary">Cancel</a>
       </div>
     </div>
   </div>
 
 </form>
 
-<?= $this->endSection() ?>
+<?php
+$this->endSection();
+$this->section('footer');
+?>
+<script>
+  // select2
+  $('#ticket').select2({
+    theme: 'bootstrap-5',
+    width: '100%'
+  });
+
+  $('#status').select2({
+    theme: 'bootstrap-5',
+    width: '100%'
+  });
+</script>
+<?php $this->endSection() ?>

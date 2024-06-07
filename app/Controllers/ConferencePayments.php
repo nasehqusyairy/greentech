@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Status;
 use App\Models\Ticket;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use App\Models\TicketUser;
@@ -9,7 +10,11 @@ use App\Models\TicketUser;
 class ConferencePayments extends BaseController
 {
   protected $rule = [
-    'store' => [],
+    'store' => [
+      'ticket_id' => 'required|is_not_unique[tickets.id]',
+      'proof' => 'uploaded[proof]|ext_in[proof,pdf,doc,docx,png,jpg,jpeg]|max_size[proof,5120]',
+      'attachment' => 'uploaded[attachment]|max_size[attachment,5120]|ext_in[attachment,png,jpg,jpeg,pdf]',
+    ],
     'update' => [
       'id' => 'required|is_not_unique[ticket_user.id]',
     ],
@@ -38,6 +43,9 @@ class ConferencePayments extends BaseController
     // create form
     return view('conferencepayments/create', [
       'tickets' => Ticket::all(),
+      'statuses' => Status::whereHas('stype', function ($query) {
+        $query->where('code', 0);
+      })->get(),
       'title' => 'New TicketUser'
     ]);
   }
@@ -51,12 +59,19 @@ class ConferencePayments extends BaseController
     $this->validator->setRules($this->rule['store']);
 
     // validated input
-    $validInput = $this->validInput();
+    $validInput = $this->validInput(['proof', 'attachment']);
 
     // return response if the input is invalid
     if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
 
     // manipulate data here
+    $files = $this->upload(['proof', 'attachment']);
+    $validInput['proof'] = $files['proof'];
+    $validInput['attachment'] = $files['attachment'];
+    $validInput['user_id'] = $this->getUser()->id;
+
+    $validInput['status_id'] = Status::where('text', 'unpaid')->first()->id;
+
     TicketUser::create($validInput);
 
     // redirect
