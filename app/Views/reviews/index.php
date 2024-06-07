@@ -81,7 +81,7 @@ $this->section('content');
                   </td>
                   <td><?= badge($review->status->text, $review->status->color) ?></td>
                   <td class="text-nowrap">
-                    <a href="edit/<?= $review->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
+                    <a href="edit/<?= $review->id ?>/?abstract_id=<?= $review->abstrac->id; ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
                     <button onclick="handleDelete(<?= $review->id; ?>)" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                   </td>
                 </tr>

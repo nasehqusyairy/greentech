@@ -23,7 +23,7 @@ if (session()->has('errors')) : ?>
     <div class="card-body">
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
-        <input class="form-control" type="text" name="title" id="title" disabled value="<?= $review->abstract->title; ?>">
+        <input class="form-control" type="text" name="title" id="title" disabled value="<?= $abstract->title; ?>">
         <input class="form-control" type="hidden" name="id" id="id" value="<?= $review->id; ?>">
       </div>
       <div class="mb-3">
@@ -46,7 +46,7 @@ if (session()->has('errors')) : ?>
       </div>
       <div class="d-grid d-lg-block gap-2">
         <button type="submit" class="btn btn-primary">Save</button>
-        <a href="<?= base_url("/reviews/?abstract_id=" . $review->abstract->id); ?>" class="btn btn-secondary">Cancel</a>
+        <a href="<?= base_url("/reviews/?abstract_id=" . $abstract->id); ?>" class="btn btn-secondary">Cancel</a>
       </div>
     </div>
   </div>
