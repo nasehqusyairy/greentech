@@ -10,6 +10,7 @@ class AddSettings extends Blueprint
     {
         $this->create('settings', function (Blueprint $table) {
             $table->id();
+            $table->string('code')->unique();
             $table->string('title')->unique();
             $table->string('description');
             $table->string('value')->nullable();
