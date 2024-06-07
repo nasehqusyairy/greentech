@@ -112,6 +112,11 @@ class DatabaseSeeder extends Seeder
                 'url' => 'publications',
                 'icon' => 'bi bi-arrow-up-circle-fill'
             ],
+            '001' => [
+                'name' => 'reviews',
+                'url' => 'reviews',
+                'icon' => 'bi bi-chat-left-text'
+            ],
         ];
 
         foreach ($abstractSubmenus as $key => $submenu) {

@@ -50,10 +50,28 @@ class Reviews extends BaseController
   public function index()
   {
 
+    $request = service('request');
+
+    if ($request->getGet('abstract_id') == null) {
+      $abstract = Abstrac::with('creator', 'topic', 'reviewer');
+
+      $user = $this->getUser();
+      if ($user->role->code == 3) {
+        $abstract = $abstract->where('creator_id', $user->id);
+      } else if ($user->role->code == 2) {
+        $abstract = $abstract->where('reviewer_id', $user->id);
+      }
+      return view('reviews/choose', [
+        'abstracs' => $abstract->get()->sortBy('topic_id'),
+        'title' => 'Choose Abstract'
+      ]);
+    }
+
     $abstract = $this->getAbstract();
 
     // main view
     return view('reviews/index', [
+      'user' => $this->getUser(),
       'reviews' => $abstract->load('reviews')->reviews->sortByDesc('created_at')->sortByDesc('updated_at'),
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
       'title' => 'Reviews for "' . $abstract->title . '"',
