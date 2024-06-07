@@ -80,6 +80,7 @@ if (!empty($message)) : ?>
             <thead>
               <tr>
                 <th>#</th>
+                <th>Created At</th>
                 <th>Name</th>
                 <th>Ticket</th>
                 <th>Proof</th>
