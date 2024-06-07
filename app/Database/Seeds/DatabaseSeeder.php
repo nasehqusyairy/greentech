@@ -382,6 +382,7 @@ class DatabaseSeeder extends Seeder
             ['text' => 'Comfirmed', 'color' => 'success', 'stype' => $stypes[2]],
             ['text' => 'Rejected', 'color' => 'danger', 'stype' => $stypes[2]],
             ['text' => 'Waiting', 'color' => 'info', 'stype' => $stypes[2]],
+            ['text' => 'Waiting', 'color' => 'info', 'stype' => $stypes[0]],
         ];
 
         foreach ($statuses as $key => $status) {
