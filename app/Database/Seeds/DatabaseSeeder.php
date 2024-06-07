@@ -365,6 +365,7 @@ class DatabaseSeeder extends Seeder
             'payment',
             'acceptence',
             'paper',
+            'system',
         ];
 
         foreach ($stypes as $key => $stype) {
@@ -376,17 +377,15 @@ class DatabaseSeeder extends Seeder
 
         // Add statuses
         $statuses = [
-            ['text' => 'Unavailable', 'color' => 'secondary', 'stype' => $stypes[0]],
-            ['text' => 'Waiting', 'color' => 'info', 'stype' => $stypes[0]],
+            ['text' => 'Unavailable', 'color' => 'secondary', 'stype' => $stypes[3]],
+            ['text' => 'Waiting', 'color' => 'info', 'stype' => $stypes[3]],
             ['text' => 'Unpaid', 'color' => 'warning', 'stype' => $stypes[0]],
             ['text' => 'Paid', 'color' => 'success', 'stype' => $stypes[0]],
-            ['text' => 'Unsigned', 'color' => 'secondary', 'stype' => $stypes[1]],
-            ['text' => 'Reviewing', 'color' => 'info', 'stype' => $stypes[1]],
+            ['text' => 'Unsigned', 'color' => 'secondary', 'stype' => $stypes[3]],
+            ['text' => 'Reviewing', 'color' => 'info', 'stype' => $stypes[3]],
             ['text' => 'Need Revision', 'color' => 'warning', 'stype' => $stypes[1]],
             ['text' => 'Accepted', 'color' => 'success', 'stype' => $stypes[1]],
             ['text' => 'Rejected', 'color' => 'danger', 'stype' => $stypes[1]],
-            ['text' => 'Comfirmed', 'color' => 'success', 'stype' => $stypes[2]],
-            ['text' => 'Rejected', 'color' => 'danger', 'stype' => $stypes[2]],
         ];
 
         foreach ($statuses as $key => $status) {

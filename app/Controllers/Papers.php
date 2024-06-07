@@ -108,7 +108,7 @@ class Papers extends BaseController
       $validInput['provement'] = $provement['provement'];
     }
 
-    $validInput['status_id'] = 11;
+    $validInput['status_id'] = 2;
     Paper::create($validInput);
     
     // send email to user
@@ -129,7 +129,6 @@ class Papers extends BaseController
     foreach($emails as $email){
       
       if (!send_email($mail, $email)) {
-        dd($mail, $email);
         return redirect()->back()->withInput()->with('message', 'Failed to send email, please make sure your email is valid and try again. If the problem persists, please contact our customer service.');
       }
     }
@@ -155,7 +154,9 @@ class Papers extends BaseController
       'paper' => $paper,
       'abstracs' => Abstrac::all(),
       'publications' => Publication::all(),
-      'statuses' => Status::all(),
+      'statuses' => Status::whereHas('stype', function ($query) {
+        $query->where('code', 2);
+      })->get(),
       'title' => 'Edit Paper'
     ]);
   }
