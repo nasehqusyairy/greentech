@@ -377,6 +377,7 @@ class DatabaseSeeder extends Seeder
         // Add statuses
         $statuses = [
             ['text' => 'Unavailable', 'color' => 'secondary', 'stype' => $stypes[0]],
+            ['text' => 'Waiting', 'color' => 'info', 'stype' => $stypes[0]],
             ['text' => 'Unpaid', 'color' => 'warning', 'stype' => $stypes[0]],
             ['text' => 'Paid', 'color' => 'success', 'stype' => $stypes[0]],
             ['text' => 'Unsigned', 'color' => 'secondary', 'stype' => $stypes[1]],
@@ -386,7 +387,6 @@ class DatabaseSeeder extends Seeder
             ['text' => 'Rejected', 'color' => 'danger', 'stype' => $stypes[1]],
             ['text' => 'Comfirmed', 'color' => 'success', 'stype' => $stypes[2]],
             ['text' => 'Rejected', 'color' => 'danger', 'stype' => $stypes[2]],
-            ['text' => 'Waiting', 'color' => 'info', 'stype' => $stypes[2]],
         ];
 
         foreach ($statuses as $key => $status) {
