@@ -120,9 +120,11 @@ class Reviews extends BaseController
 
     // throw error if the data is not found
     if ($id == null || !$review) throw new PageNotFoundException();
+    $abstract = $this->getAbstract();
 
     // return view
     return view('reviews/edit', [
+      'abstract' => $abstract,
       'review' => $review,
       'title' => 'Edit Review',
       'statuses' => Status::whereHas('stype', function ($query) {
