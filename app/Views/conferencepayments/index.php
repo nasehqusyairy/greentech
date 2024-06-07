@@ -33,6 +33,7 @@ if (!empty($message)) : ?>
             <thead>
               <tr>
                 <th>#</th>
+                <th>Created At</th>
                 <th>Name</th>
                 <th>Ticket</th>
                 <th>Proof</th>
@@ -47,14 +48,25 @@ if (!empty($message)) : ?>
               foreach ($ticketUsers as $ticketUser) : ?>
                 <tr>
                   <td><?= $i++; ?></td>
-                  <td><?= $ticketuser->user->name ?></td>
-                  <td><?= $ticketuser->ticket->name ?></td>
-                  <td><?= $ticketUser->proof ?></td>
-                  <td><?= $ticketUser->attachment ?></td>
-                  <td><?= $ticketUser->status->name ?></td>
+                  <td><?= $ticketUser->created_at ?></td>
+                  <td><?= $ticketUser->user->name ?></td>
+                  <td><?= $ticketUser->ticket->name ?></td>
+                  <td>
+                    <a href="<?= $ticketUser->proof ?>" download class="btn btn-primary">
+                      <i class="bi bi-download"></i>
+                    </a>
+                  </td>
+                  <td>
+                    <a href="<?= $ticketUser->attachment ?>" download class="btn btn-primary">
+                      <i class="bi bi-person-vcard"></i>
+                    </a>
+                  </td>
+                  <td>
+                    <?= badge($ticketUser->status->text,  $ticketUser->status->color) ?>
+                  </td>
                   <td>
                     <a href="/conferencepayments/edit/<?= $ticketUser->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
-                    <button onclick="handleDelete(<?= $ticketUser->id; ?>)" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <button onclick="handleDelete('<?= $ticketUser->id; ?>')" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -82,11 +94,22 @@ if (!empty($message)) : ?>
               foreach ($deleted as $ticketUser) : ?>
                 <tr>
                   <td><?= $i++; ?></td>
-                  <td><?= $ticketuser->user->name ?></td>
-                  <td><?= $ticketuser->ticket->name ?></td>
-                  <td><?= $ticketUser->proof ?></td>
-                  <td><?= $ticketUser->attachment ?></td>
-                  <td><?= $ticketUser->status->name ?></td>
+                  <td><?= $ticketUser->created_at; ?></td>
+                  <td><?= $ticketUser->user->name ?></td>
+                  <td><?= $ticketUser->ticket->name ?></td>
+                  <td>
+                    <a href="<?= $ticketUser->proof ?>" download class="btn btn-primary">
+                      <i class="bi bi-download"></i>
+                    </a>
+                  </td>
+                  <td>
+                    <a href="<?= $ticketUser->attachment ?>" download class="btn btn-primary">
+                      <i class="bi bi-person-vcard"></i>
+                    </a>
+                  </td>
+                  <td>
+                    <?= badge($ticketUser->status->text,  $ticketUser->status->color) ?>
+                  </td>
                   <td>
                     <a href="<?= base_url('conferencepayments/restore/' . $ticketUser->id); ?>" title="Restore" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
