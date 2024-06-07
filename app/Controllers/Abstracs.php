@@ -8,6 +8,7 @@ use App\Models\Abstrac;
 use App\Models\Topic;
 use App\Models\User;
 use App\Models\Setting;
+use App\Models\Status;
 
 class Abstracs extends BaseController
 {
@@ -121,7 +122,7 @@ class Abstracs extends BaseController
       $validInput['file'] = $files['file'];
     }
 
-    $validInput['status_id'] = 4;
+    $validInput['status_id'] = Status::where('code', '5')->first()->id;
     Abstrac::create($validInput);
 
     // send email to user
@@ -192,12 +193,10 @@ class Abstracs extends BaseController
     // return response if the input is invalid
     if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
 
-    // remove reviewer_id if not set
-    if (empty($validInput['reviewer_id'])) unset($validInput['reviewer_id']);
-
-    $validInput['status_id'] = isset($validInput['reviewer_id']) ? 5 : 4;
-
     $abstrac = Abstrac::find($validInput['id']);
+
+    $unsignStatus = Status::where('code', '5')->first()->id;
+    $reviewStatus = Status::where('code', '6')->first()->id;
 
     if ($user->role->code == '3') {
       $files = $this->upload(['file']);
@@ -212,8 +211,16 @@ class Abstracs extends BaseController
       }
     }
 
-    $abstrac->update($validInput);
+    if (!isset($validInput['reviewer_id'])) {
+      $validInput['status_id'] = $reviewStatus;
+      if (!$abstrac->reviewer_id) {
+        $validInput['status_id'] = $unsignStatus;
+      }
+    } else {
+      $validInput['status_id'] = $reviewStatus;
+    }
 
+    $abstrac->update($validInput);
 
     // redirect
     return redirect()->to('/abstracs/')->with('message', 'Abstrac data has been updated successfully');

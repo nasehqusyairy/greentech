@@ -70,7 +70,7 @@ class ConferencePayments extends BaseController
     $validInput['attachment'] = $files['attachment'];
     $validInput['user_id'] = $this->getUser()->id;
 
-    $validInput['status_id'] = Status::where('text', 'unpaid')->first()->id;
+    $validInput['status_id'] = Status::where('code', '2')->first()->id;
 
     TicketUser::create($validInput);
 
