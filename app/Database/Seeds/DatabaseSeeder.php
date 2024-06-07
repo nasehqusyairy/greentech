@@ -165,7 +165,7 @@ class DatabaseSeeder extends Seeder
         $paymentSubmenus = [
             '5' => [
                 'name' => 'conferences',
-                'url' => '/',
+                'url' => 'conferencepayments',
                 'icon' => 'bi bi-building'
             ],
             '6' => [
