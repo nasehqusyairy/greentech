@@ -24,15 +24,17 @@ if (session()->has('errors')) : ?>
   <div class="card mb-3">
     <div class="card-body">
       <div class="mb-3">
-        <label for="ticket_user_id" class="form-label">Tickert User</label>
+        <label for="ticket_user_id" class="form-label">
+          Choose a Paid Conference Payment
+        </label>
         <select class="form-select" id="ticket_user_id" name="ticket_user_id">
           <?php foreach ($ticketUsers as $ticketUser) : ?>
-            <option value="<?= $ticketUser->id ?>" <?= $abstract->ticket_user_id == $ticketUser->id ? 'selected' : '' ?>><?= $ticketUser->attachment ?></option>
+            <option value="<?= $ticketUser->id ?>" <?= $abstract->ticket_user_id == $ticketUser->id ? 'selected' : '' ?>><?= $ticketUser->ticket->name . ' - ' . $ticketUser->id ?></option>
           <?php endforeach; ?>
         </select>
       </div>
       <div class="d-grid d-lg-block gap-2">
-        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="submit" class="btn btn-primary">Save</button>
         <a href="<?= base_url('abstractpayments'); ?>" class="btn btn-secondary">Cancel</a>
       </div>
     </div>
@@ -45,13 +47,9 @@ $this->section('footer');
 ?>
 <script>
   // select2
-  $('#topic_id').select2({
+  $('#ticket_user_id').select2({
     theme: 'bootstrap-5',
     width: '100%'
   });
-  // $('#reviewer_id').select2({
-  //   theme: 'bootstrap-5',
-  //   width: '100%'
-  // });
 </script>
 <?php $this->endSection() ?>

@@ -69,7 +69,7 @@
 
     <!-- FOOTER -->
     <footer class="bd-footer text-bg-primary text-center py-3">
-      Copyrigth &copy; <?= date('Y'); ?>. All rights reserved
+      Copyright &copy; <?= date('Y'); ?>. All rights reserved
     </footer>
     <!-- END OF FOOTER -->
 

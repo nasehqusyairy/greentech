@@ -9,6 +9,9 @@ $this->section('content');
 <div class="card">
   <div class="card-body">
     <form>
+      <label for="abstrac_id" class="form-label">
+        Which abstract do you want to review?
+      </label>
       <select name="abstrac_id" id="abstrac_id" class="form-select">
         <option value="">Choose...</option>
         <?php foreach ($abstracs as $abstrac) : ?>

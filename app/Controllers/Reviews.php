@@ -63,7 +63,7 @@ class Reviews extends BaseController
       }
       return view('reviews/choose', [
         'abstracs' => $abstract->get()->sortBy('topic_id'),
-        'title' => 'Choose Abstract'
+        'title' => 'Reviews'
       ]);
     }
 

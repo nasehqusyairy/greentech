@@ -40,9 +40,8 @@ class AbstractPayments extends BaseController
       'user' => $user,
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
       'deleted' => Abstrac::onlyTrashed()->with('creator', 'topic', 'reviewer')->get()->sortBy('topic_id'),
-      'title' => 'Abstracs Payments'
+      'title' => 'Abstracts Payments'
     ]);
-
   }
 
   public function create()
@@ -96,7 +95,7 @@ class AbstractPayments extends BaseController
     return view('abstractpayments/pay', [
       'abstract' => $abstrac,
       'ticketUsers' => $ticketUsers,
-      'title' => 'Payment Abstrac'
+      'title' => 'New Payment'
     ]);
   }
 

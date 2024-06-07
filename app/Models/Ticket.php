@@ -13,7 +13,6 @@ class Ticket extends Model
         'name',
         'attendance',
         'price',
-        'currency',
         'ttype_id',
         'trole_id',
         'state_id',
@@ -37,7 +36,7 @@ class Ticket extends Model
 
     public function state()
     {
-        return $this->belongsTo(Status::class)->withTrashed();
+        return $this->belongsTo(State::class)->withTrashed();
     }
 
     public function study()
