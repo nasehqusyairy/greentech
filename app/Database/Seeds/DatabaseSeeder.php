@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             'Admin',
             'Reviewer',
             'Presenter',
+            'Listener',
         ];
 
 
@@ -164,7 +165,7 @@ class DatabaseSeeder extends Seeder
             ],
             '6' => [
                 'name' => 'abstracts',
-                'url' => '/',
+                'url' => 'abstractpayments',
                 'icon' => 'bi bi-file-earmark-text'
             ],
             '7' => [
@@ -483,16 +484,17 @@ class DatabaseSeeder extends Seeder
 
         // Add publications 
         $publications = [
-            'IOP Earth and Environmental Science (Scopus Indexed)',
-            'Proceedings of the International Conference on Green Technology',
-            'JIA (Journal of Islamic Architecture) ** (Scopus Indexed)',
-            'Jurnal Neutrino: Jurnal Fisika dan Aplikasinya (Accredited SINTA-3)',
-            'El-Hayah: Journal of Biology (Accredited SINTA-3)',
+            ['name'=>'IOP Earth and Environmental Science (Scopus Indexed)', 'price'=> 1000000],
+            ['name'=>'Proceedings of the International Conference on Green Technology', 'price'=> 1000000],
+            ['name'=>'JIA (Journal of Islamic Architecture) ** (Scopus Indexed)', 'price'=> 1000000],
+            ['name'=>'Jurnal Neutrino: Jurnal Fisika dan Aplikasinya (Accredited SINTA-3)', 'price'=> 1000000],
+            ['name'=>'El-Hayah: Journal of Biology (Accredited SINTA-3)', 'price'=> 1000000],
         ];
 
         foreach ($publications as $key => $publication) {
             $this->db->table('publications')->insert([
-                'name' => $publication,
+                'name' => $publication['name'],
+                'price' => $publication['price']
             ]);
         }
 

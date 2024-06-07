@@ -7,9 +7,11 @@ use CodeIgniter\Exceptions\PageNotFoundException;
 use App\Models\Abstrac;
 use App\Models\Topic;
 use App\Models\User;
+use App\Models\Setting;
 
 class Abstracs extends BaseController
 {
+
   protected $rule = [
     'store' => [
       'topic_id' => 'required|is_not_unique[topics.id]',
@@ -20,16 +22,7 @@ class Abstracs extends BaseController
       'file' => 'uploaded[file]|ext_in[file,pdf,doc,docx]|max_size[file,5120]',
       'creator_id' => 'required|is_not_unique[users.id]',
     ],
-    'update' => [
-      'id' => 'required|is_not_unique[abstracs.id]',
-      'topic_id' => 'required|is_not_unique[topics.id]',
-      'title' => 'required|string',
-      'authors' => 'required|string',
-      'emails' => 'required|valid_emails',
-      'text' => 'required|string',
-      'file' => 'permit_empty|uploaded[file]|ext_in[file,pdf,doc,docx]|max_size[file,5120]',
-      'reviewer_id' => 'permit_empty|is_not_unique[users.id]',
-    ],
+
   ];
 
   public function __construct()
@@ -74,10 +67,19 @@ class Abstracs extends BaseController
 
   public function index()
   {
+    $abstract = Abstrac::with('creator', 'topic', 'reviewer');
+
+    $user = $this->getUser();
+    if ($user->role->code == 3) {
+      $abstract = $abstract->where('creator_id', $user->id);
+    } else if ($user->role->code == 2) {
+      $abstract = $abstract->where('reviewer_id', $user->id);
+    }
+
     // main view
     return view('abstracs/index', [
-      'user' => $this->getUser(),
-      'abstracts' => Abstrac::with('creator', 'topic', 'reviewer')->get()->sortBy('topic_id'),
+      'user' => $user,
+      'abstracts' => $abstract->get()->sortBy('topic_id'),
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
       'title' => 'Abstracts',
       'deleted' => Abstrac::onlyTrashed()->with('creator', 'topic', 'reviewer')->get()->sortBy('topic_id'),
@@ -86,6 +88,12 @@ class Abstracs extends BaseController
 
   public function create()
   {
+    $setting = Setting::where('title', 'Enable Abstract Submission')->first()->value;
+    if ($setting != '1') {
+      $statusCode = 422;
+      $message = 'Submission has been closed';
+      return redirect()->setStatusCode($statusCode)->back()->withInput()->with('errors', [$message]);
+    }
     // create form
     return view('abstracs/create', [
       'title' => 'New Abstract',
@@ -133,6 +141,7 @@ class Abstracs extends BaseController
     // return view
     return view('abstracs/edit', [
       'abstract' => $abstrac,
+      'user' => $this->getUser(),
       'topics' => Topic::all(),
       'reviewers' => User::with('role')->whereHas('role', function ($query) {
         $query->where('code', 2);
@@ -146,35 +155,48 @@ class Abstracs extends BaseController
     // check if the request is POST
     $this->isPostRequest();
 
-    // set validation rules
-    $this->validator->setRules($this->rule['update']);
+    $user = $this->getUser();
 
-    // validated input
-    $validInput = $this->validInput(['file']);
+    $this->rule['update'] = $user->role->code == '3' ? [
+      'id' => 'required|is_not_unique[abstracs.id]',
+      'topic_id' => 'required|is_not_unique[topics.id]',
+      'title' => 'required|string',
+      'authors' => 'required|string',
+      'emails' => 'required|valid_emails',
+      'text' => 'required|string',
+      'file' => 'permit_empty|uploaded[file]|ext_in[file,pdf,doc,docx]|max_size[file,5120]',
+    ] : [
+      'reviewer_id' => 'permit_empty|is_not_unique[users.id]',
+      'id' => 'required|is_not_unique[abstracs.id]',
+    ];
+    $this->validator->setRules($this->rule['update']);
+    $validInput = $this->validInput($user->role->code == '3' ? ['file'] : null);
 
     // return response if the input is invalid
     if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
-
-    // manipulate data here
-    $abstrac = Abstrac::find($validInput['id']);
-    $files = $this->upload(['file']);
-
-    // delete old file
-    if (!isset($files['file'])) {
-      unset($validInput['file']);
-    } else {
-      if ($abstrac->file && str_contains($abstrac->file, base_url())) {
-        unlink(FCPATH . str_replace('/', '\\', str_replace(base_url(), '', $abstrac->file)));
-      }
-      $validInput['file'] = $files['file'];
-    }
 
     // remove reviewer_id if not set
     if (empty($validInput['reviewer_id'])) unset($validInput['reviewer_id']);
 
     $validInput['status_id'] = isset($validInput['reviewer_id']) ? 5 : 4;
 
+    $abstrac = Abstrac::find($validInput['id']);
+
+    if ($user->role->code == '3') {
+      $files = $this->upload(['file']);
+      // delete old file
+      if (!isset($files['file'])) {
+        unset($validInput['file']);
+      } else {
+        if ($abstrac->file && str_contains($abstrac->file, base_url())) {
+          unlink(FCPATH . str_replace('/', '\\', str_replace(base_url(), '', $abstrac->file)));
+        }
+        $validInput['file'] = $files['file'];
+      }
+    }
+
     $abstrac->update($validInput);
+
 
     // redirect
     return redirect()->to('/abstracs/')->with('message', 'Abstrac data has been updated successfully');

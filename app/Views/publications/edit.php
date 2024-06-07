@@ -7,6 +7,7 @@ $this->extend('components/layout');
 $this->section('content');
 
 $name = !old('name') ? $publication->name : old('name');
+$price = !old('price') ? $publication->price : old('price');
 
 if (session()->has('errors')) : ?>
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -27,6 +28,10 @@ if (session()->has('errors')) : ?>
       <div class="mb-3">
         <label for="name" class="form-label">Name</label>
         <input type="text" class="form-control" id="name" name="name" value="<?= $name ?>">
+      </div>
+      <div class="mb-3">
+        <label for="price" class="form-label">Price</label>
+        <input type="number" class="form-control" id="price" name="price" value="<?= $price ?>">
       </div>
       <div class="d-grid d-lg-block gap-2">
         <button type="submit" class="btn btn-primary">Save</button>

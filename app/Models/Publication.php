@@ -9,6 +9,7 @@ class Publication extends Model
 {
     use SoftDeletes;
     protected $fillable = [
-        'name'
+        'name',
+        'price'
     ];
 }

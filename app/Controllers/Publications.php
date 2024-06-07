@@ -10,10 +10,12 @@ class Publications extends BaseController
   protected $rule = [
     'store' => [
       'name' => 'required|alpha_numeric_punct',
+      'price' => 'required|numeric',
     ],
     'update' => [
       'id' => 'required|is_not_unique[publications.id]',
       'name' => 'required|alpha_numeric_punct',
+      'price' => 'required|numeric',
     ],
   ];
 
