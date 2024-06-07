@@ -87,7 +87,7 @@ class AbstractPayments extends BaseController
     $ticketUsers = TicketUser::all();
     $usedTicketUser = Abstrac::pluck('ticket_user_id')->toArray();
 
-    // Menghapus TicketUser yang digunakan di tabel Tickets
+    // Deleted Ticket wichh has been used in list
     $ticketUsers = $ticketUsers->reject(function ($ticketUser) use ($usedTicketUser) {
       return in_array($ticketUser->id, $usedTicketUser);
     });

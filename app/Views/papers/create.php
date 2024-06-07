@@ -29,6 +29,9 @@ if (session()->has('errors')) : ?>
             <option value="<?= $abstrac->id ?>" <?= old('abstrac_id') == $abstrac->id ? 'selected' : '' ?>><?= $abstrac->title ?></option>
           <?php endforeach; ?>
         </select>
+        <small class="form-text">
+          Create accepted abstract first if there are no options available
+        </small>
       </div>
       <div class="mb-3">
         <label for="publication_id" class="form-label">Publication</label>

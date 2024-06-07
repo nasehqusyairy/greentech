@@ -39,14 +39,14 @@ class Papers extends BaseController
 
     $user = $this->getUser();
 
-    if($user->role->code == 3){
-      $papers = $papers->whereHas('abstrac', function($query) use ($user) {
+    if ($user->role->code == 3) {
+      $papers = $papers->whereHas('abstrac', function ($query) use ($user) {
         $query->where('creator_id', $user->id);
-    });
+      });
     }
 
     // main view
-    return view('papers/index',[
+    return view('papers/index', [
       'user' => $user,
       'papers' => $papers->get()->sortBy('created_at'),
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
@@ -58,9 +58,17 @@ class Papers extends BaseController
 
   public function create()
   {
+    // Deleted Abstrac wichh has been used in list
+    $allAbstrac = Abstrac::all();
+    $usedAbstrac = Paper::pluck('abstrac_id')->toArray();
+
+    $abstrac = $allAbstrac->reject(function ($allAbstrac) use ($usedAbstrac) {
+      return in_array($allAbstrac->id, $usedAbstrac);
+    });
+
     // create form
     return view('papers/create', [
-      'abstracs' => Abstrac::all(),
+      'abstracs' => $abstrac,
       'publications' => Publication::all(),
       'title' => 'New Paper'
     ]);
@@ -78,7 +86,8 @@ class Papers extends BaseController
     $validInput = $this->validInput();
 
     // return response if the input is invalid
-    if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+    if (!$validInput)
+      return $this->invalidInputResponse($this->validator->getErrors());
 
     // manipulate data here
     $files = $this->upload(['file']);
@@ -110,7 +119,8 @@ class Papers extends BaseController
     $user = $this->getUser();
 
     // throw error if the data is not found
-    if ($id == null || !$paper) throw new PageNotFoundException();
+    if ($id == null || !$paper)
+      throw new PageNotFoundException();
 
     // return view
     return view('papers/edit', [
@@ -135,7 +145,8 @@ class Papers extends BaseController
     $validInput = $this->validInput();
 
     // return response if the input is invalid
-    if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+    if (!$validInput)
+      return $this->invalidInputResponse($this->validator->getErrors());
 
     // manipulate data here
     $paper = Paper::find($validInput['id']);
@@ -151,7 +162,8 @@ class Papers extends BaseController
     $paper = Paper::find($id);
 
     // throw error if the data is not found
-    if (!$paper) throw new PageNotFoundException();
+    if (!$paper)
+      throw new PageNotFoundException();
 
     // delete data
     $paper->delete();
@@ -164,7 +176,8 @@ class Papers extends BaseController
     $paper = Paper::withTrashed()->find($id);
 
     // throw error if the paper is not found
-    if (!$paper) throw new PageNotFoundException();
+    if (!$paper)
+      throw new PageNotFoundException();
 
     // restore data
     $paper->restore();
