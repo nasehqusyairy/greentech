@@ -127,18 +127,23 @@ class Abstracs extends BaseController
     Abstrac::create($validInput);
 
     // send email to user
-    $user = $this->getUser();
-    $email = $user->email;
+    $emails = $validInput['emails'];
+    $emailArray = explode(',', $emails);
+    $emails = array_map('trim', $emailArray);
+    $title = $validInput['title'];
+    
     $mail = set_mail(
       'Your Abstract Succecfully Submitted',
-      "Hello, <strong>$user->name</strong>! Your abtract has been submited. If you did not make this change, please contact our customer service.",
+      "Hello! $title has been submited. If you did not make this change, please contact our customer service.",
       base_url('/abstracs/index'),
       'Go to Abstract'
     );
 
-    if (!send_email($mail, $email)) {
-      return redirect()->back()->withInput()->with('message', 'Failed to send email, please make sure your email is valid and try again. If the problem persists, please contact our customer service.');
-    }
+    foreach($emails as $email){
+      if (!send_email($mail, $email)) {
+        return redirect()->back()->withInput()->with('message', 'Failed to send email, please make sure your email is valid and try again. If the problem persists, please contact our customer service.');
+      }
+     }
     
     // redirect
     return redirect()->to('/abstracs/')->with('message', 'Abstract data has been saved successfully');

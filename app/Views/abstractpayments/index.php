@@ -43,6 +43,7 @@ $user = $user->role->code;
             <tbody>
 
               <?php $i = 1;
+              dd($abstracs->toArray());
               foreach ($abstracs as $abstrac): ?>
                 <tr>
                   <td><?= $i++; ?></td>
