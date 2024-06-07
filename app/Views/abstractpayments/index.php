@@ -7,7 +7,7 @@ $this->extend('components/layout');
 $this->section('content');
 $user = $user->role->code;
 ?>
-<?php if (!empty($message)): ?>
+<?php if (!empty($message)) : ?>
   <div class="alert alert-success alert-dismissible fade show">
     <?= $message ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -18,14 +18,8 @@ $user = $user->role->code;
   <div class="card-body">
     <ul class="nav nav-tabs" id="tab">
       <li class="nav-item">
-        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#available-tab-pane"
-          type="button">Available</button>
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#available-tab-pane" type="button">Available</button>
       </li>
-      <?php //if ($user == '0' || $user == '1'): ?>
-      <!-- <li class="nav-item">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#deleted-tab-pane" type="button">Deleted</button>
-      </li> -->
-      <?php //endif ?>
     </ul>
     <div class="tab-content" id="tabContent">
       <div class="tab-pane fade show active" id="available-tab-pane">
@@ -43,72 +37,35 @@ $user = $user->role->code;
             <tbody>
 
               <?php $i = 1;
-              dd($abstracs->toArray());
-              foreach ($abstracs as $abstrac): ?>
+              foreach ($abstracs as $abstrac) : ?>
                 <tr>
                   <td><?= $i++; ?></td>
                   <td><?= $abstrac->title ?></td>
-                  <?php if ($abstrac->ticket_user_id == null): ?>
-                    <td><a href="" title="" class="" download>-</a></td>
-                    <td><a href="" title="" class="">-</a></td>
+                  <?php if ($abstrac->ticket_user_id == null) : ?>
+                    <td>-</td>
+                    <td>-</td>
                   <?php endif ?>
 
-                  <?php if ($abstrac->ticket_user_id != null): ?>
-                    <td>
-                      <a href="<?= $abstrac->ticketUser->proff ?>" title="Download" class="btn btn-primary" download><i
-                          class="bi bi-download"></i></a>
-                    </td>
-                    <td>
-                      <?= $abstrac->ticketUser->status ? badge($abstrac->ticketUser->status->text, $abstrac->ticketUser->status->color) : badge('Unknown', 'secondary') ?>
-                    </td>
-                  <?php endif ?>
-                  <td class="text-nowrap">
-                    <?php //if ($user == '3'): ?>
-                    <a href="/abstractpayments/pay/<?= $abstrac->id ?>" title="Pay" class="btn btn-primary mb-1"><i
-                        class="bi bi-wallet2"></i></a>
-                    <?php //endif ?>
-                    <?php //if ($user == '1' || $user == '2'): ?>
-                    <button onclick="handleDelete(<?= $abstrac->id; ?>)" title="Delete" class="btn btn-danger"
-                      data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
-                    <?php //endif ?>
-
+                  <!-- <?php if ($abstrac->ticket_user_id != null) : ?> -->
+                  <td>
+                    <a href="<?= $abstrac->ticketUser->proff ?>" title="Download" class="btn btn-primary" download><i class="bi bi-download"></i></a>
                   </td>
-                </tr>
-              <?php endforeach; ?>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="tab-pane fade" id="deleted-tab-pane">
-        <div class="table-responsive">
-          <table class="table table-striped table-hover w-100" id="deleted">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Title</th>
-                <th>File</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php $i = 1;
-              foreach ($deleted as $abstrac): ?>
-                <tr>
-                  <td><?= $i++; ?></td>
-                  <td><?= $abstrac->title ?></td>
                   <td>
-                      <a href="<?= $abstrac->ticketUser->proff ?>" title="Download" class="btn btn-primary" download><i
-                          class="bi bi-download"></i></a>
-                    </td>
-                    <td>
-                      <?= $abstrac->ticketUser->status ? badge($abstrac->ticketUser->status->text, $abstrac->ticketUser->status->color) : badge('Unknown', 'secondary') ?>
-                    </td>
-                  <td>
-                    <a href="<?= base_url('abstractpayments/restore/' . $abstrac->id); ?>" title="Restore"
-                      class="btn btn-secondary">
-                      <i class="bi bi-arrow-repeat"></i>
-                    </a>
+                    <?= $abstrac->ticketUser->status ? badge($abstrac->ticketUser->status->text, $abstrac->ticketUser->status->color) : badge('Unknown', 'secondary') ?>
+                  </td>
+                  <!-- <?php endif ?> -->
+                  <td class="text-nowrap">
+                    <?php //if ($user == '3'): 
+                    ?>
+                    <a href="/abstractpayments/pay/<?= $abstrac->id ?>" title="Pay" class="btn btn-primary mb-1"><i class="bi bi-credit-card"></i></a>
+                    <?php //endif 
+                    ?>
+                    <?php //if ($user == '1' || $user == '2'): 
+                    ?>
+                    <button onclick="handleDelete(<?= $abstrac->id; ?>)" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <?php //endif 
+                    ?>
+
                   </td>
                 </tr>
               <?php endforeach; ?>

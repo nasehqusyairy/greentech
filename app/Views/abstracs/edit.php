@@ -96,9 +96,9 @@ $this->section('footer');
     theme: 'bootstrap-5',
     width: '100%'
   });
-  // $('#reviewer_id').select2({
-  //   theme: 'bootstrap-5',
-  //   width: '100%'
-  // });
+  $('#reviewer_id').select2({
+    theme: 'bootstrap-5',
+    width: '100%'
+  });
 </script>
 <?php $this->endSection() ?>

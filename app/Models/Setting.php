@@ -12,5 +12,6 @@ class Setting extends Model
         'title',
         'description',
         'value',
+        'code'
     ];
 }

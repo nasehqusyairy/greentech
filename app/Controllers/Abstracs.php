@@ -88,11 +88,9 @@ class Abstracs extends BaseController
 
   public function create()
   {
-    $setting = Setting::where('title', 'Enable Abstract Submission')->first()->value;
+    $setting = Setting::where('code', '1')->first()->value;
     if ($setting != '1') {
-      $statusCode = 422;
-      $message = 'Submission has been closed';
-      return redirect()->setStatusCode($statusCode)->back()->withInput()->with('errors', [$message]);
+      return redirect()->to('/abstracs/')->with('errors', ['Submission has been closed']);
     }
     // create form
     return view('abstracs/create', [

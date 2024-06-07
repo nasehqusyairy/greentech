@@ -55,7 +55,7 @@ if (!empty($message)) : ?>
                   <td><?= $ticket->trole->name ?></td>
                   <td><?= $ticket->state->name ?></td>
                   <td><?= $ticket->study->name ?></td>
-                  <td><?= $ticket->currency . ' ' . $ticket->price ?></td>
+                  <td>Rp. <?= $ticket->price ?></td>
                   <td>
                     <a href="/tickets/edit/<?= $ticket->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
                     <button onclick="handleDelete('<?= $ticket->id; ?>')" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
@@ -94,7 +94,7 @@ if (!empty($message)) : ?>
                   <td><?= $ticket->trole->name ?></td>
                   <td><?= $ticket->state->name ?></td>
                   <td><?= $ticket->study->name ?></td>
-                  <td><?= $ticket->currency . ' ' . $ticket->price ?></td>
+                  <td>Rp. <?= $ticket->price ?></td>
                   <td>
                     <a href="<?= base_url('tickets/restore/' . $ticket->id); ?>" title="Restore" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
