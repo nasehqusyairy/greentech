@@ -79,7 +79,7 @@ if (session()->has('errors')) : ?>
                     <?php if ($user == '3' || $user == '0') : ?>
                       <a href="/abstracs/edit/<?= $abstract->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
                     <?php endif ?>
-                    <?php if ($user == '1') : ?>
+                    <?php if ($user == '0' || $user == '1') : ?>
                       <button onclick="handleDelete(<?= $abstract->id; ?>)" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                     <?php endif ?>
 
