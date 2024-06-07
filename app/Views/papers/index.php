@@ -18,7 +18,7 @@ $user = $user->role->code;
   <div class="card-body">
     <?php if ($user == '3'): ?>
     <div class="mb-3">
-      <a href="/papers/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Abstract</a>
+      <a href="/papers/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Paper</a>
     </div>
     <?php endif ?>
 

@@ -58,6 +58,7 @@ class Papers extends BaseController
 
   public function create()
   {
+    $user = $this->getUser();
     // Deleted Abstrac wichh has been used in list
     $allAbstrac = Abstrac::all();
     $usedAbstrac = Paper::pluck('abstrac_id')->toArray();
@@ -68,12 +69,15 @@ class Papers extends BaseController
 
     // create form
     return view('papers/create', [
-      'abstracs' => $abstrac,
+      'abstracs' => $abstrac->where('status_id', '3')->where('creator_id', $user->id),
       'publications' => Publication::all(),
       'title' => 'New Paper'
     ]);
   }
 
+ private $mail;
+ private $emails;
+  
   public function store()
   {
     // check if the request is POST
@@ -106,6 +110,29 @@ class Papers extends BaseController
 
     $validInput['status_id'] = 11;
     Paper::create($validInput);
+    
+    // send email to user
+    $abstract = Abstrac::find($validInput['abstrac_id']);
+    
+    $emails = $abstract->emails;
+    $emailArray = explode(',', $emails);
+    $emails = array_map('trim', $emailArray);
+    $title = $abstract->title;
+
+    $mail = set_mail(
+      'Your Paper Succecfully Submitted',
+      "Hello! $title paper has been submited. If you did not make this change, please contact our customer service.",
+      base_url('/papers/index'),
+      'Go to Papers'
+    );
+
+    foreach($emails as $email){
+      
+      if (!send_email($mail, $email)) {
+        dd($mail, $email);
+        return redirect()->back()->withInput()->with('message', 'Failed to send email, please make sure your email is valid and try again. If the problem persists, please contact our customer service.');
+      }
+    }
 
     // redirect
     return redirect()->to('/papers/')->with('message', 'Paper data has been saved successfully');
