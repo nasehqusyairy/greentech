@@ -17,7 +17,7 @@ if (session()->has('errors')) : ?>
   </div>
 <?php endif ?>
 
-<form action="<?= base_url('conferencepayments/store'); ?>" method="post" enctype="multipart/form-data">
+<form action="<?= base_url('conferencepayments/update'); ?>" method="post" enctype="multipart/form-data">
   <?= csrf_field(); ?>
   <div class="card mb-3">
     <div class="card-body">
@@ -30,6 +30,7 @@ if (session()->has('errors')) : ?>
           <?php endforeach; ?>
         </select>
       </div>
+      <input type="hidden" name="id" value="<?= old('id', $ticketUser->id) ?>">
       <div class="mb-3">
         <label for="proof" class="form-label">Proof</label>
         <input type="file" name="proof" id="proof" class="form-control">

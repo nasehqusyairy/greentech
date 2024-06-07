@@ -43,10 +43,6 @@ if (session()->has('errors')) : ?>
           <option value="dark" <?= old('color') == 'dark' ? 'selected' : ''; ?>>Dark</option>
         </select>
       </div>
-      <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control" id="name" name="name" value="<?= old('name'); ?>">
-      </div>
       <!-- Type Drop down -->
       <div class="mb-3">
         <label for="stype_id" class="form-label">Type</label>

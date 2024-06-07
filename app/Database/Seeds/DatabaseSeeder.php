@@ -380,6 +380,7 @@ class DatabaseSeeder extends Seeder
             ['text' => 'Waiting', 'color' => 'info', 'stype' => $stypes[0]],
             ['text' => 'Unpaid', 'color' => 'warning', 'stype' => $stypes[0]],
             ['text' => 'Paid', 'color' => 'success', 'stype' => $stypes[0]],
+            ['text' => 'Waiting', 'color' => 'info', 'stype' => $stypes[0]],
             ['text' => 'Unsigned', 'color' => 'secondary', 'stype' => $stypes[1]],
             ['text' => 'Reviewing', 'color' => 'info', 'stype' => $stypes[1]],
             ['text' => 'Need Revision', 'color' => 'warning', 'stype' => $stypes[1]],
