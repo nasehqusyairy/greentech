@@ -170,7 +170,7 @@ class DatabaseSeeder extends Seeder
             ],
             '7' => [
                 'name' => 'full Papers',
-                'url' => '/',
+                'url' => 'papers',
                 'icon' => 'bi bi-journals'
             ],
         ];

@@ -35,7 +35,7 @@ class AbstractPayments extends BaseController
 
     return view('abstractpayments/index', [
       'abstracs' => $abstract->whereHas('status', function ($query) {
-        $query->where('text', 'accepted');
+        $query->where('code', '7');
       })->get()->sortBy('topic_id'),
       'user' => $user,
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
@@ -87,7 +87,7 @@ class AbstractPayments extends BaseController
     $ticketUsers = TicketUser::all();
     $usedTicketUser = Abstrac::pluck('ticket_user_id')->toArray();
 
-    // Menghapus TicketUser yang digunakan di tabel Tickets
+    // Deleted Ticket wichh has been used in list
     $ticketUsers = $ticketUsers->reject(function ($ticketUser) use ($usedTicketUser) {
       return in_array($ticketUser->id, $usedTicketUser);
     });
