@@ -69,15 +69,13 @@ class Papers extends BaseController
 
     // create form
     return view('papers/create', [
-      'abstracs' => $abstrac->where('status_id', '3')->where('creator_id', $user->id),
+      'abstracs' => $abstrac->where('status_id', '4')->where('creator_id', $user->id),
       'publications' => Publication::all(),
       'title' => 'New Paper'
     ]);
   }
 
- private $mail;
- private $emails;
-  
+
   public function store()
   {
     // check if the request is POST
@@ -110,10 +108,10 @@ class Papers extends BaseController
 
     $validInput['status_id'] = 2;
     Paper::create($validInput);
-    
+
     // send email to user
     $abstract = Abstrac::find($validInput['abstrac_id']);
-    
+
     $emails = $abstract->emails;
     $emailArray = explode(',', $emails);
     $emails = array_map('trim', $emailArray);
@@ -126,15 +124,18 @@ class Papers extends BaseController
       'Go to Papers'
     );
 
-    foreach($emails as $email){
-      
+    foreach ($emails as $email) {
+
       if (!send_email($mail, $email)) {
-        return redirect()->back()->withInput()->with('message', 'Failed to send email, please make sure your email is valid and try again. If the problem persists, please contact our customer service.');
+        $error = 'Failed to send email to ' . $email . ', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
       }
     }
 
     // redirect
-    return redirect()->to('/papers/')->with('message', 'Paper data has been saved successfully');
+    return redirect()->to('/papers/')->with('messages', [
+      'success' => 'Abstract data has been saved successfully',
+      'error' => $error
+    ]);
   }
 
   public function edit($id = null)
@@ -155,7 +156,7 @@ class Papers extends BaseController
       'abstracs' => Abstrac::all(),
       'publications' => Publication::all(),
       'statuses' => Status::whereHas('stype', function ($query) {
-        $query->where('code', 2);
+        $query->where('code', '0');
       })->get(),
       'title' => 'Edit Paper'
     ]);
@@ -179,6 +180,40 @@ class Papers extends BaseController
     // manipulate data here
     $paper = Paper::find($validInput['id']);
     $paper->update($validInput);
+
+    // send email to user
+    $emails = $paper->abstrac->emails;
+    $emailArray = explode(',', $emails);
+    $emails = array_map('trim', $emailArray);
+    $title = $paper->abtrac->title;
+
+    if (!$validInput['status_id']) {
+      $mail = set_mail(
+        'Your Paper Payment Status has Been Changed',
+        "Hello! $title payment status has been changed. Let's check it!",
+        base_url('/papers/index'),
+        'Go to Paper Page'
+      );
+
+      foreach ($emails as $email) {
+        if (!send_email($mail, $email)) {
+          $error = 'Failed to send email to ' . $email . ', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
+        }
+      }
+    } else {
+      $mail = set_mail(
+        'Your Paper has Been Updated',
+        "Hello! Data paper $title has been updated. Let's check it!",
+        base_url('/papers/index'),
+        'Go to Paper Page'
+      );
+
+      foreach ($emails as $email) {
+        if (!send_email($mail, $email)) {
+          $error = 'Failed to send email to ' . $email . ', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
+        }
+      }
+    }
 
     // redirect
     return redirect()->to('/papers/')->with('message', 'Paper data has been updated successfully');

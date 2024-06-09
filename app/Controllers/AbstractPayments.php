@@ -94,22 +94,38 @@ class AbstractPayments extends BaseController
     $emailArray = explode(',', $emails);
     $emails = array_map('trim', $emailArray);
     $title = $abstrac->title;
-    
-    $mail = set_mail(
-      'Your Abstract Payment Status has Been Changed',
-      "Hello! $title payment status has been changed. Let's check it!",
-      base_url('/abstractpayments/index'),
-      'Go to Abstract Payments'
-    );
 
-    foreach($emails as $email){
-      if (!send_email($mail, $email)) {
-        return redirect()->back()->withInput()->with('message', 'Failed to send email, please make sure your email is valid and try again. If the problem persists, please contact our customer service.');
-      }
-     }
-
+    if($validInput['ticket_user_id'] != null){
+      $mail = set_mail(
+        'Your Abstract Proof of Payment has Been Uplouded',
+        "Hello! $title proof of payment has been uplouded. Let's check it!",
+        base_url('/abstractpayments/index'),
+        'Go to Abstract Payments'
+      );
+  
+      foreach($emails as $email){
+        if (!send_email($mail, $email)) {
+          $error = 'Failed to send email to '.$email.', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
+        }
+       }
+    }else{
+      $mail = set_mail(
+        'Your Abstract Payment Status has Been Changed',
+        "Hello! $title payment status has been changed. Let's check it!",
+        base_url('/abstractpayments/index'),
+        'Go to Abstract Payments'
+      );
+  
+      foreach($emails as $email){
+        if (!send_email($mail, $email)) {
+          $error = 'Failed to send email to '.$email.', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
+        }
+       }
+    }
     // redirect
-    return redirect()->to('/abstractpayments/')->with('message', 'Abstrac Payments data has been updated successfully');
+    return redirect()->to('/abstractpayments/')->with('messages', ['success'=>'Abstract data has been saved successfully',
+    'error'=>$error
+  ]);
   }
 
   public function delete($id = null)

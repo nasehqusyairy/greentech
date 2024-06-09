@@ -7,12 +7,27 @@ $this->extend('components/layout');
 $this->section('content');
 ?>
 <?php
-if (!empty($message)) : ?>
+if (!empty($message)): ?>
   <div class="alert alert-success alert-dismissible fade show">
     <?= $message ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
+<?php endif;
+
+if (session()->has('messages')):
+  $successMsg = session('messages')['success'];
+  $errorMsg = session('messages')['error'];
+  ?>
+  <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+    <?= $successMsg ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <?= $errorMsg ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
 <?php endif ?>
+
 <div class="card">
   <div class="card-body">
     <div class="mb-3">
@@ -20,7 +35,8 @@ if (!empty($message)) : ?>
     </div>
     <ul class="nav nav-tabs" id="tab">
       <li class="nav-item">
-        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#available-tab-pane" type="button">Available</button>
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#available-tab-pane"
+          type="button">Available</button>
       </li>
       <li class="nav-item">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#deleted-tab-pane" type="button">Deleted</button>
@@ -45,7 +61,7 @@ if (!empty($message)) : ?>
             <tbody>
               <?php
               $i = 1;
-              foreach ($ticketUsers as $ticketUser) : ?>
+              foreach ($ticketUsers as $ticketUser): ?>
                 <tr>
                   <td><?= $i++; ?></td>
                   <td><?= $ticketUser->created_at ?></td>
@@ -62,11 +78,13 @@ if (!empty($message)) : ?>
                     </a>
                   </td>
                   <td>
-                    <?= badge($ticketUser->status->text,  $ticketUser->status->color) ?>
+                    <?= badge($ticketUser->status->text, $ticketUser->status->color) ?>
                   </td>
                   <td>
-                    <a href="/conferencepayments/edit/<?= $ticketUser->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
-                    <button onclick="handleDelete('<?= $ticketUser->id; ?>')" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <a href="/conferencepayments/edit/<?= $ticketUser->id ?>" title="Edit" class="btn btn-warning mb-1"><i
+                        class="bi bi-pencil"></i></a>
+                    <button onclick="handleDelete('<?= $ticketUser->id; ?>')" title="Delete" class="btn btn-danger"
+                      data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -91,7 +109,7 @@ if (!empty($message)) : ?>
             <tbody>
               <?php
               $i = 1;
-              foreach ($deleted as $ticketUser) : ?>
+              foreach ($deleted as $ticketUser): ?>
                 <tr>
                   <td><?= $i++; ?></td>
                   <td><?= $ticketUser->created_at; ?></td>
@@ -108,10 +126,11 @@ if (!empty($message)) : ?>
                     </a>
                   </td>
                   <td>
-                    <?= badge($ticketUser->status->text,  $ticketUser->status->color) ?>
+                    <?= badge($ticketUser->status->text, $ticketUser->status->color) ?>
                   </td>
                   <td>
-                    <a href="<?= base_url('conferencepayments/restore/' . $ticketUser->id); ?>" title="Restore" class="btn btn-secondary">
+                    <a href="<?= base_url('conferencepayments/restore/' . $ticketUser->id); ?>" title="Restore"
+                      class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
                     </a>
                   </td>

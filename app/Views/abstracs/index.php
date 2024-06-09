@@ -23,6 +23,20 @@ if (session()->has('errors')) : ?>
     </ul>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
+<?php endif;
+
+if (session()->has('messages')) :
+$successMsg = session('messages')['success'];
+$errorMsg = session('messages')['error'];
+?>
+  <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+  <?= $successMsg ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <?= $errorMsg ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
 <?php endif ?>
 
 <div class="card">

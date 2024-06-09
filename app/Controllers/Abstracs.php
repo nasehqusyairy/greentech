@@ -140,12 +140,14 @@ class Abstracs extends BaseController
 
     foreach($emails as $email){
       if (!send_email($mail, $email)) {
-        return redirect()->back()->withInput()->with('errors', ['Failed to send email, please make sure your email is valid and try again. If the problem persists, please contact our customer service.']);
+        $error = 'Failed to send email to '.$email.', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
       }
      }
     
     // redirect
-    return redirect()->to('/abstracs/')->with('message', 'Abstract data has been saved successfully');
+    return redirect()->to('/abstracs/')->with('messages', ['success'=>'Abstract data has been saved successfully',
+    'error'=>$error
+  ]);
   }
 
   public function edit($id = null)
