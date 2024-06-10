@@ -95,15 +95,17 @@ if (!empty($message)) :
               <option value="2">Female</option>
             </select>
           </div>
-          <div class="mb-3">
-            <label for="role" class="form-label">Role</label>
-            <!-- select -->
-            <select class="form-select" id="role" name="role_id">
-              <?php foreach ($roles as $role) : ?>
-                <option value="<?= $role->id; ?>" <?= $role->id == $user->role_id ? 'selected' : ''; ?>><?= $role->name; ?></option>
-              <?php endforeach  ?>
-            </select>
-          </div>
+          <?php if ($user->role->code != 0 && $user->role->code != 1) : ?>
+            <div class="mb-3">
+              <label for="role" class="form-label">Role</label>
+              <!-- select -->
+              <select class="form-select" id="role" name="role_id">
+                <?php foreach ($roles as $role) : ?>
+                  <option value="<?= $role->id; ?>" <?= $role->id == $user->role_id ? 'selected' : ''; ?>><?= $role->name; ?></option>
+                <?php endforeach  ?>
+              </select>
+            </div>
+          <?php endif ?>
           <div class="d-grid d-lg-block gap-2">
             <button class="btn btn-primary">Save</button>
           </div>
