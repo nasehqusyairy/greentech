@@ -50,6 +50,7 @@ if (session()->has('errors')) : ?>
         <label for="country" class="form-label">Country</label>
         <select class="form-select" id="country" name="country">
           <option value="" disabled selected>Select...</option>
+          <option value="ID">Indonesia (+62)</option>
         </select>
       </div>
       <input type="hidden" name="callingcode" id="callingcode" value="<?= old('callingcode'); ?>">
