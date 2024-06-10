@@ -5,7 +5,6 @@
  */
 $this->extend('components/layout');
 $this->section('content');
-$user = $user->role->code;
 
 ?>
 <?php
@@ -66,14 +65,10 @@ if (!empty($message)) : ?>
                     <?= badge($ticketUser->status->text,  $ticketUser->status->color) ?>
                   </td>
                   <td>
-                    <?php if ($user == '0' || $user == '1') : ?>
+                    <?php if ($user->role->code == '0' || $user->role->code == '1') : ?>
                       <a href="/conferencepayments/confirm/<?= $ticketUser->id ?>" class="btn btn-primary mb-1"><i class="bi bi-check-all"></i></a>
                     <?php endif; ?>
                     <a href="/conferencepayments/edit/<?= $ticketUser->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
-                    <!-- Disable download -->
-                    <?php if ($user == '10') : ?>
-                      <button onclick="handleDelete('<?= $ticketUser->id; ?>')" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
-                    <?php endif; ?>
                   </td>
                 </tr>
               <?php endforeach; ?>
