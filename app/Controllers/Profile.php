@@ -17,7 +17,7 @@ class Profile extends BaseController
       'image' => 'permit_empty|max_size[image,3072]|is_image[image]',
       'gender' => 'required|in_list[0,1,2]',
       'callingcode' => 'required|alpha_numeric_punct',
-      'role_id' => 'required|is_not_unique[roles.id]',
+      'role_id' => 'permit_empty|is_not_unique[roles.id]',
     ],
   ];
 
@@ -33,7 +33,10 @@ class Profile extends BaseController
     return view('profile/index', [
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
       'title' => 'Profile',
-      'roles' => Role::where('id', '!=', 1)->get(),
+      'roles' => Role::where([
+        ['code', '!=', 0],
+        ['code', '!=', 1]
+      ])->get(),
     ]);
   }
 
@@ -71,6 +74,12 @@ class Profile extends BaseController
       $validInput['image'] = $files['image'];
     }
 
+    if (!isset($validInput['role_id'])) {
+      unset($validInput['role_id']);
+    }
+
+    $user->update($validInput);
+
     // set mail
     $mail = set_mail(
       'Your account has been updated',
@@ -84,7 +93,6 @@ class Profile extends BaseController
       return redirect()->back()->withInput()->with('message', 'Failed to send email, please make sure your email is valid and try again. If the problem persists, please contact our customer service.');
     }
 
-    $user->update($validInput);
 
     // redirect
     return redirect()->to('/profile/index')->with('message', 'User data has been updated successfully');
