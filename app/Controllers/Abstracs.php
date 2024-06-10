@@ -123,7 +123,7 @@ class Abstracs extends BaseController
     }
 
     $validInput['status_id'] = Status::where('code', '5')->first()->id;
-    // Abstrac::create($validInput);
+    Abstrac::create($validInput);
 
     // send email to user
     $emails = $validInput['emails'];
