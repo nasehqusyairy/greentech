@@ -80,7 +80,7 @@ class ConferencePayments extends BaseController
     TicketUser::create($validInput);
 
     // send email to user
-    $user = User::where('user_id', $validInput['user_id']);
+    $user = User::where('id', $validInput['user_id']);
     $email = $user->email;
 
     $mail = set_mail(
@@ -95,9 +95,10 @@ class ConferencePayments extends BaseController
     }
 
     // redirect
-    return redirect()->to('/conferencepayments/')->with('messages', ['success'=>'Abstract data has been saved successfully',
-    'error'=>$error
-  ]);
+    return redirect()->to('/conferencepayments/')->with('messages', [
+      'success' => 'Abstract data has been saved successfully',
+      'error' => $error
+    ]);
   }
 
   public function edit($id = null)
