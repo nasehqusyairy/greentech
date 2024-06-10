@@ -33,6 +33,7 @@ class ConferencePayments extends BaseController
   {
     // main view
     return view('conferencepayments/index', [
+      'user' => $this->getUser(),
       'ticketUsers' => TicketUser::with('abstrac', 'status', 'user', 'ticket')->get(),
       'deleted' => TicketUser::onlyTrashed()->get(),
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
