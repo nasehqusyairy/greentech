@@ -234,7 +234,7 @@ $this->section('footer');
     });
   }
   showColumns('available');
-  showColumns('deleted');
+  showColumns('deleted');  
 </script>
 <script>
   const handleDelete = (id) => document.querySelector('#deleteModal .modal-footer a').href = '<?= base_url(); ?>' + 'users/delete/' + id;
