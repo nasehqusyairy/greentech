@@ -191,7 +191,7 @@ class Users extends BaseController
 
     // send email
     if (!send_email($mail, $validInput['email'])) {
-      return redirect()->back()->withInput()->with('message', 'Failed to send email, please make sure your email is valid and try again. If the problem persists, please contact our customer service.');
+      return redirect()->back()->withInput()->with('errors', ['Failed to send email, please make sure your email is valid and try again. If the problem persists, please contact our customer service.']);
     }
 
     // redirect
