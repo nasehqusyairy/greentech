@@ -116,12 +116,6 @@ class Auth extends BaseController
         'isActive' => 1
       ];
 
-      // get callingcode from https://restcountries.com/v3.1/all?fields=name,cca2,idd by country code
-      if (!empty($google_account_info->locale)) {
-        $country = json_decode(file_get_contents('https://restcountries.com/v3.1/alpha/' . $google_account_info->locale . '?fields=name,cca2,idd'));
-        $preparedData['callingcode'] = $country->idd->root . $country->idd->suffixes[0];
-      }
-
       // Lakukan sesuatu dengan data akun Google yang diterima
       $user = User::where('email', $google_account_info->email)->first();
       if (!$user) {

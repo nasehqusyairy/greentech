@@ -26,7 +26,7 @@ if (session()->has('errors')) : ?>
         <select name="ticket_id" id="ticket" class="form-select">
           <option value="">Select Ticket</option>
           <?php foreach ($tickets as $ticket) : ?>
-            <option value="<?= $ticket->id; ?>" <?= $ticket->id == old('ticket_id') ? 'selected' : ''; ?>><?= $ticket->name; ?></option>
+            <option value="<?= $ticket->id; ?>" <?= $ticket->id == old('ticket_id', $ticket->id) ? 'selected' : ''; ?>><?= $ticket->name; ?></option>
           <?php endforeach; ?>
         </select>
       </div>
@@ -54,10 +54,10 @@ $this->section('footer');
 ?>
 <script>
   // select2
-  // $('#ticket').select2({
-  //   theme: 'bootstrap-5',
-  //   width: '100%'
-  // });
+  $('#ticket').select2({
+    theme: 'bootstrap-5',
+    width: '100%'
+  });
 
   $('#status').select2({
     theme: 'bootstrap-5',
