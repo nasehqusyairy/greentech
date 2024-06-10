@@ -80,7 +80,7 @@ class ConferencePayments extends BaseController
     TicketUser::create($validInput);
 
     // send email to user
-    $user = User::where('id', $validInput['user_id']);
+    $user = User::where('id', $validInput['user_id'])->first();
     $email = $user->email;
 
     $mail = set_mail(
@@ -94,11 +94,14 @@ class ConferencePayments extends BaseController
       $error = 'Failed to send email to ' . $email . ', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
     }
 
+    $response = [
+      'success' => 'Payment data has been saved successfully',
+    ];
+
+    if (isset($error)) $response['error'] = $error;
+
     // redirect
-    return redirect()->to('/conferencepayments/')->with('messages', [
-      'success' => 'Abstract data has been saved successfully',
-      'error' => $error
-    ]);
+    return redirect()->to('/conferencepayments/')->with('messages', $response);
   }
 
   public function edit($id = null)
@@ -109,6 +112,10 @@ class ConferencePayments extends BaseController
     // throw error if the data is not found
     if ($id == null || !$ticketUser)
       throw new PageNotFoundException();
+
+    if ($ticketUser->status->code == 4) {
+      return redirect()->to('/conferencepayments/')->with('message', 'Payment data has been confirmed, cannot be edited');
+    }
 
     // return view
     return view('conferencepayments/edit', [
