@@ -228,6 +228,7 @@ class Users extends BaseController
 
   public function export()
   {
+    $countries = countries();
     $users = User::with('role')->where('role_id', '!=', 0)->where('isActive', 1)->get();
 
     // set header to xls
@@ -236,6 +237,7 @@ class Users extends BaseController
 
     return view('users/export', [
       'users' => $users,
+      'countries' => $countries
     ]);
   }
 }

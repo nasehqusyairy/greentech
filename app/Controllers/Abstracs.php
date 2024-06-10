@@ -130,7 +130,7 @@ class Abstracs extends BaseController
     $emailArray = explode(',', $emails);
     $emails = array_map('trim', $emailArray);
     $title = $validInput['title'];
-    
+
     $mail = set_mail(
       'Your Abstract Succecfully Submitted',
       "Hello! $title has been submited. If you did not make this change, please contact our customer service.",
@@ -138,16 +138,17 @@ class Abstracs extends BaseController
       'Go to Abstract'
     );
 
-    foreach($emails as $email){
+    foreach ($emails as $email) {
       if (!send_email($mail, $email)) {
-        $error = 'Failed to send email to '.$email.', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
+        $error = 'Failed to send email to ' . $email . ', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
       }
-     }
-    
+    }
+
     // redirect
-    return redirect()->to('/abstracs/')->with('messages', ['success'=>'Abstract data has been saved successfully',
-    'error'=>$error
-  ]);
+    return redirect()->to('/abstracs/')->with('messages', [
+      'success' => 'Abstract data has been saved successfully',
+      'error' => $error
+    ]);
   }
 
   public function edit($id = null)
