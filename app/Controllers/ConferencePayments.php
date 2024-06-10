@@ -146,4 +146,19 @@ class ConferencePayments extends BaseController
     // redirect
     return redirect()->to('/conferencepayments/')->with('message', 'Payment data has been restored successfully');
   }
+
+  public function confirm($id = null)
+  {
+    // find data
+    $ticketUser = TicketUser::find($id);
+
+    // throw error if the data is not found
+    if (!$ticketUser) throw new PageNotFoundException();
+
+    // manipulate data here
+    $ticketUser->status_id = Status::where('code', '4')->first()->id;
+    $ticketUser->save();
+
+    return redirect()->to('/conferencepayments/')->with('message', 'Payment data has been confirmed successfully');
+  }
 }
