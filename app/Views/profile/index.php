@@ -122,6 +122,8 @@ if (!empty($message)) :
     gender: '<?= $gender; ?>',
     country: '<?= $country; ?>',
   }
+
+  const data = <?= json_encode(countries()); ?>;
   // select2 role
   $('#role').select2({
     theme: 'bootstrap-5',
