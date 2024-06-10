@@ -143,12 +143,15 @@ class Abstracs extends BaseController
         $error = 'Failed to send email to ' . $email . ', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
       }
     }
+    $response = [
+      'success' => 'Abstract data has been saved successfully',
+    ];
+
+    if (isset($error)) $response['error'] = $error;
 
     // redirect
-    return redirect()->to('/abstracs/')->with('messages', [
-      'success' => 'Abstract data has been saved successfully',
-      'error' => $error
-    ]);
+    return redirect()->to('/abstracs/')->with('messages', $response);
+
   }
 
   public function edit($id = null)

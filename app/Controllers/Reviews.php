@@ -217,8 +217,15 @@ class Reviews extends BaseController
       }
      }
 
+     $response = [
+      'success' => 'Abstract data has been saved successfully',
+    ];
+
+    if (isset($error)) $response['error'] = $error;
+
     // redirect
-    return redirect()->to("/reviews/?abstract_id=" . $review->abstrac->id)->with('message', 'Review data has been updated successfully');
+    return redirect()->to('/reviews/?abstract_id=' . $review->abstrac->id)->with('messages', $response);
+   
   }
 
   public function delete($id = null)

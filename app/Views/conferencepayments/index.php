@@ -5,7 +5,6 @@
  */
 $this->extend('components/layout');
 $this->section('content');
-$user = $user->role->code;
 
 ?>
 <?php
@@ -16,25 +15,29 @@ if (!empty($message)) : ?>
   </div>
 <?php endif;
 
-if (session()->has('messages')) :
-  $successMsg = session('messages')['success'];
+if (session()->has('messages')) :  
 ?>
-  <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
-    <?= $successMsg ?>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-  <?php if (!empty(session('error'))) : ?>
+  <?php if (!empty(session('messages')['error'])) : ?>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
       <?= session('messages')['error'] ?>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   <?php endif; ?>
+  <?php if (!empty(session('messages')['success'])) : ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <?= session('messages')['success'] ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif; ?>
+  
 <?php endif ?>
 
 <div class="card">
   <div class="card-body">
     <div class="mb-3">
+      <?php if($user->role->code == '3') : ?>
       <a href="/conferencepayments/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Payment</a>
+      <?php endif ?>
     </div>
     <ul class="nav nav-tabs" id="tab">
       <li class="nav-item">
@@ -80,14 +83,10 @@ if (session()->has('messages')) :
                     <?= badge($ticketUser->status->text, $ticketUser->status->color) ?>
                   </td>
                   <td>
-                    <?php if ($user == '0' || $user == '1') : ?>
+                    <?php if ($user->role->code == '0' || $user->role->code == '1') : ?>
                       <a href="/conferencepayments/confirm/<?= $ticketUser->id ?>" class="btn btn-primary mb-1"><i class="bi bi-check-all"></i></a>
                     <?php endif; ?>
                     <a href="/conferencepayments/edit/<?= $ticketUser->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
-                    <!-- Disable download -->
-                    <?php if ($user == '10') : ?>
-                      <button onclick="handleDelete('<?= $ticketUser->id; ?>')" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
-                    <?php endif; ?>
                   </td>
                 </tr>
               <?php endforeach; ?>

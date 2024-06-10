@@ -40,7 +40,6 @@ class ConferencePayments extends BaseController
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
       'title' => 'Conference Payments'
     ]);
-    // dd(TicketUser::all()->toArray());
   }
 
   public function create()
@@ -113,6 +112,10 @@ class ConferencePayments extends BaseController
     // throw error if the data is not found
     if ($id == null || !$ticketUser)
       throw new PageNotFoundException();
+
+    if ($ticketUser->status->code == 4) {
+      return redirect()->to('/conferencepayments/')->with('message', 'Payment data has been confirmed, cannot be edited');
+    }
 
     // return view
     return view('conferencepayments/edit', [
