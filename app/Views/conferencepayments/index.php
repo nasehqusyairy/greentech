@@ -16,19 +16,21 @@ if (!empty($message)) : ?>
   </div>
 <?php endif;
 
-if (session()->has('messages')) :
-  $successMsg = session('messages')['success'];
+if (session()->has('messages')) :  
 ?>
-  <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
-    <?= $successMsg ?>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-  <?php if (!empty(session('error'))) : ?>
+  <?php if (!empty(session('messages')['error'])) : ?>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
       <?= session('messages')['error'] ?>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   <?php endif; ?>
+  <?php if (!empty(session('messages')['success'])) : ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <?= session('messages')['success'] ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif; ?>
+  
 <?php endif ?>
 
 <div class="card">
