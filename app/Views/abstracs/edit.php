@@ -22,7 +22,6 @@ if (session()->has('errors')) : ?>
 <form action="<?= base_url('abstracs/update/' . $abstract->id); ?>" method="post" enctype="multipart/form-data">
   <?= csrf_field(); ?>
   <input type="hidden" name="id" value="<?= $abstract->id; ?>">
-  <input type="hidden" name="creator_id" value="<?= session('user'); ?>">
   <div class="card mb-3">
     <div class="card-body">
       <?php if ($user == '3') : ?>
@@ -76,7 +75,7 @@ if (session()->has('errors')) : ?>
         </div>
       <?php endif ?>
       <div class="d-grid d-lg-block gap-2">
-        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="submit" class="btn btn-primary">Save</button>
         <a href="<?= base_url('abstracs'); ?>" class="btn btn-secondary">Cancel</a>
       </div>
     </div>

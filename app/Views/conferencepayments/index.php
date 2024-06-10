@@ -67,6 +67,7 @@ if (!empty($message)) : ?>
                     <?= badge($ticketUser->status->text,  $ticketUser->status->color) ?>
                   </td>
                   <td>
+                    <a href="#" class="btn btn-primary mb-1"><i class="bi bi-check-all"></i></a>
                     <a href="/conferencepayments/edit/<?= $ticketUser->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
                     <button onclick="handleDelete('<?= $ticketUser->id; ?>')" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                   </td>
@@ -82,6 +83,7 @@ if (!empty($message)) : ?>
             <thead>
               <tr>
                 <th>#</th>
+                <th>Created At</th>
                 <th>Name</th>
                 <th>Ticket</th>
                 <th>Proof</th>
