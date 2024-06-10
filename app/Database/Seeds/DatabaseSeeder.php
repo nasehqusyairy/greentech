@@ -75,6 +75,15 @@ class DatabaseSeeder extends Seeder
             'gender' => 0,
             'role_id' => 3,
         ]);
+        $this->db->table('users')->insert([
+            'name' => 'Listener',
+            'email' => 'listener@greentech.com',
+            'password' => password_hash('password', PASSWORD_DEFAULT),
+            'image' => null,
+            'isActive' => 1,
+            'gender' => 0,
+            'role_id' => 5,
+        ]);
 
 
         // menus
@@ -85,6 +94,7 @@ class DatabaseSeeder extends Seeder
             'Status',
             'Ticket',
             'Setting',
+            'Listener',
         ];
 
         foreach ($menus as $key => $menu) {
@@ -295,6 +305,27 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        // setting's submenus
+        $conferencepaymentsSubmenus = [
+            '19' => [
+                'name' => 'Conference Payment',
+                'url'  => 'conferencepayments',
+                'icon' => 'bi bi-soundwave'
+            ],        
+        ];
+
+        foreach ($conferencepaymentsSubmenus as $key => $submenu) {
+            $menu_id = $this->db->table('menus')->where('name', 'Listener')->get()->getRow()->id;
+
+            $this->db->table('submenus')->insert([
+                'menu_id' => $menu_id,
+                'code' => $key,
+                'name' => ucfirst($submenu['name']),
+                'url' => $submenu['url'],
+                'icon' => $submenu['icon'],
+            ]);
+        }
+
         // menu_role
         $menuRoles = [
             ['role' => 'Super Admin', 'menu' => $menus[0]],
@@ -316,6 +347,9 @@ class DatabaseSeeder extends Seeder
 
             // reviewer
             ['role' => 'Reviewer', 'menu' => $menus[0]],
+
+            // listener
+            ['role' => 'Listener', 'menu' => $menus[6]],
         ];
 
         foreach ($menuRoles as $key => $menuRole) {
@@ -381,8 +415,9 @@ class DatabaseSeeder extends Seeder
             ['text' => 'Waiting', 'color' => 'info', 'stype' => $stypes[3]],
             ['text' => 'Unpaid', 'color' => 'warning', 'stype' => $stypes[0]],
             ['text' => 'Paid', 'color' => 'success', 'stype' => $stypes[0]],
-            ['text' => 'Unsigned', 'color' => 'secondary', 'stype' => $stypes[3]],
-            ['text' => 'Reviewing', 'color' => 'info', 'stype' => $stypes[3]],
+            ['text' => 'Waiting', 'color' => 'info', 'stype' => $stypes[0]],
+            ['text' => 'Unsigned', 'color' => 'secondary', 'stype' => $stypes[1]],
+            ['text' => 'Reviewing', 'color' => 'info', 'stype' => $stypes[1]],
             ['text' => 'Need Revision', 'color' => 'warning', 'stype' => $stypes[1]],
             ['text' => 'Accepted', 'color' => 'success', 'stype' => $stypes[1]],
             ['text' => 'Rejected', 'color' => 'danger', 'stype' => $stypes[1]],

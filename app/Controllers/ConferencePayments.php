@@ -18,6 +18,9 @@ class ConferencePayments extends BaseController
     ],
     'update' => [
       'id' => 'required|is_not_unique[ticket_user.id]',
+      'ticket_id' => 'required|is_not_unique[tickets.id]',
+      'proof' => 'uploaded[proof]|ext_in[proof,pdf,doc,docx,png,jpg,jpeg]|max_size[proof,5120]',
+      'attachment' => 'uploaded[attachment]|max_size[attachment,5120]|ext_in[attachment,png,jpg,jpeg,pdf]',
     ],
   ];
 
@@ -31,6 +34,7 @@ class ConferencePayments extends BaseController
   {
     // main view
     return view('conferencepayments/index', [
+      'user' => $this->getUser(),
       'ticketUsers' => TicketUser::with('abstrac', 'status', 'user', 'ticket')->get(),
       'deleted' => TicketUser::onlyTrashed()->get(),
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
@@ -47,7 +51,7 @@ class ConferencePayments extends BaseController
       'statuses' => Status::whereHas('stype', function ($query) {
         $query->where('code', 0);
       })->get(),
-      'title' => 'New TicketUser'
+      'title' => 'New Payment'
     ]);
   }
 
@@ -109,7 +113,8 @@ class ConferencePayments extends BaseController
     // return view
     return view('conferencepayments/edit', [
       'ticketUser' => $ticketUser,
-      'title' => 'Edit TicketUser'
+      'tickets' => Ticket::all(),
+      'title' => 'Edit Payment'
     ]);
   }
 
@@ -133,7 +138,7 @@ class ConferencePayments extends BaseController
     $ticketUser->update($validInput);
 
     // redirect
-    return redirect()->to('/conferencepayments/')->with('message', 'TicketUser data has been updated successfully');
+    return redirect()->to('/conferencepayments/')->with('message', 'Payment data has been updated successfully');
   }
 
   public function delete($id = null)
@@ -149,7 +154,7 @@ class ConferencePayments extends BaseController
     $ticketUser->delete();
 
     // redirect
-    return redirect()->to('/conferencepayments/')->with('message', 'TicketUser data has been deleted successfully');
+    return redirect()->to('/conferencepayments/')->with('message', 'Payment data has been deleted successfully');
   }
   public function restore($id = null)
   {
@@ -163,6 +168,21 @@ class ConferencePayments extends BaseController
     $ticketUser->restore();
 
     // redirect
-    return redirect()->to('/conferencepayments/')->with('message', 'TicketUser data has been restored successfully');
+    return redirect()->to('/conferencepayments/')->with('message', 'Payment data has been restored successfully');
+  }
+
+  public function confirm($id = null)
+  {
+    // find data
+    $ticketUser = TicketUser::find($id);
+
+    // throw error if the data is not found
+    if (!$ticketUser) throw new PageNotFoundException();
+
+    // manipulate data here
+    $ticketUser->status_id = Status::where('code', '4')->first()->id;
+    $ticketUser->save();
+
+    return redirect()->to('/conferencepayments/')->with('message', 'Payment data has been confirmed successfully');
   }
 }
