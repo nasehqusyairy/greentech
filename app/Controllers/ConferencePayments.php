@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Status;
 use App\Models\Ticket;
+use App\Models\User;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use App\Models\TicketUser;
 
@@ -66,7 +67,8 @@ class ConferencePayments extends BaseController
     $validInput = $this->validInput(['proof', 'attachment']);
 
     // return response if the input is invalid
-    if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+    if (!$validInput)
+      return $this->invalidInputResponse($this->validator->getErrors());
 
     // manipulate data here
     $files = $this->upload(['proof', 'attachment']);
@@ -78,8 +80,29 @@ class ConferencePayments extends BaseController
 
     TicketUser::create($validInput);
 
+    // send email to user
+    $user = User::where('id', $validInput['user_id'])->first();
+    $email = $user->email;
+
+    $mail = set_mail(
+      'You have Successfully Purchased a Ticket',
+      "Congrats! Your ticket succesfully purchased. If you did not make this change, please contact our customer service.",
+      base_url('/conferencepayments/index'),
+      'Go to Conference Payment Page'
+    );
+
+    if (!send_email($mail, $email)) {
+      $error = 'Failed to send email to ' . $email . ', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
+    }
+
+    $response = [
+      'success' => 'Payment data has been saved successfully',
+    ];
+
+    if (isset($error)) $response['error'] = $error;
+
     // redirect
-    return redirect()->to('/conferencepayments/')->with('message', 'Payment data has been saved successfully');
+    return redirect()->to('/conferencepayments/')->with('messages', $response);
   }
 
   public function edit($id = null)
@@ -88,7 +111,8 @@ class ConferencePayments extends BaseController
     $ticketUser = TicketUser::find($id);
 
     // throw error if the data is not found
-    if ($id == null || !$ticketUser) throw new PageNotFoundException();
+    if ($id == null || !$ticketUser)
+      throw new PageNotFoundException();
 
     if ($ticketUser->status->code == 4) {
       return redirect()->to('/conferencepayments/')->with('message', 'Payment data has been confirmed, cannot be edited');
@@ -114,7 +138,8 @@ class ConferencePayments extends BaseController
     $validInput = $this->validInput();
 
     // return response if the input is invalid
-    if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+    if (!$validInput)
+      return $this->invalidInputResponse($this->validator->getErrors());
 
     // manipulate data here
     $ticketUser = TicketUser::find($validInput['id']);
@@ -130,7 +155,8 @@ class ConferencePayments extends BaseController
     $ticketUser = TicketUser::find($id);
 
     // throw error if the data is not found
-    if (!$ticketUser) throw new PageNotFoundException();
+    if (!$ticketUser)
+      throw new PageNotFoundException();
 
     // delete data
     $ticketUser->delete();
@@ -143,7 +169,8 @@ class ConferencePayments extends BaseController
     $ticketUser = TicketUser::withTrashed()->find($id);
 
     // throw error if the ticketUser is not found
-    if (!$ticketUser) throw new PageNotFoundException();
+    if (!$ticketUser)
+      throw new PageNotFoundException();
 
     // restore data
     $ticketUser->restore();

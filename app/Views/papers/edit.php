@@ -5,7 +5,6 @@
  */
 $this->extend('components/layout');
 $this->section('content');
-
 if (session()->has('errors')): ?>
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
     <ul class="m-0">

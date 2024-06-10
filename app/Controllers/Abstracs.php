@@ -125,8 +125,30 @@ class Abstracs extends BaseController
     $validInput['status_id'] = Status::where('code', '5')->first()->id;
     Abstrac::create($validInput);
 
+    // send email to user
+    $emails = $validInput['emails'];
+    $emailArray = explode(',', $emails);
+    $emails = array_map('trim', $emailArray);
+    $title = $validInput['title'];
+
+    $mail = set_mail(
+      'Your Abstract Succecfully Submitted',
+      "Hello! $title has been submited. If you did not make this change, please contact our customer service.",
+      base_url('/abstracs/index'),
+      'Go to Abstract'
+    );
+
+    foreach ($emails as $email) {
+      if (!send_email($mail, $email)) {
+        $error = 'Failed to send email to ' . $email . ', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
+      }
+    }
+
     // redirect
-    return redirect()->to('/abstracs/')->with('message', 'Abstract data has been saved successfully');
+    return redirect()->to('/abstracs/')->with('messages', [
+      'success' => 'Abstract data has been saved successfully',
+      'error' => $error
+    ]);
   }
 
   public function edit($id = null)

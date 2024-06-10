@@ -125,6 +125,25 @@ class Reviews extends BaseController
 
     $review = Review::create($validInput);
 
+    
+    // send email to user
+    $emails = $abstract->emails;
+    $emailArray = explode(',', $emails);
+    $emails = array_map('trim', $emailArray);
+
+    $mail = set_mail(
+      'Your Abstract Has Been Reviewed',
+      "Hello! $abstract->title has been reviewed. Lets check your progress!",
+      base_url('/abstracs/index'),
+      'Go to Abstract'
+    );
+
+     foreach($emails as $email){
+      if (!send_email($mail, $email)) {
+        return redirect()->back()->withInput()->with('message', 'Failed to send email, please make sure your email is valid and try again. If the problem persists, please contact our customer service.');
+      }
+     }  
+
     // redirect
     return redirect()->to("/reviews/?abstract_id=$review->abstrac_id")->with('message', 'Review data has been saved successfully');
   }
@@ -178,6 +197,25 @@ class Reviews extends BaseController
 
     $review->abstrac->status_id = $validInput['status_id'];
     $review->abstrac->save();
+
+    // send email to user
+    $abstrac = $review->abstrac;
+    $emails = $abstrac->emails;
+    $emailArray = explode(',', $emails);
+    $emails = array_map('trim', $emailArray);
+
+    $mail = set_mail(
+      'You Have Update in Your Abstrac Review',
+      "Hello! $abstrac->title review has been changed. Lets check your progress!",
+      base_url('/abstracs/index'),
+      'Go to Abstract'
+    );
+
+     foreach($emails as $email){
+      if (!send_email($mail, $email)) {
+        return redirect()->back()->withInput()->with('message', 'Failed to send email, please make sure your email is valid and try again. If the problem persists, please contact our customer service.');
+      }
+     }
 
     // redirect
     return redirect()->to("/reviews/?abstract_id=" . $review->abstrac->id)->with('message', 'Review data has been updated successfully');

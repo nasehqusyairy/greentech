@@ -14,7 +14,23 @@ if (!empty($message)) : ?>
     <?= $message ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
+<?php endif;
+
+if (session()->has('messages')) :
+  $successMsg = session('messages')['success'];
+?>
+  <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+    <?= $successMsg ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <?php if (!empty(session('error'))) : ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <?= session('messages')['error'] ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif; ?>
 <?php endif ?>
+
 <div class="card">
   <div class="card-body">
     <div class="mb-3">
@@ -61,7 +77,7 @@ if (!empty($message)) : ?>
                     </a>
                   </td>
                   <td>
-                    <?= badge($ticketUser->status->text,  $ticketUser->status->color) ?>
+                    <?= badge($ticketUser->status->text, $ticketUser->status->color) ?>
                   </td>
                   <td>
                     <?php if ($user == '0' || $user == '1') : ?>

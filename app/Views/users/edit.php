@@ -105,6 +105,7 @@ if (session()->has('errors')) : ?>
     gender: '<?= $gender ?>',
     country: '<?= $country ?>',
   }
+  const data = <?= json_encode(countries()); ?>;
   $('#role').select2({
     theme: 'bootstrap-5',
     width: '100%'

@@ -44,35 +44,6 @@ class AbstractPayments extends BaseController
     ]);
   }
 
-  public function create()
-  {
-    // create form
-    return view('abstractpayments/create', [
-      'title' => 'New Abstrac'
-    ]);
-  }
-
-  public function store()
-  {
-    // check if the request is POST
-    $this->isPostRequest();
-
-    // set validation rules
-    $this->validator->setRules($this->rule['store']);
-
-    // validated input
-    $validInput = $this->validInput();
-
-    // return response if the input is invalid
-    if (!$validInput)
-      return $this->invalidInputResponse($this->validator->getErrors());
-
-    // manipulate data here
-    Abstrac::create($validInput);
-
-    // redirect
-    return redirect()->to('/abstractpayments/')->with('message', 'Abstrac data has been saved successfully');
-  }
 
   public function pay($id = null)
   {
@@ -118,8 +89,43 @@ class AbstractPayments extends BaseController
     $abstrac = Abstrac::find($validInput['id']);
     $abstrac->update($validInput);
 
+    // send email to user
+    $emails = $abstrac->emails;
+    $emailArray = explode(',', $emails);
+    $emails = array_map('trim', $emailArray);
+    $title = $abstrac->title;
+
+    if($validInput['ticket_user_id'] != null){
+      $mail = set_mail(
+        'Your Abstract Proof of Payment has Been Uplouded',
+        "Hello! $title proof of payment has been uplouded. Let's check it!",
+        base_url('/abstractpayments/index'),
+        'Go to Abstract Payments'
+      );
+  
+      foreach($emails as $email){
+        if (!send_email($mail, $email)) {
+          $error = 'Failed to send email to '.$email.', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
+        }
+       }
+    }else{
+      $mail = set_mail(
+        'Your Abstract Payment Status has Been Changed',
+        "Hello! $title payment status has been changed. Let's check it!",
+        base_url('/abstractpayments/index'),
+        'Go to Abstract Payments'
+      );
+  
+      foreach($emails as $email){
+        if (!send_email($mail, $email)) {
+          $error = 'Failed to send email to '.$email.', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
+        }
+       }
+    }
     // redirect
-    return redirect()->to('/abstractpayments/')->with('message', 'Abstrac Payments data has been updated successfully');
+    return redirect()->to('/abstractpayments/')->with('messages', ['success'=>'Abstract data has been saved successfully',
+    'error'=>$error
+  ]);
   }
 
   public function delete($id = null)
@@ -136,19 +142,5 @@ class AbstractPayments extends BaseController
 
     // redirect
     return redirect()->to('/abstractpayments/')->with('message', 'Abstract Ticket has been deleted successfully');
-  }
-  public function restore($id = null)
-  {
-    $abstrac = Abstrac::withTrashed()->find($id);
-
-    // throw error if the abstrac is not found
-    if (!$abstrac)
-      throw new PageNotFoundException();
-
-    // restore data
-    $abstrac->restore();
-
-    // redirect
-    return redirect()->to('/abstractpayments/')->with('message', 'Abstrac data has been restored successfully');
   }
 }

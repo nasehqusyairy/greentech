@@ -54,10 +54,10 @@ $this->section('footer');
 ?>
 <script>
   // select2
-  $('#ticket').select2({
-    theme: 'bootstrap-5',
-    width: '100%'
-  });
+  // $('#ticket').select2({
+  //   theme: 'bootstrap-5',
+  //   width: '100%'
+  // });
 
   $('#status').select2({
     theme: 'bootstrap-5',

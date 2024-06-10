@@ -12,13 +12,27 @@ $user = $user->role->code;
     <?= $message ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
-<?php endif ?>
+<?php endif ;
+
+if (session()->has('messages')) :
+  $successMsg = session('messages')['success'];
+  $errorMsg = session('messages')['error'];
+  ?>
+    <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+    <?= $successMsg ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <?= $errorMsg ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif ?>
 
 <div class="card">
   <div class="card-body">
     <?php if ($user == '3'): ?>
     <div class="mb-3">
-      <a href="/papers/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Abstract</a>
+      <a href="/papers/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Paper</a>
     </div>
     <?php endif ?>
 
