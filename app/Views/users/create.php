@@ -50,6 +50,7 @@ if (session()->has('errors')) : ?>
         <label for="country" class="form-label">Country</label>
         <select class="form-select" id="country" name="country">
           <option value="" disabled selected>Select...</option>
+          <option value="ID">Indonesia (+62)</option>
         </select>
       </div>
       <input type="hidden" name="callingcode" id="callingcode" value="<?= old('callingcode'); ?>">
@@ -95,6 +96,8 @@ if (session()->has('errors')) : ?>
     gender: '<?= $gender ?>',
     country: '<?= $country ?>',
   }
+  const data = <?= json_encode(countries()); ?>;
+
   $('#role').select2({
     theme: 'bootstrap-5',
     width: '100%'

@@ -13,54 +13,55 @@ $('#gender').select2({
 });
 
 // Fetch countries data
-const url = 'https://restcountries.com/v3.1/all?fields=name,cca2,idd'
-fetch(url)
-  .then(response => response.json())
-  .then(data => {
+// const url = 'https://restcountries.com/v3.1/all?fields=name,cca2,idd'
+// fetch(url)
+//   .then(response => response.json())
+//   .then(data => {
 
-    const transformedData = [];
-    const selectedCountry = server.country.toUpperCase();
+const transformedData = [];
+const selectedCountry = server.country.toUpperCase();
 
-    data.forEach(entry => {
-      entry.idd.suffixes.forEach(suffix => {
-        transformedData.push({
-          cca2: entry.cca2,
-          name: entry.name.common,
-          callingcode: entry.idd.root + suffix
-        });
-      });
+data.forEach(entry => {
+  entry.idd.suffixes.forEach(suffix => {
+    transformedData.push({
+      cca2: entry.cca2,
+      name: entry.name.common,
+      callingcode: entry.idd.root + suffix
     });
+  });
+});
 
-    transformedData.sort((a, b) => a.name.localeCompare(b.name))
-      .map(country => {
-        const option = document.createElement('option');
-        option.value = country.cca2;
-        option.textContent = `${country.name} (${country.callingcode})`;
-        if (country.cca2 === selectedCountry) option.selected = true;
-        document.getElementById('country').appendChild(option);
-      });
+transformedData.sort((a, b) => a.name.localeCompare(b.name))
+  .map(country => {
+    const option = document.createElement('option');
+    option.value = country.cca2;
+    option.textContent = `${country.name} (${country.callingcode})`;
+    if (country.cca2 === selectedCountry) option.selected = true;
+    document.getElementById('country').appendChild(option);
+  });
 
-    const countrySelectField = $('#country')
+const countrySelectField = $('#country')
 
-    countrySelectField.select2({
-      theme: 'bootstrap-5',
-      width: '100%'
-    });
+countrySelectField.select2({
+  theme: 'bootstrap-5',
+  width: '100%'
+});
 
-    // Set default value
-    // countrySelectField.val('+62').trigger('change');
+// Set default value
+// countrySelectField.val('+62').trigger('change');
 
-    // Set phone add-on onchange
-    countrySelectField.change(function () {
-      const callingcode = transformedData.find(country => country.cca2 === this.value).callingcode;
-      $('#phone-addon').text(callingcode);
-      $('#callingcode').val(callingcode);
-    });
-    const callingcode = transformedData.find(country => country.cca2 === selectedCountry).callingcode;
-    $('#phone-addon').text(callingcode);
-    $('#callingcode').val(callingcode);
+// Set phone add-on onchange
+countrySelectField.change(function () {
+  const callingcode = transformedData.find(country => country.cca2 === this.value).callingcode;
+  $('#phone-addon').text(callingcode);
+  $('#callingcode').val(callingcode);
+});
 
-  })
+const callingcode = transformedData.find(country => country.cca2 === selectedCountry).callingcode;
+$('#phone-addon').text(callingcode);
+$('#callingcode').val(callingcode);
+
+// })
 
 // Image preview
 document.getElementById('image').addEventListener('change', function (event) {

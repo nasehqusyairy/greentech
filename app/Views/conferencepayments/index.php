@@ -8,12 +8,27 @@ $this->section('content');
 
 ?>
 <?php
-if (!empty($message)) : ?>
+if (!empty($message)): ?>
   <div class="alert alert-success alert-dismissible fade show">
     <?= $message ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
+<?php endif;
+
+if (session()->has('messages')):
+  $successMsg = session('messages')['success'];
+  $errorMsg = session('messages')['error'];
+  ?>
+  <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+    <?= $successMsg ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <?= $errorMsg ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
 <?php endif ?>
+
 <div class="card">
   <div class="card-body">
     <div class="mb-3">
@@ -23,7 +38,8 @@ if (!empty($message)) : ?>
     </div>
     <ul class="nav nav-tabs" id="tab">
       <li class="nav-item">
-        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#available-tab-pane" type="button">Available</button>
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#available-tab-pane"
+          type="button">Available</button>
       </li>
     </ul>
     <div class="tab-content" id="tabContent">
@@ -45,7 +61,7 @@ if (!empty($message)) : ?>
             <tbody>
               <?php
               $i = 1;
-              foreach ($ticketUsers as $ticketUser) : ?>
+              foreach ($ticketUsers as $ticketUser): ?>
                 <tr>
                   <td><?= $i++; ?></td>
                   <td><?= $ticketUser->created_at ?></td>
@@ -62,7 +78,7 @@ if (!empty($message)) : ?>
                     </a>
                   </td>
                   <td>
-                    <?= badge($ticketUser->status->text,  $ticketUser->status->color) ?>
+                    <?= badge($ticketUser->status->text, $ticketUser->status->color) ?>
                   </td>
                   <td>
                     <?php if ($user->role->code == '0' || $user->role->code == '1') : ?>
