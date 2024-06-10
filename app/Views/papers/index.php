@@ -12,28 +12,31 @@ $user = $user->role->code;
     <?= $message ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
-<?php endif ;
+<?php endif;
 
-if (session()->has('messages')) :
-  $successMsg = session('messages')['success'];
-  $errorMsg = session('messages')['error'];
+if (session()->has('messages')):
   ?>
-    <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
-    <?= $successMsg ?>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+  <?php if (!empty(session('messages')['error'])): ?>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <?= $errorMsg ?>
+      <?= session('messages')['error'] ?>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-  <?php endif ?>
+  <?php endif; ?>
+  <?php if (!empty(session('messages')['success'])): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <?= session('messages')['success'] ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif; ?>
+
+<?php endif ?>
 
 <div class="card">
   <div class="card-body">
     <?php if ($user == '3'): ?>
-    <div class="mb-3">
-      <a href="/papers/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Paper</a>
-    </div>
+      <div class="mb-3">
+        <a href="/papers/create" class="btn btn-primary"><i class="bi bi-plus"></i>New Paper</a>
+      </div>
     <?php endif ?>
 
     <ul class="nav nav-tabs" id="tab">
@@ -42,9 +45,9 @@ if (session()->has('messages')) :
           type="button">Available</button>
       </li>
       <?php if ($user == '0' || $user == '1'): ?>
-      <li class="nav-item">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#deleted-tab-pane" type="button">Deleted</button>
-      </li>
+        <li class="nav-item">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#deleted-tab-pane" type="button">Deleted</button>
+        </li>
       <?php endif ?>
     </ul>
     <div class="tab-content" id="tabContent">
@@ -82,8 +85,8 @@ if (session()->has('messages')) :
                   </td>
                   <td class="text-nowrap">
                     <?php //if ($user == '3'): ?>
-                      <a href="/papers/edit/<?= $paper->id ?>" title="Edit" class="btn btn-warning mb-1"><i
-                          class="bi bi-pencil"></i></a>
+                    <a href="/papers/edit/<?= $paper->id ?>" title="Edit" class="btn btn-warning mb-1"><i
+                        class="bi bi-pencil"></i></a>
                     <?php //endif ?>
                     <?php if ($user == '0' || $user == '1'): ?>
                       <button onclick="handleDelete(<?= $paper->id; ?>)" title="Delete" class="btn btn-danger"
@@ -130,8 +133,7 @@ if (session()->has('messages')) :
                     <?= $paper->status ? badge($paper->status->text, $paper->status->color) : badge('Unknown', 'secondary') ?>
                   </td>
                   <td>
-                    <a href="<?= base_url('papers/restore/' . $paper->id); ?>" title="Restore"
-                      class="btn btn-secondary">
+                    <a href="<?= base_url('papers/restore/' . $paper->id); ?>" title="Restore" class="btn btn-secondary">
                       <i class="bi bi-arrow-repeat"></i>
                     </a>
                   </td>

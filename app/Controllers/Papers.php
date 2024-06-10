@@ -131,11 +131,14 @@ class Papers extends BaseController
       }
     }
 
+    $response = [
+      'success' => 'Payment data has been updated successfully',
+    ];
+
+    if (isset($error)) $response['error'] = $error;
+
     // redirect
-    return redirect()->to('/papers/')->with('messages', [
-      'success' => 'Abstract data has been saved successfully',
-      'error' => $error
-    ]);
+    return redirect()->to('/papers/')->with('messages', $response);
   }
 
   public function edit($id = null)
@@ -215,8 +218,14 @@ class Papers extends BaseController
       }
     }
 
+    $response = [
+      'success' => 'Payment data has been updated successfully',
+    ];
+
+    if (isset($error)) $response['error'] = $error;
+
     // redirect
-    return redirect()->to('/papers/')->with('message', 'Paper data has been updated successfully');
+    return redirect()->to('/papers/')->with('messages', $response);
   }
 
   public function delete($id = null)

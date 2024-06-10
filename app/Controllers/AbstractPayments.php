@@ -125,10 +125,14 @@ class AbstractPayments extends BaseController
         }
        }
     }
+    $response = [
+      'success' => 'Payment data has been updated successfully',
+    ];
+
+    if (isset($error)) $response['error'] = $error;
+
     // redirect
-    return redirect()->to('/abstractpayments/')->with('messages', ['success'=>'Abstract data has been saved successfully',
-    'error'=>$error
-  ]);
+    return redirect()->to('/abstractpayments/')->with('messages', $response);
   }
 
   public function delete($id = null)
