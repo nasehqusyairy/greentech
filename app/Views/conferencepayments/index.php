@@ -23,7 +23,7 @@ if (!empty($message)) : ?>
     <ul class="nav nav-tabs" id="tab">
       <li class="nav-item">
         <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#available-tab-pane" type="button">Available</button>
-      </li>      
+      </li>
     </ul>
     <div class="tab-content" id="tabContent">
       <div class="tab-pane fade show active" id="available-tab-pane">
@@ -64,13 +64,13 @@ if (!empty($message)) : ?>
                     <?= badge($ticketUser->status->text,  $ticketUser->status->color) ?>
                   </td>
                   <td>
-                    <?php if ($user == '0' || $user == '1' ) : ?>
-                      <a href="#" class="btn btn-primary mb-1"><i class="bi bi-check-all"></i></a>
+                    <?php if ($user == '0' || $user == '1') : ?>
+                      <a href="/conferencepayments/confirm/<?= $ticketUser->id ?>" class="btn btn-primary mb-1"><i class="bi bi-check-all"></i></a>
                     <?php endif; ?>
                     <a href="/conferencepayments/edit/<?= $ticketUser->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
                     <!-- Disable download -->
-                    <?php if ($user == '10' ) : ?> 
-                    <button onclick="handleDelete('<?= $ticketUser->id; ?>')" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <?php if ($user == '10') : ?>
+                      <button onclick="handleDelete('<?= $ticketUser->id; ?>')" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                     <?php endif; ?>
                   </td>
                 </tr>
