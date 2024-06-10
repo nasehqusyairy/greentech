@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Status;
 use App\Models\TicketUser;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use App\Models\Abstrac;
@@ -35,7 +36,7 @@ class AbstractPayments extends BaseController
 
     return view('abstractpayments/index', [
       'abstracs' => $abstract->whereHas('status', function ($query) {
-        $query->where('code', '8');
+        $query->where('code', '9');
       })->get()->sortBy('topic_id'),
       'user' => $user,
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
@@ -61,6 +62,8 @@ class AbstractPayments extends BaseController
     $ticketUsers = $ticketUsers->reject(function ($ticketUser) use ($usedTicketUser) {
       return in_array($ticketUser->id, $usedTicketUser);
     });
+
+    $abstrac->status_id = Status::where('code', '4')->first()->id;
 
     // return view
     return view('abstractpayments/pay', [
