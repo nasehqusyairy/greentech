@@ -84,9 +84,13 @@ if (session()->has('messages')) :
                   </td>
                   <td>
                     <?php if ($user->role->code == '0' || $user->role->code == '1') : ?>
-                      <a href="/conferencepayments/confirm/<?= $ticketUser->id ?>" class="btn btn-primary mb-1"><i class="bi bi-check-all"></i></a>
+                      <button onclick="handleConfirmation(<?= $ticketUser->id; ?>)" title="Confirm" class="btn btn-primary mb-1"
+                      data-bs-toggle="modal" data-bs-target="#confirmationModal"><i class="bi bi-check-all"></i></button>
+                      <!-- <a href="/conferencepayments/confirm/<?= $ticketUser->id ?>" class="btn btn-primary mb-1"><i class="bi bi-check-all"></i></a> -->
                     <?php endif; ?>
+                    <?php if ($user->role->code == '3' || $user->role->code == '4') : ?>
                     <a href="/conferencepayments/edit/<?= $ticketUser->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
+                    <?php endif; ?>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -97,34 +101,31 @@ if (session()->has('messages')) :
     </div>
   </div>
 </div>
-<!-- DELETE MODAL -->
-<div class="modal fade" id="deleteModal">
+<!-- CONFIRMATION MODAL -->
+<div class="modal fade" id="confirmationModal">
   <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Delete</h5>
+        <h5 class="modal-title">Confirmation</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <p>Are you sure you want to delete this item?</p>
+        <p>Are you sure you want to Confirm this item?</p>
       </div>
       <div class="modal-footer">
-        <a href="javascript:void(0)" class="btn btn-danger">Delete</a>
+        <a href="javascript:void(0)" class="btn btn-primary">Confirm</a>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>
 </div>
-<!-- END OF DELETE MODAL -->
+<!-- END OF CONFIRMATION MODAL -->
 <?php
 $this->endSection();
 $this->section('footer');
 ?>
 <script>
-  const handleDelete = (id) => document.querySelector('#deleteModal .modal-footer a').href = '<?= base_url(); ?>' + 'conferencepayments/delete/' + id;
-  // DataTables
-  const table = new DataTable('#available');
-  const table_deleted = new DataTable('#deleted');
+  const handleConfirmation = (id) => document.querySelector('#confirmModal .modal-footer a').href = '<?= base_url(); ?>' + 'conferencepayments/confirm/' + id;
 </script>
 <?php
 $this->endSection();
