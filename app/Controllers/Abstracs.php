@@ -220,7 +220,7 @@ class Abstracs extends BaseController
         unset($validInput['file']);
       } else {
         if ($abstrac->file && str_contains($abstrac->file, base_url())) {
-          unlink(FCPATH . str_replace('/', '\\', str_replace(base_url(), '', $abstrac->file)));
+          // unlink(FCPATH . str_replace('/', '\\', str_replace(base_url(), '', $abstrac->file)));
         }
         $validInput['file'] = $files['file'];
       }
