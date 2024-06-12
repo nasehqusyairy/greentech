@@ -32,10 +32,18 @@ class ConferencePayments extends BaseController
 
   public function index()
   {
+    $ticket = TicketUser::with('abstrac', 'status', 'user', 'ticket');
+
+    $user = $this->getUser();
+
+    if ($user->role->code == 3 || $user->role->code == 4) {
+      $ticket = $ticket->where('user_id', $user->id);
+    } 
+
     // main view
     return view('conferencepayments/index', [
       'user' => $this->getUser(),
-      'ticketUsers' => TicketUser::with('abstrac', 'status', 'user', 'ticket')->get(),
+      'ticketUsers' => $ticket->get()->sortByDesc('created_at'),
       'deleted' => TicketUser::onlyTrashed()->get(),
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
       'title' => 'Conference Payments'
@@ -185,6 +193,11 @@ class ConferencePayments extends BaseController
 
     // throw error if the data is not found
     if (!$ticketUser) throw new PageNotFoundException();
+    
+
+    if($ticketUser->status_id == 4){
+      return redirect()->to('/conferencepayments/')->with('message', "This ticket already confirmed");
+    }
 
     // manipulate data here
     $ticketUser->status_id = Status::where('code', '4')->first()->id;

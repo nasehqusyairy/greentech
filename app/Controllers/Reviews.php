@@ -43,7 +43,8 @@ class Reviews extends BaseController
     // Mendapatkan nilai query string
     $abstract_id = $request->getGet('abstract_id');
     $abstract = Abstrac::find($abstract_id);
-    if (!$abstract) throw new PageNotFoundException();
+    if (!$abstract)
+      throw new PageNotFoundException();
     return $abstract;
   }
 
@@ -108,7 +109,8 @@ class Reviews extends BaseController
     $validInput = $this->validInput(['file']);
 
     // return response if the input is invalid
-    if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+    if (!$validInput)
+      return $this->invalidInputResponse($this->validator->getErrors());
 
     // manipulate data here
     $files = $this->upload(['file']);
@@ -125,7 +127,7 @@ class Reviews extends BaseController
 
     $review = Review::create($validInput);
 
-    
+
     // send email to user
     $emails = $abstract->emails;
     $emailArray = explode(',', $emails);
@@ -138,14 +140,21 @@ class Reviews extends BaseController
       'Go to Abstract'
     );
 
-     foreach($emails as $email){
+    foreach ($emails as $email) {
       if (!send_email($mail, $email)) {
-        return redirect()->back()->withInput()->with('message', 'Failed to send email, please make sure your email is valid and try again. If the problem persists, please contact our customer service.');
+        $error = 'Failed to send email to ' . $email . ', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
       }
-     }  
+    }
+
+    $response = [
+      'success' => 'Review data has been saved successfully',
+    ];
+
+    if (isset($error))
+      $response['error'] = $error;
 
     // redirect
-    return redirect()->to("/reviews/?abstract_id=$review->abstrac_id")->with('message', 'Review data has been saved successfully');
+    return redirect()->to("/reviews/?abstract_id=$review->abstrac_id")->with('messages', $response);
   }
 
   public function edit($id = null)
@@ -156,7 +165,8 @@ class Reviews extends BaseController
     // dd($review->toArray());
 
     // throw error if the data is not found
-    if ($id == null || !$review) throw new PageNotFoundException();
+    if ($id == null || !$review)
+      throw new PageNotFoundException();
     $abstract = $this->getAbstract();
 
     // return view
@@ -182,7 +192,8 @@ class Reviews extends BaseController
     $validInput = $this->validInput(['file']);
 
     // return response if the input is invalid
-    if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+    if (!$validInput)
+      return $this->invalidInputResponse($this->validator->getErrors());
 
     // manipulate data here
     $files = $this->upload(['file']);
@@ -211,21 +222,22 @@ class Reviews extends BaseController
       'Go to Abstract'
     );
 
-     foreach($emails as $email){
+    foreach ($emails as $email) {
       if (!send_email($mail, $email)) {
-        return redirect()->back()->withInput()->with('message', 'Failed to send email, please make sure your email is valid and try again. If the problem persists, please contact our customer service.');
+        $error = 'Failed to send email to ' . $email . ', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
       }
-     }
+    }
 
-     $response = [
-      'success' => 'Abstract data has been saved successfully',
+    $response = [
+      'success' => 'Review data has been saved successfully',
     ];
 
-    if (isset($error)) $response['error'] = $error;
+    if (isset($error))
+      $response['error'] = $error;
 
     // redirect
-    return redirect()->to('/reviews/?abstract_id=' . $review->abstrac->id)->with('messages', $response);
-   
+    return redirect()->to("/reviews/?abstract_id=$review->abstrac_id")->with('messages', $response);
+
   }
 
   public function delete($id = null)
@@ -234,7 +246,8 @@ class Reviews extends BaseController
     $review = Review::find($id);
 
     // throw error if the data is not found
-    if (!$review) throw new PageNotFoundException();
+    if (!$review)
+      throw new PageNotFoundException();
 
     // delete data
     $review->delete();
@@ -247,7 +260,8 @@ class Reviews extends BaseController
     $review = Review::withTrashed()->find($id);
 
     // throw error if the review is not found
-    if (!$review) throw new PageNotFoundException();
+    if (!$review)
+      throw new PageNotFoundException();
 
     // restore data
     $review->restore();

@@ -75,6 +75,8 @@ class DatabaseSeeder extends Seeder
             'gender' => 0,
             'role_id' => 3,
         ]);
+
+        //make 1 Listener
         $this->db->table('users')->insert([
             'name' => 'Listener',
             'email' => 'listener@greentech.com',
@@ -83,6 +85,17 @@ class DatabaseSeeder extends Seeder
             'isActive' => 1,
             'gender' => 0,
             'role_id' => 5,
+        ]);
+
+        //make 1 Admin
+        $this->db->table('users')->insert([
+            'name' => 'Admin',
+            'email' => 'admin1@greentech.com',
+            'password' => password_hash('password', PASSWORD_DEFAULT),
+            'image' => null,
+            'isActive' => 1,
+            'gender' => 0,
+            'role_id' => 2,
         ]);
 
 
@@ -95,6 +108,7 @@ class DatabaseSeeder extends Seeder
             'Ticket',
             'Setting',
             'Listener',
+            'Admin',
         ];
 
         foreach ($menus as $key => $menu) {
@@ -310,12 +324,33 @@ class DatabaseSeeder extends Seeder
             '19' => [
                 'name' => 'Conference Payment',
                 'url'  => 'conferencepayments',
-                'icon' => 'bi bi-soundwave'
-            ],        
+                'icon' => 'bi bi-currency-dollar',
+            ],
         ];
 
         foreach ($conferencepaymentsSubmenus as $key => $submenu) {
             $menu_id = $this->db->table('menus')->where('name', 'Listener')->get()->getRow()->id;
+
+            $this->db->table('submenus')->insert([
+                'menu_id' => $menu_id,
+                'code' => $key,
+                'name' => ucfirst($submenu['name']),
+                'url' => $submenu['url'],
+                'icon' => $submenu['icon'],
+            ]);
+        }
+
+        // Admin submenus
+        $AdminSubmenus = [
+            '20' => [
+                'name' => 'systems',
+                'url' => 'systems',
+                'icon' => 'bi bi-gear'
+            ],
+        ];
+
+        foreach ($AdminSubmenus as $key => $submenu) {
+            $menu_id = $this->db->table('menus')->where('name', 'Admin')->get()->getRow()->id;
 
             $this->db->table('submenus')->insert([
                 'menu_id' => $menu_id,
@@ -335,11 +370,13 @@ class DatabaseSeeder extends Seeder
             ['role' => 'Super Admin', 'menu' => $menus[4]],
             ['role' => 'Super Admin', 'menu' => $menus[5]],
 
+            //Admin
+            ['role' => 'Admin', 'menu' => $menus[0]],
             ['role' => 'Admin', 'menu' => $menus[1]],
             ['role' => 'Admin', 'menu' => $menus[2]],
             ['role' => 'Admin', 'menu' => $menus[3]],
             ['role' => 'Admin', 'menu' => $menus[4]],
-            ['role' => 'Admin', 'menu' => $menus[5]],
+            ['role' => 'Admin', 'menu' => $menus[7]],
 
             // presenter
             ['role' => 'Presenter', 'menu' => $menus[0]],
@@ -415,9 +452,8 @@ class DatabaseSeeder extends Seeder
             ['text' => 'Waiting', 'color' => 'info', 'stype' => $stypes[3]],
             ['text' => 'Unpaid', 'color' => 'warning', 'stype' => $stypes[0]],
             ['text' => 'Paid', 'color' => 'success', 'stype' => $stypes[0]],
-            ['text' => 'Waiting', 'color' => 'info', 'stype' => $stypes[0]],
-            ['text' => 'Unsigned', 'color' => 'secondary', 'stype' => $stypes[1]],
-            ['text' => 'Reviewing', 'color' => 'info', 'stype' => $stypes[1]],
+            ['text' => 'Unsigned', 'color' => 'secondary', 'stype' => $stypes[3]],
+            ['text' => 'Reviewing', 'color' => 'info', 'stype' => $stypes[3]],
             ['text' => 'Need Revision', 'color' => 'warning', 'stype' => $stypes[1]],
             ['text' => 'Accepted', 'color' => 'success', 'stype' => $stypes[1]],
             ['text' => 'Rejected', 'color' => 'danger', 'stype' => $stypes[1]],

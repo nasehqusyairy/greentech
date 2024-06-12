@@ -56,7 +56,7 @@ if (session()->has('messages')) :
   <div class="card-body">
     <div class="mb-3">
       <a href="<?= base_url('abstracs'); ?>" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</a>
-      <?php if ($user == '3'): ?>
+      <?php if ($user == '2'): ?>
         <a href="<?= base_url("/reviews/create/?abstract_id=$abstract_id"); ?>" class="btn btn-primary"><i
             class="bi bi-plus"></i> New Review</a>
       <?php endif; ?>

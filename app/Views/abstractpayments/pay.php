@@ -28,6 +28,7 @@ if (session()->has('errors')) : ?>
           Choose a Paid Conference Payment
         </label>
         <select class="form-select" id="ticket_user_id" name="ticket_user_id">
+        <option value="">Choose...</option>
           <?php foreach ($ticketUsers as $ticketUser) : ?>
             <option value="<?= $ticketUser->id ?>" <?= $abstract->ticket_user_id == $ticketUser->id ? 'selected' : '' ?>><?= $ticketUser->ticket->name . ' - ' . $ticketUser->id ?></option>
           <?php endforeach; ?>

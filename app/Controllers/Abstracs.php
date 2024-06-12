@@ -162,6 +162,15 @@ class Abstracs extends BaseController
     // throw error if the data is not found
     if ($id == null || !$abstrac) throw new PageNotFoundException();
 
+    //cek accepted abstract
+    $response = [
+      'success' => "Can't edit accepted abstract",
+    ];
+
+    if ($abstrac->status->id == 8 || $abstrac->status->id == 4){
+      return redirect()->to('/abstracs/')->with('messages', $response);
+    }
+
     // return view
     return view('abstracs/edit', [
       'abstract' => $abstrac,
