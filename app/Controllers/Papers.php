@@ -69,7 +69,7 @@ class Papers extends BaseController
 
     // create form
     return view('papers/create', [
-      'abstracs' => $abstrac->where('status_id', '4')->where('creator_id', $user->id),
+      'abstracs' => $abstrac->whereNotNull('ticket_user_id')->where('creator_id', $user->id),
       'publications' => Publication::all(),
       'title' => 'New Paper'
     ]);
@@ -148,15 +148,35 @@ class Papers extends BaseController
 
     $user = $this->getUser();
 
+    // option abstract
+    $allAbstrac = Abstrac::all();
+    $usedAbstrac = Paper::where('abstrac_id', '!=', $paper->abstrac_id)->pluck('abstrac_id')->toArray();
+
+    $abstrac = $allAbstrac->reject(function ($allAbstrac) use ($usedAbstrac) {
+      return in_array($allAbstrac->id, $usedAbstrac);
+    });
+
     // throw error if the data is not found
     if ($id == null || !$paper)
       throw new PageNotFoundException();
+
+    // disable edit if paper already paid
+    if($paper->status_id == 4){
+      $response = [
+        'success' => 'This paper already confirmed',
+      ];
+  
+      if (isset($error)) $response['error'] = $error;
+  
+      // redirect
+      return redirect()->to('/papers/')->with('messages', $response);
+    }
 
     // return view
     return view('papers/edit', [
       'user' => $user->role->code,
       'paper' => $paper,
-      'abstracs' => Abstrac::all(),
+      'abstracs' => $abstrac->whereNotNull('ticket_user_id')->where('creator_id', $user->id),
       'publications' => Publication::all(),
       'statuses' => Status::whereHas('stype', function ($query) {
         $query->where('code', '0');
@@ -188,9 +208,10 @@ class Papers extends BaseController
     $emails = $paper->abstrac->emails;
     $emailArray = explode(',', $emails);
     $emails = array_map('trim', $emailArray);
-    $title = $paper->abtrac->title;
+    $title = $paper->abstrac->title;
 
-    if (!$validInput['status_id']) {
+
+    if (isset($validInput['status_id'])) {
       $mail = set_mail(
         'Your Paper Payment Status has Been Changed',
         "Hello! $title payment status has been changed. Let's check it!",
@@ -219,7 +240,7 @@ class Papers extends BaseController
     }
 
     $response = [
-      'success' => 'Payment data has been updated successfully',
+      'success' => 'Paper data has been updated successfully',
     ];
 
     if (isset($error)) $response['error'] = $error;
