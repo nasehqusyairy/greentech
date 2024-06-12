@@ -62,25 +62,24 @@ if (session()->has('messages')) :
                     <td>-</td>
                     <td>-</td>
                   <?php endif ?>
-
-                  <!-- <?php if ($abstrac->ticket_user_id != null) : ?> -->
+                  <?php if ($abstrac->ticket_user_id != null) : ?>
                   <td>
-                    <a href="<?= $abstrac->ticketUser->proff ?>" title="Download" class="btn btn-primary" download><i class="bi bi-download"></i></a>
+                    <a href="<?= $abstrac->ticketUser->proof ?>" title="Download" class="btn btn-primary" download><i class="bi bi-download"></i></a>
                   </td>
                   <td>
                     <?= $abstrac->ticketUser->status ? badge($abstrac->ticketUser->status->text, $abstrac->ticketUser->status->color) : badge('Unknown', 'secondary') ?>
                   </td>
-                  <!-- <?php endif ?> -->
+                  <?php endif ?>
                   <td class="text-nowrap">
-                    <?php //if ($user == '3'): 
+                    <?php if ($user == '3'): 
                     ?>
                     <a href="/abstractpayments/pay/<?= $abstrac->id ?>" title="Pay" class="btn btn-primary mb-1"><i class="bi bi-credit-card"></i></a>
-                    <?php //endif 
+                    <?php endif 
                     ?>
-                    <?php //if ($user == '1' || $user == '2'): 
+                    <?php if ($user == '3'): 
                     ?>
                     <button onclick="handleDelete(<?= $abstrac->id; ?>)" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
-                    <?php //endif 
+                    <?php endif 
                     ?>
 
                   </td>
@@ -102,7 +101,7 @@ if (session()->has('messages')) :
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <p>Are you sure you want to delete this item?</p>
+        <p>Are you sure you want to cancel this payment?</p>
       </div>
       <div class="modal-footer">
         <a href="javascript:void(0)" class="btn btn-danger">Delete</a>

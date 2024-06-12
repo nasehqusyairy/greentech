@@ -36,7 +36,7 @@ class AbstractPayments extends BaseController
 
     return view('abstractpayments/index', [
       'abstracs' => $abstract->whereHas('status', function ($query) {
-        $query->where('code', '9');
+        $query->where('code', '8');
       })->get()->sortBy('topic_id'),
       'user' => $user,
       'message' => $this->session->has('message') ? $this->session->get('message') : '',
@@ -65,11 +65,20 @@ class AbstractPayments extends BaseController
 
     $abstrac->status_id = Status::where('code', '4')->first()->id;
 
+    // disabled access when status is paid
+    if ($abstrac->ticket_user_id != null) {
+      $response = [
+        'success' => 'This abstract already pay',
+      ];
+      // redirect
+      return redirect()->to('/abstractpayments/')->with('messages', $response);
+    }
+
     // return view
     return view('abstractpayments/pay', [
       'abstract' => $abstrac,
-      'ticketUsers' => $ticketUsers,
-      'title' => 'New Payment'
+      'ticketUsers' => $ticketUsers->where('status_id', 4),
+      'title' => 'Payment'
     ]);
   }
 
@@ -98,38 +107,39 @@ class AbstractPayments extends BaseController
     $emails = array_map('trim', $emailArray);
     $title = $abstrac->title;
 
-    if($validInput['ticket_user_id'] != null){
+    if ($validInput['ticket_user_id'] != null) {
       $mail = set_mail(
         'Your Abstract Proof of Payment has Been Uplouded',
         "Hello! $title proof of payment has been uplouded. Let's check it!",
         base_url('/abstractpayments/index'),
         'Go to Abstract Payments'
       );
-  
-      foreach($emails as $email){
+
+      foreach ($emails as $email) {
         if (!send_email($mail, $email)) {
-          $error = 'Failed to send email to '.$email.', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
+          $error = 'Failed to send email to ' . $email . ', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
         }
-       }
-    }else{
+      }
+    } else {
       $mail = set_mail(
         'Your Abstract Payment Status has Been Changed',
         "Hello! $title payment status has been changed. Let's check it!",
         base_url('/abstractpayments/index'),
         'Go to Abstract Payments'
       );
-  
-      foreach($emails as $email){
+
+      foreach ($emails as $email) {
         if (!send_email($mail, $email)) {
-          $error = 'Failed to send email to '.$email.', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
+          $error = 'Failed to send email to ' . $email . ', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
         }
-       }
+      }
     }
     $response = [
       'success' => 'Payment data has been updated successfully',
     ];
 
-    if (isset($error)) $response['error'] = $error;
+    if (isset($error))
+      $response['error'] = $error;
 
     // redirect
     return redirect()->to('/abstractpayments/')->with('messages', $response);

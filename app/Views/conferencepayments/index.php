@@ -84,7 +84,7 @@ if (session()->has('messages')) :
                   </td>
                   <td>
                     <?php if ($user->role->code == '0' || $user->role->code == '1') : ?>
-                      <button onclick="handleConfirmation(<?= $ticketUser->id; ?>)" title="Confirm" class="btn btn-primary mb-1"
+                      <button onclick="handleConfirmation('<?= $ticketUser->id; ?>')" title="Confirm" class="btn btn-primary mb-1"
                       data-bs-toggle="modal" data-bs-target="#confirmationModal"><i class="bi bi-check-all"></i></button>
                       <!-- <a href="/conferencepayments/confirm/<?= $ticketUser->id ?>" class="btn btn-primary mb-1"><i class="bi bi-check-all"></i></a> -->
                     <?php endif; ?>
@@ -125,7 +125,7 @@ $this->endSection();
 $this->section('footer');
 ?>
 <script>
-  const handleConfirmation = (id) => document.querySelector('#confirmModal .modal-footer a').href = '<?= base_url(); ?>' + 'conferencepayments/confirm/' + id;
+  const handleConfirmation = (id) => document.querySelector('#confirmationModal .modal-footer a').href = '<?= base_url(); ?>' + 'conferencepayments/confirm/' + id;
 </script>
 <?php
 $this->endSection();

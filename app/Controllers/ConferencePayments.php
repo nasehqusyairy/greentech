@@ -193,6 +193,11 @@ class ConferencePayments extends BaseController
 
     // throw error if the data is not found
     if (!$ticketUser) throw new PageNotFoundException();
+    
+
+    if($ticketUser->status_id == 4){
+      return redirect()->to('/conferencepayments/')->with('message', "This ticket already confirmed");
+    }
 
     // manipulate data here
     $ticketUser->status_id = Status::where('code', '4')->first()->id;
