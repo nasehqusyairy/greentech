@@ -141,7 +141,7 @@
         <h5>October 2024 - Hybrid Meeting</h5>
         <h5 class="mb-5">Malang, Indonesia</h5>
       </div>
-      <a href="<?= base_url('auth/register'); ?>" class="btn btn-primary mt-3 btn-lg" data-aos="zoom-in" data-aos-delay="1500">Register</a>
+      <!-- <a href="<?= base_url('auth/register'); ?>" class="btn btn-primary mt-3 btn-lg" data-aos="zoom-in" data-aos-delay="1500">Register</a> -->
     </div>
   </section>
   <!-- END OF JUMBOTRON -->

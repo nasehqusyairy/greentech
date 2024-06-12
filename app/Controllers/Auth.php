@@ -133,10 +133,10 @@ class Auth extends BaseController
     return redirect()->to('/auth')->with('message', 'You have been logged out');
   }
 
-  public function register()
-  {
-    return view('auth/register');
-  }
+  // public function register()
+  // {
+  //   return view('auth/register');
+  // }
 
   public function store()
   {
