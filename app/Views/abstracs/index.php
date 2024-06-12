@@ -90,7 +90,7 @@ if (session()->has('messages')) :
                     <?= $abstract->status ? badge($abstract->status->text, $abstract->status->color) : badge('Unknown', 'secondary') ?>
                   </td>
                   <td class="text-nowrap">
-                    <?php if ($user == 0 || array_search($user, [1, 2, 3])) : ?>
+                    <?php if ($user == '0' || $user == '1' || $user == '2') : ?>
                       <a href="<?= base_url("/reviews/?abstract_id=$abstract->id"); ?>" title="Review" class="btn btn-info mb-1"><i class="bi bi-chat-left-text"></i></a>
                     <?php endif ?>
                     <?php if ($user == '3' || $user == '0') : ?>

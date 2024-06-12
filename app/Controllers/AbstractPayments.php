@@ -7,7 +7,7 @@ use App\Models\TicketUser;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use App\Models\Abstrac;
 
-class AbstractPayments extends BaseController
+class Abstractpayments extends BaseController
 {
   protected $rule = [
     'store' => [],

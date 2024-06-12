@@ -8,7 +8,7 @@ use App\Models\User;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use App\Models\TicketUser;
 
-class ConferencePayments extends BaseController
+class Conferencepayments extends BaseController
 {
   protected $rule = [
     'store' => [
