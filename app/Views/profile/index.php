@@ -35,7 +35,7 @@ if (!empty($message)) :
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 <?php endif; ?>
-<form action="<?= base_url('profile/update/'); ?>" method="post" enctype="multipart/form-data">
+<form action="<?= base_url('profile/update'); ?>" method="post" enctype="multipart/form-data">
   <?= csrf_field(); ?>
   <input type="hidden" name="id" value="<?= $user->id; ?>">
   <div class="row flex-lg-row-reverse align-items-center">
