@@ -69,7 +69,7 @@ class Profile extends BaseController
       unset($validInput['image']);
     } else {
       if ($user->image && str_contains($user->image, base_url())) {
-        unlink(FCPATH . str_replace('/', '\\', str_replace(base_url(), '', $user->image)));
+         unlink(FCPATH . str_replace(base_url(), '', $user->image));
       }
       $validInput['image'] = $files['image'];
     }

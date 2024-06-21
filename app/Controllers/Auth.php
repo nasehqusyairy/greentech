@@ -28,9 +28,9 @@ class Auth extends BaseController
 
   public function index()
   {
-    if ($this->session->has('user')) return redirect()->to('/');
+    if ($this->session->has('user')) return redirect()->to('/profile');
     // main view
-    return view('auth/index');
+    return view('auth/index1');
   }
 
   public function login()

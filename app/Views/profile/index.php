@@ -35,7 +35,7 @@ if (!empty($message)) :
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 <?php endif; ?>
-<form action="<?= base_url('profile/update/'); ?>" method="post" enctype="multipart/form-data">
+<form action="<?= base_url('profile/update'); ?>" method="post" enctype="multipart/form-data">
   <?= csrf_field(); ?>
   <input type="hidden" name="id" value="<?= $user->id; ?>">
   <div class="row flex-lg-row-reverse align-items-center">
@@ -47,15 +47,15 @@ if (!empty($message)) :
           <input class="form-control" type="file" id="image" name="image">
         </div>
       </div>
-      <div class="card mb-3">
-        <div class="card-body">
-          <h5 class="card-title">More</h5>
-          <ul>
-            <li><a href="./change-email.html">Change Email</a></li>
-            <li> <a href="<?= base_url('auth/forgot'); ?>">Reset Password</a></li>
-          </ul>
-        </div>
-      </div>
+      <!--<div class="card mb-3">-->
+      <!--  <div class="card-body">-->
+      <!--    <h5 class="card-title">More</h5>-->
+      <!--    <ul>-->
+      <!--      <li><a href="./change-email.html">Change Email</a></li>-->
+      <!--      <li> <a href="<?= base_url('auth/forgot'); ?>">Reset Password</a></li>-->
+      <!--    </ul>-->
+      <!--  </div>-->
+      <!--</div>-->
     </div>
     <div class="col-12 col-lg">
       <div class="card mb-3">

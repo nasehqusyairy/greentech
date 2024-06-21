@@ -28,7 +28,7 @@ $this->section('content');
 $user = $user->role->code;
 ?>
 
-<?php if (!empty($message)) : ?>
+<?php if (!empty($message)): ?>
   <div class="alert alert-success alert-dismissible fade show" role="alert">
     <?= $message ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -36,33 +36,35 @@ $user = $user->role->code;
 <?php endif;
 
 if (session()->has('messages')) :
-?>
-  <?php if (!empty(session('messages')['error'])) : ?>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      <?= session('messages')['error'] ?>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  <?php endif; ?>
-  <?php if (!empty(session('messages')['success'])) : ?>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <?= session('messages')['success'] ?>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  <?php endif; ?>
-
-<?php endif ?>
+  ?>
+    <?php if (!empty(session('messages')['error'])) : ?>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?= session('messages')['error'] ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <?php endif; ?>
+    <?php if (!empty(session('messages')['success'])) : ?>
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <?= session('messages')['success'] ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <?php endif; ?>
+    
+  <?php endif ?>
 
 <div class="card">
   <div class="card-body">
     <div class="mb-3">
       <a href="<?= base_url('abstracs'); ?>" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</a>
-      <?php if ($user == '2') : ?>
-        <a href="<?= base_url("/reviews/create/?abstract_id=$abstract_id"); ?>" class="btn btn-primary"><i class="bi bi-plus"></i> New Review</a>
+      <?php if ($user == '2'): ?>
+        <a href="<?= base_url("/reviews/create/?abstract_id=$abstract_id"); ?>" class="btn btn-primary"><i
+            class="bi bi-plus"></i> New Review</a>
       <?php endif; ?>
     </div>
     <ul class="nav nav-tabs" id="tab">
       <li class="nav-item">
-        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#available-tab-pane" type="button">Available</button>
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#available-tab-pane"
+          type="button">Available</button>
       </li>
       <li class="nav-item">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#deleted-tab-pane" type="button">Deleted</button>
@@ -86,7 +88,7 @@ if (session()->has('messages')) :
             </thead>
             <tbody>
               <?php $i = 1;
-              foreach ($reviews as $review) : ?>
+              foreach ($reviews as $review): ?>
                 <tr>
                   <td><?= $i++; ?></td>
                   <!-- <td><?= $review->created_at ?></td> -->
@@ -99,12 +101,14 @@ if (session()->has('messages')) :
                   </td>
                   <td><?= badge($review->status->text, $review->status->color) ?></td>
                   <td class="text-nowrap">
-                    <?php if ($user == '0' || $user == '2') : ?>
-                      <a href="/reviews/edit/<?= $review->id ?>/?abstract_id=<?= $review->abstrac->id; ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
+                    <?php if ($user == '0' || $user == '2'): ?>
+                      <a href="/reviews/edit/<?= $review->id ?>/?abstract_id=<?= $review->abstrac->id; ?>" title="Edit"
+                        class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
                     <?php endif ?>
-                    <?php if ($user == '0' || $user == '2') : ?>
-                      <button onclick="handleDelete(<?= $review->id; ?>)" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
-                    <?php endif ?>
+                    <?php if ($user == '0' || $user == '2'): ?>
+                    <button onclick="handleDelete(<?= $review->id; ?>)" title="Delete" class="btn btn-danger"
+                      data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                      <?php endif ?>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -128,7 +132,7 @@ if (session()->has('messages')) :
             </thead>
             <tbody>
               <?php $i = 1;
-              foreach ($deleted as $review) : ?>
+              foreach ($deleted as $review): ?>
                 <tr>
                   <td><?= $i++; ?></td>
                   <!-- <td><?= $review->created_at ?></td> -->

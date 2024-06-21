@@ -49,10 +49,10 @@ $this->section('content');
             <a href="<?= base_url('auth/register'); ?>" class="btn btn-secondary">Sign Up</a>
           </div>
           <p class="text-center">Or</p>
-          <a href="<?= base_url('auth/google'); ?>" class="btn btn-outline-primary w-100 mb-3"><i class="bi bi-google me-3"></i>
+        <!--  <a href="<?= base_url('auth/google'); ?>" class="btn btn-outline-primary w-100 mb-3"><i class="bi bi-google me-3"></i>
             Continue
             with
-            Google</a>
+            Google</a> -->
         </form>
       </div>
     </div>
