@@ -78,7 +78,7 @@ if (session()->has('messages')) :
                     ?>
                     <?php if ($user == '3'): 
                     ?>
-                    <button onclick="handleDelete(<?= $abstrac->id; ?>)" title="Delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <button onclick="handleDelete(<?= $abstrac->id; ?>)" title="Cancel" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-x-lg"></i></button>
                     <?php endif 
                     ?>
 
@@ -97,15 +97,15 @@ if (session()->has('messages')) :
   <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Delete</h5>
+        <h5 class="modal-title">Cancel</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
         <p>Are you sure you want to cancel this payment?</p>
       </div>
       <div class="modal-footer">
-        <a href="javascript:void(0)" class="btn btn-danger">Delete</a>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a href="javascript:void(0)" class="btn btn-danger">Yes</a>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
       </div>
     </div>
   </div>

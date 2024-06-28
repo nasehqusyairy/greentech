@@ -48,7 +48,8 @@ class Abstracs extends BaseController
   public function reviews($abstract_id)
   {
     $abstract = Abstrac::find($abstract_id);
-    if (!$abstract) throw new PageNotFoundException();
+    if (!$abstract)
+      throw new PageNotFoundException();
 
     return view('reviews/index', [
       // 'abstract_id' => $abstract->id,
@@ -112,18 +113,15 @@ class Abstracs extends BaseController
     $validInput = $this->validInput(['file']);
 
     // return response if the input is invalid
-    if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+    if (!$validInput)
+      return $this->invalidInputResponse($this->validator->getErrors());
 
     // manipulate data here
-    $files = $this->upload(['file']);
-    if (!isset($files['file'])) {
-      unset($validInput['file']);
-    } else {
-      $validInput['file'] = $files['file'];
-    }
-
     $validInput['status_id'] = Status::where('code', '5')->first()->id;
-    Abstrac::create($validInput);
+    $abstract = Abstrac::create($validInput);
+    $file = $this->upload(['file'], null, 'abs_' . $abstract->id);
+    $abstract->file = $file['file'];
+    $abstract->save();
 
     // send email to user
     $emails = $validInput['emails'];
@@ -147,7 +145,8 @@ class Abstracs extends BaseController
       'success' => 'Abstract data has been saved successfully',
     ];
 
-    if (isset($error)) $response['error'] = $error;
+    if (isset($error))
+      $response['error'] = $error;
 
     // redirect
     return redirect()->to('/abstracs/')->with('messages', $response);
@@ -160,16 +159,38 @@ class Abstracs extends BaseController
     $abstrac = Abstrac::find($id);
 
     // throw error if the data is not found
-    if ($id == null || !$abstrac) throw new PageNotFoundException();
+    if ($id == null || !$abstrac)
+      throw new PageNotFoundException();
 
     //cek accepted abstract
     $response = [
       'success' => "Can't edit accepted abstract",
     ];
 
-    if ($abstrac->status->id == 8 || $abstrac->status->id == 4){
+    if ($abstrac->status->id == 8 || $abstrac->status->id == 4) {
       return redirect()->to('/abstracs/')->with('messages', $response);
     }
+
+    // return view
+    return view('abstracs/edit', [
+      'abstract' => $abstrac,
+      'user' => $this->getUser(),
+      'topics' => Topic::all(),
+      'reviewers' => User::with('role')->whereHas('role', function ($query) {
+        $query->where('code', 2);
+      })->get(),
+      'title' => 'Edit Abstract'
+    ]);
+  }
+
+  public function detail($id = null)
+  {
+    // find data
+    $abstrac = Abstrac::find($id);
+
+    // throw error if the data is not found
+    if ($id == null || !$abstrac)
+      throw new PageNotFoundException();
 
     // return view
     return view('abstracs/edit', [
@@ -206,7 +227,8 @@ class Abstracs extends BaseController
     $validInput = $this->validInput($user->role->code == '3' ? ['file'] : null);
 
     // return response if the input is invalid
-    if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+    if (!$validInput)
+      return $this->invalidInputResponse($this->validator->getErrors());
 
     $abstrac = Abstrac::find($validInput['id']);
 
@@ -214,13 +236,13 @@ class Abstracs extends BaseController
     $reviewStatus = Status::where('code', '6')->first()->id;
 
     if ($user->role->code == '3') {
-      $files = $this->upload(['file']);
+      $files = $this->upload(['file'], null, 'abs_' . $validInput['id']);
       // delete old file
       if (!isset($files['file'])) {
         unset($validInput['file']);
       } else {
         if ($abstrac->file && str_contains($abstrac->file, base_url())) {
-           unlink(FCPATH .  str_replace(base_url(), '', $abstrac->file));
+          unlink(FCPATH . str_replace(base_url(), '', $abstrac->file));
         }
         $validInput['file'] = $files['file'];
       }
@@ -247,7 +269,8 @@ class Abstracs extends BaseController
     $abstrac = Abstrac::find($id);
 
     // throw error if the data is not found
-    if (!$abstrac) throw new PageNotFoundException();
+    if (!$abstrac)
+      throw new PageNotFoundException();
 
     // delete data
     $abstrac->delete();
@@ -260,7 +283,8 @@ class Abstracs extends BaseController
     $abstrac = Abstrac::withTrashed()->find($id);
 
     // throw error if the abstrac is not found
-    if (!$abstrac) throw new PageNotFoundException();
+    if (!$abstrac)
+      throw new PageNotFoundException();
 
     // restore data
     $abstrac->restore();

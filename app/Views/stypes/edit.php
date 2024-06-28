@@ -34,7 +34,7 @@ if (session()->has('errors')) : ?>
         <input type="text" class="form-control" id="name" name="name" value="<?= $name ?>">
       </div>
       <div class="d-grid d-lg-block gap-2">
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button onsubmit="loadingButton(event)" type="submit" class="btn btn-primary">Save</button>
         <a href="<?= base_url('stypes'); ?>" class="btn btn-secondary">Cancel</a>
       </div>
     </div>

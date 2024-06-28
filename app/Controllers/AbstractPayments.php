@@ -77,7 +77,7 @@ class Abstractpayments extends BaseController
     // return view
     return view('abstractpayments/pay', [
       'abstract' => $abstrac,
-      'ticketUsers' => $ticketUsers->where('status_id', 4),
+      'ticketUsers' => $ticketUsers,
       'title' => 'Payment'
     ]);
   }

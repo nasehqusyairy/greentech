@@ -92,23 +92,20 @@ class Papers extends BaseController
       return $this->invalidInputResponse($this->validator->getErrors());
 
     // manipulate data here
-    $files = $this->upload(['file']);
-    if (!isset($files['file'])) {
-      unset($validInput['file']);
-    } else {
-      $validInput['file'] = $files['file'];
-    }
-
-    $provement = $this->upload(['provement']);
-    if (!isset($provement['provement'])) {
-      unset($validInput['provement']);
-    } else {
-      $validInput['provement'] = $provement['provement'];
-    }
-
     $validInput['status_id'] = 2;
-    Paper::create($validInput);
 
+    
+    $files = $this->upload(['file'], null, 'fp_'.$validInput['abstrac_id']);
+    $provement = $this->upload(['provement'], null, 'pymn_fp_'.$validInput['abstrac_id']);
+    $validInput['file'] = $files['file'];
+    $validInput['provement'] = $provement['provement'];
+    
+    // dd($files);
+    $paper = Paper::create($validInput);
+    $paper->file = $files['file'];
+    $paper->provement = $provement['provement'];
+
+    $paper->save();
     // send email to user
     $abstract = Abstrac::find($validInput['abstrac_id']);
 
@@ -202,7 +199,29 @@ class Papers extends BaseController
 
     // manipulate data here
     $paper = Paper::find($validInput['id']);
+    $files = $this->upload(['file'], null, 'fp_'.$paper->abstrac_id);
+    $provement = $this->upload(['provement'], null, 'pymn_fp_'.$paper->abstrac_id);
+
+    if (!isset($files['file'])) {
+      unset($validInput['file']);
+    } else {
+      if ($paper->file && str_contains($paper->file, base_url())) {
+        unlink(FCPATH . str_replace(base_url(), '', $paper->file));
+      }
+      $validInput['file'] = $files['file'];
+    }
+
+    if (!isset($provement['provement'])) {
+      unset($validInput['provement']);
+    } else {
+      if ($paper->provement && str_contains($paper->provement, base_url())) {
+        unlink(FCPATH . str_replace(base_url(), '', $paper->provement));
+      }
+      $validInput['provement'] = $provement['provement'];
+    }
+
     $paper->update($validInput);
+
 
     // send email to user
     $emails = $paper->abstrac->emails;

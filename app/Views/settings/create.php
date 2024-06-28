@@ -42,7 +42,7 @@ if (session()->has('errors')) : ?>
         <input type="text" class="form-control" id="value" name="value" value="<?= old('value'); ?>">
       </div>
       <div class="d-grid d-lg-block gap-2">
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button onsubmit="loadingButton(event)" type="submit" class="btn btn-primary">Save</button>
         <a href="<?= base_url('settings'); ?>" class="btn btn-secondary">Cancel</a>
       </div>
     </div>

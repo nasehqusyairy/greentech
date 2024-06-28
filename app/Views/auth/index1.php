@@ -60,12 +60,12 @@
               <p class="text-center">
                 <a href="https://greentech.uin-malang.ac.id" class="text-white">Read more</a>
               </p>
-				<!--
+				
               <p><a href="<?= base_url('auth/google'); ?>" class="btn btn-primary btn-lg"><i class="bi bi-google me-3"></i>
                   Continue
                   with
                   Google</a></p>
-			-->
+			
             </div>
           </div>
         </div>

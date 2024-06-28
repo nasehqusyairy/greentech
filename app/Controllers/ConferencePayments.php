@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Abstrac;
 use App\Models\Status;
 use App\Models\Ticket;
 use App\Models\User;
@@ -14,13 +15,13 @@ class Conferencepayments extends BaseController
     'store' => [
       'ticket_id' => 'required|is_not_unique[tickets.id]',
       'proof' => 'uploaded[proof]|ext_in[proof,pdf,doc,docx,png,jpg,jpeg]|max_size[proof,5120]',
-      'attachment' => 'uploaded[attachment]|max_size[attachment,5120]|ext_in[attachment,png,jpg,jpeg,pdf]',
+      'attachment' => 'permit_empty|uploaded[attachment]|max_size[attachment,5120]|ext_in[attachment,png,jpg,jpeg,pdf]',
     ],
     'update' => [
       'id' => 'required|is_not_unique[ticket_user.id]',
       'ticket_id' => 'required|is_not_unique[tickets.id]',
       'proof' => 'uploaded[proof]|ext_in[proof,pdf,doc,docx,png,jpg,jpeg]|max_size[proof,5120]',
-      'attachment' => 'uploaded[attachment]|max_size[attachment,5120]|ext_in[attachment,png,jpg,jpeg,pdf]',
+      'attachment' => 'permit_empty|uploaded[attachment]|max_size[attachment,5120]|ext_in[attachment,png,jpg,jpeg,pdf]',
     ],
   ];
 
@@ -38,7 +39,7 @@ class Conferencepayments extends BaseController
 
     if ($user->role->code == 3 || $user->role->code == 4) {
       $ticket = $ticket->where('user_id', $user->id);
-    } 
+    }
 
     // main view
     return view('conferencepayments/index', [
@@ -78,14 +79,20 @@ class Conferencepayments extends BaseController
       return $this->invalidInputResponse($this->validator->getErrors());
 
     // manipulate data here
-    $files = $this->upload(['proof', 'attachment']);
-    $validInput['proof'] = $files['proof'];
-    $validInput['attachment'] = $files['attachment'];
+
     $validInput['user_id'] = $this->getUser()->id;
 
     $validInput['status_id'] = Status::where('code', '2')->first()->id;
 
-    TicketUser::create($validInput);
+    $ticket = TicketUser::create($validInput);
+    $files1 = $this->upload(['proof'], null, 'abs_proof_' . $ticket->id);
+    $files2 = $this->upload(['attachment'], null, 'abs_att_' . $ticket->id);
+    $ticket->proof = $files1['proof'];
+
+    if(isset($files2['attachment'])){
+      $ticket->attachment = $files2['attachment'];
+    }
+    $ticket->save();
 
     // send email to user
     $user = User::where('id', $validInput['user_id'])->first();
@@ -106,7 +113,8 @@ class Conferencepayments extends BaseController
       'success' => 'Payment data has been saved successfully',
     ];
 
-    if (isset($error)) $response['error'] = $error;
+    if (isset($error))
+      $response['error'] = $error;
 
     // redirect
     return redirect()->to('/conferencepayments/')->with('messages', $response);
@@ -150,6 +158,14 @@ class Conferencepayments extends BaseController
 
     // manipulate data here
     $ticketUser = TicketUser::find($validInput['id']);
+    $files1 = $this->upload(['proof'], null, 'abs_proof_' . $ticketUser->id);
+    $files2 = $this->upload(['attachment'], null, 'abs_att_' . $ticketUser->id);
+
+    $validInput['proof'] = $files1['proof'];
+
+    if(isset($files2['attachment'])){
+      $validInput['attachment'] = $files2['attachment'];
+    }
     $ticketUser->update($validInput);
 
     // redirect
@@ -192,10 +208,11 @@ class Conferencepayments extends BaseController
     $ticketUser = TicketUser::find($id);
 
     // throw error if the data is not found
-    if (!$ticketUser) throw new PageNotFoundException();
-    
+    if (!$ticketUser)
+      throw new PageNotFoundException();
 
-    if($ticketUser->status_id == 4){
+
+    if ($ticketUser->status_id == 4) {
       return redirect()->to('/conferencepayments/')->with('message', "This ticket already confirmed");
     }
 
@@ -205,4 +222,33 @@ class Conferencepayments extends BaseController
 
     return redirect()->to('/conferencepayments/')->with('message', 'Payment data has been confirmed successfully');
   }
+
+  public function reject($id = null)
+  {
+    // find data
+    $ticketUser = TicketUser::find($id);
+    $abstract = Abstrac::where('ticket_user_id', $id)->first();
+
+    // throw error if the data is not found
+    if (!$ticketUser)
+      throw new PageNotFoundException();
+
+
+    if ($ticketUser->status_id == 4) {
+      return redirect()->to('/conferencepayments/')->with('message', "This ticket already confirmed");
+    }
+
+    // manipulate data here
+    $ticketUser->status_id = Status::where('code', '3')->first()->id;
+    $ticketUser->save();
+
+    if (!empty($abstract)){
+      $abstract->update(['ticket_user_id' => null]);
+    }
+
+    return redirect()->to('/conferencepayments/')->with('message', 'Payment data has been confirmed successfully');
+  }
 }
+
+
+

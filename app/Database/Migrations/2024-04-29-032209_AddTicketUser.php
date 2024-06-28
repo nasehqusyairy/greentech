@@ -11,7 +11,7 @@ class AddTicketUser extends Blueprint
         $this->create('ticket_user', function (Blueprint $table) {
             $table->uuid();
             $table->text('proof');
-            $table->text('attachment');
+            $table->text('attachment')->nullable();
             $table->foreignId('status_id')->constrained('statuses')->cascadeOnDelete()->add();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->add();
             $table->foreignUuid('ticket_id')->constrained('tickets')->cascadeOnDelete()->add();

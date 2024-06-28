@@ -29,7 +29,7 @@ if (session()->has('errors')) : ?>
         </div>
       </div>
       <div class="d-grid d-lg-block gap-2">
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button onsubmit="loadingButton(event)" type="submit" class="btn btn-primary">Save</button>
         <a href="<?= base_url('permissions'); ?>" class="btn btn-secondary">Cancel</a>
       </div>
     </div>

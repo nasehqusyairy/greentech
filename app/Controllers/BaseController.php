@@ -188,7 +188,7 @@ abstract class BaseController extends Controller
             ->save($destinationPath);
     }
 
-    protected function upload(array $files = null, callable $callback = null)
+    protected function upload(array $files = null, callable $callback = null, $newfilename=null)
     {
         $fileUrls = [];
         foreach ($files as $file) {
@@ -197,7 +197,7 @@ abstract class BaseController extends Controller
 
             if ($file->isValid() && !$file->hasMoved()) {
                 // Generate a new filename
-                $newName = $file->getRandomName();
+                $newName = !empty($newfilename)?$newfilename.'.'.$file->getExtension():$file->getRandomName();
 
                 $newLocation = 'uploads/' . $file->getExtension();
 

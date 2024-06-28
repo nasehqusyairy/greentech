@@ -13,7 +13,7 @@ class Reviews extends BaseController
     'store' => [
       'abstrac_id' => 'required|is_not_unique[abstracs.id]',
       'comment' => 'required|string',
-      'file' => 'uploaded[file]|ext_in[file,pdf,doc,docx]|max_size[file,5120]',
+      'file' => 'permit_empty|uploaded[file]|ext_in[file,pdf,doc,docx]|max_size[file,5120]',
       'status_id' => 'required|is_not_unique[statuses.id]',
     ],
     'update' => [
@@ -113,20 +113,22 @@ class Reviews extends BaseController
       return $this->invalidInputResponse($this->validator->getErrors());
 
     // manipulate data here
-    $files = $this->upload(['file']);
-    if (!isset($files['file'])) {
-      unset($validInput['file']);
-    } else {
-      $validInput['file'] = $files['file'];
-    }
-
     $abstract = Abstrac::find($validInput['abstrac_id']);
 
     $abstract->status_id = $validInput['status_id'];
     $abstract->save();
+    
+    $random = random_int(0,1000);
+
+    // if(isset($validInput['file'])){
+    $files = $this->upload(['file'], null, 'rev_'.$abstract->id.'_'.$random);
 
     $review = Review::create($validInput);
 
+    if(isset($files['file'])){
+      $review->file= $files['file'];
+      $review->save();
+    }
 
     // send email to user
     $emails = $abstract->emails;
@@ -194,21 +196,21 @@ class Reviews extends BaseController
     // return response if the input is invalid
     if (!$validInput)
       return $this->invalidInputResponse($this->validator->getErrors());
-
+    
+    $review = Review::find($validInput['id'])->load('abstrac');
     // manipulate data here
-    $files = $this->upload(['file']);
-    if (!isset($files['file'])) {
-      unset($validInput['file']);
-    } else {
-      $validInput['file'] = $files['file'];
+    $random = random_int(0,1000);
+    $files = $this->upload(['file'], null, 'rev_'.$review->abstrac_id.'_'.$random);
+    if (isset($files['file'])) {
+        $review->file= $files['file'];
+        $validInput['file'] = $files['file'];
     }
 
-    $review = Review::find($validInput['id'])->load('abstrac');
     $review->update($validInput);
-
+    
     $review->abstrac->status_id = $validInput['status_id'];
     $review->abstrac->save();
-
+    
     // send email to user
     $abstrac = $review->abstrac;
     $emails = $abstrac->emails;

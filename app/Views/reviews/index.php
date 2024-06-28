@@ -35,22 +35,22 @@ $user = $user->role->code;
   </div>
 <?php endif;
 
-if (session()->has('messages')) :
+if (session()->has('messages')):
   ?>
-    <?php if (!empty(session('messages')['error'])) : ?>
-      <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <?= session('messages')['error'] ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    <?php endif; ?>
-    <?php if (!empty(session('messages')['success'])) : ?>
-      <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <?= session('messages')['success'] ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    <?php endif; ?>
-    
-  <?php endif ?>
+  <?php if (!empty(session('messages')['error'])): ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <?= session('messages')['error'] ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif; ?>
+  <?php if (!empty(session('messages')['success'])): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <?= session('messages')['success'] ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif; ?>
+
+<?php endif ?>
 
 <div class="card">
   <div class="card-body">
@@ -97,7 +97,12 @@ if (session()->has('messages')) :
                     <?= $review->comment ?>
                   </td>
                   <td>
-                    <a href="<?= $review->file ?>" class="btn btn-primary" download><i class="bi bi-download"></i></a>
+                    <?php if (!empty($review->file)): ?>
+                      <a href="<?= $review->file ?>" class="btn btn-primary" download><i class="bi bi-download"></i></a>
+                    <?php endif ?>
+                    <?php if (empty($review->file)): ?>
+                      <p>-</p>
+                    <?php endif ?>
                   </td>
                   <td><?= badge($review->status->text, $review->status->color) ?></td>
                   <td class="text-nowrap">
@@ -106,9 +111,9 @@ if (session()->has('messages')) :
                         class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
                     <?php endif ?>
                     <?php if ($user == '0' || $user == '2'): ?>
-                    <button onclick="handleDelete(<?= $review->id; ?>)" title="Delete" class="btn btn-danger"
-                      data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
-                      <?php endif ?>
+                      <button onclick="handleDelete(<?= $review->id; ?>)" title="Delete" class="btn btn-danger"
+                        data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <?php endif ?>
                   </td>
                 </tr>
               <?php endforeach; ?>

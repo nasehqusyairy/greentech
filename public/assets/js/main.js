@@ -112,3 +112,9 @@ $('#userFormModal select').select2({
   theme: 'bootstrap-5',
   width: '100%'
 });
+
+function loadingButton(e){
+  el = e.target
+  el.setAttribute('disabled','')
+  el.innerText = 'Loading...'
+}

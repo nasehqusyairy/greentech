@@ -10,10 +10,14 @@ class Auth extends BaseController
 {
   protected $rule = [
     'store' => [
-      'name' => 'required|alpha_numeric_punct',
       'email' => 'required|valid_email|is_unique[users.email]',
-      'password' => 'required|min_length[8]|max_length[255]',
-      'confirm_password' => 'required|matches[password]',
+      'name' => 'required|alpha_numeric_punct',
+      'country' => 'required|alpha',
+      'callingcode' => 'required|alpha_numeric_punct',
+      'phone' => 'required|numeric',
+      'institution' => 'required|alpha_numeric_punct',
+      'gender' => 'required|in_list[0,1,2]',
+      'role_id' => 'required|is_not_unique[roles.id]',
     ],
     'login' => [
       'email' => 'required|valid_email',
@@ -28,7 +32,8 @@ class Auth extends BaseController
 
   public function index()
   {
-    if ($this->session->has('user')) return redirect()->to('/profile');
+    if ($this->session->has('user'))
+      return redirect()->to('/profile');
     // main view
     return view('auth/index1');
   }
@@ -41,7 +46,8 @@ class Auth extends BaseController
 
     $validInput = $this->validInput();
 
-    if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+    if (!$validInput)
+      return $this->invalidInputResponse($this->validator->getErrors());
 
     // get user by email including deleted user
     $user = User::withTrashed()->where('email', $validInput['email'])->first();
@@ -118,8 +124,14 @@ class Auth extends BaseController
 
       // Lakukan sesuatu dengan data akun Google yang diterima
       $user = User::where('email', $google_account_info->email)->first();
+
       if (!$user) {
-        $user = User::create($preparedData);
+        // $user = User::create($preparedData);
+
+        // $this->session->set('user', $preparedData);
+        $this->session->set('user', $preparedData);
+
+        return redirect()->to('auth/register');
       }
       $this->session->set('user', $user->id);
       return redirect()->to('/profile')->with('message', 'Login success, please complete your profile');
@@ -133,10 +145,18 @@ class Auth extends BaseController
     return redirect()->to('/auth')->with('message', 'You have been logged out');
   }
 
-  // public function register()
-  // {
-  //   return view('auth/register');
-  // }
+  public function register()
+  {
+    $user = $this->session->get('user');
+
+    return view('auth/register', [
+      'roles' => Role::where([
+        ['code', '!=', 0],
+        ['code', '!=', 1]
+      ])->get(),
+      'user' => $user,
+    ]);
+  }
 
   public function store()
   {
@@ -150,10 +170,13 @@ class Auth extends BaseController
     $validInput = $this->validInput();
 
     // return response if the input is invalid
-    if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+    if (!$validInput)
+      return $this->invalidInputResponse($this->validator->getErrors());
 
     // create activation code
     $validInput['activationCode'] = bin2hex(random_bytes(32));
+
+    $validInput['password'] = random_bytes(8);
 
     $mail = set_mail(
       'Welcome to our community',
@@ -163,24 +186,37 @@ class Auth extends BaseController
     );
 
     if (!send_email($mail, $validInput['email'])) {
-      return redirect()->to('/auth/register')->withInput()->with('message', 'Failed to send email, please make sure your email is valid and try again. If the problem persists, please contact our customer service.');
+      $error = 'Failed to send email to ' . $validInput['email'] . ', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
     }
 
+    $response = [
+      'success' => 'Registration success',
+    ];
+
+    if (isset($error))
+      $response['error'] = $error;
+
     // manipulate data here
-    $validInput['password'] = password_hash($validInput['password'], PASSWORD_DEFAULT);
-    $validInput['role_id'] = Role::where('code', 3)->first()->id;
+    if (!empty($validInput['password'])) {
+      $validInput['password'] = password_hash($validInput['password'], PASSWORD_DEFAULT);
+    }
+
     $validInput['isActive'] = 0;
     User::create($validInput);
 
+    $user = User::where('email', $validInput['email'])->first();
+    $this->session->set('user', $user->id);
+
     // redirect
-    return redirect()->to('/auth')->with('message', 'Registration success, please check your email to activate your account');
+    return redirect()->to('/profile')->with('messages', $response);
   }
 
   public function activate($activationCode)
   {
     $user = User::where('activationCode', $activationCode)->first();
 
-    if (!$user) throw new PageNotFoundException();
+    if (!$user)
+      throw new PageNotFoundException();
 
     $user->update([
       'isActive' => 1,
@@ -200,7 +236,8 @@ class Auth extends BaseController
     if ($resetPasswordCode) {
       if ($this->request->is('post')) {
         $user = User::where('resetPasswordCode', $resetPasswordCode)->first();
-        if (!$user) throw new PageNotFoundException();
+        if (!$user)
+          throw new PageNotFoundException();
 
         $this->validator->setRules([
           'password' => 'required|min_length[8]|max_length[255]',
@@ -209,7 +246,8 @@ class Auth extends BaseController
 
         $validInput = $this->validInput();
 
-        if (!$validInput) return $this->invalidInputResponse($this->validator->getErrors());
+        if (!$validInput)
+          return $this->invalidInputResponse($this->validator->getErrors());
 
         $user->update([
           'password' => password_hash($validInput['password'], PASSWORD_DEFAULT),
@@ -219,9 +257,11 @@ class Auth extends BaseController
         return redirect()->to('/auth')->with('message', 'Password has been reset, please login to continue');
       }
       $user = User::where('resetPasswordCode', $resetPasswordCode)->first();
-      if (!$user) throw new PageNotFoundException();
+      if (!$user)
+        throw new PageNotFoundException();
       return view('auth/reset', ['resetPasswordCode' => $resetPasswordCode]);
-    };
+    }
+    ;
     $this->isPostRequest();
 
     $user = User::where('email', $this->request->getVar('email'))->first();

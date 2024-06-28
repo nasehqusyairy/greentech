@@ -18,23 +18,43 @@ $callingcode = old('callingcode') ?? $user->callingcode;
 
 $this->extend('components/layout');
 $this->section('content');
-if (!empty($message)) :
-?>
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <?= $message; ?>
+if (!empty($message)):
+  ?>
+  <div class="alert alert-success alert-dismissible fade show">
+    <?= $message ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
-<?php endif; ?>
-<?php if (session()->has('errors')) : ?>
+<?php endif;
+
+if (session()->has('errors')): ?>
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
     <ul class="m-0">
-      <?php foreach (session('errors') as $error) : ?>
-        <li><?= $error; ?></li>
+      <?php foreach (session('errors') as $error): ?>
+        <li><?= $error ?></li>
       <?php endforeach; ?>
     </ul>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
-<?php endif; ?>
+<?php endif;
+
+if (session()->has('messages')):
+  ?>
+  <?php if (!empty(session('messages')['error'])): ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <?= session('messages')['error'] ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif; ?>
+  <?php if (!empty(session('messages')['success'])): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <?= session('messages')['success'] ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif; ?>
+
+<?php endif ?>
+
+
 <form action="<?= base_url('profile/update'); ?>" method="post" enctype="multipart/form-data">
   <?= csrf_field(); ?>
   <input type="hidden" name="id" value="<?= $user->id; ?>">
@@ -79,7 +99,8 @@ if (!empty($message)) :
             <label for="phone" class="form-label">Phone Number</label>
             <div class="input-group">
               <span class="input-group-text" id="phone-addon"><?= $callingcode; ?></span>
-              <input type="text" class="form-control" id="phone" name="phone" placeholder="81234567890" value="<?= $phone; ?>">
+              <input type="text" class="form-control" id="phone" name="phone" placeholder="81234567890"
+                value="<?= $phone; ?>">
             </div>
           </div>
           <div class="mb-3">
@@ -95,19 +116,8 @@ if (!empty($message)) :
               <option value="2">Female</option>
             </select>
           </div>
-          <?php if ($user->role->code != 0 && $user->role->code != 1) : ?>
-            <div class="mb-3">
-              <label for="role" class="form-label">Role</label>
-              <!-- select -->
-              <select class="form-select" id="role" name="role_id">
-                <?php foreach ($roles as $role) : ?>
-                  <option value="<?= $role->id; ?>" <?= $role->id == $user->role_id ? 'selected' : ''; ?>><?= $role->name; ?></option>
-                <?php endforeach  ?>
-              </select>
-            </div>
-          <?php endif ?>
           <div class="d-grid d-lg-block gap-2">
-            <button class="btn btn-primary">Save</button>
+            <button onsubmit="loadingButton(event)" class="btn btn-primary">Save</button>
           </div>
         </div>
       </div>

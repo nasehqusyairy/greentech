@@ -70,7 +70,7 @@ if (session()->has('errors')) : ?>
         <input type="number" class="form-control" id="price" name="price" value="<?= old('price', $ticket->price); ?>">
       </div>
       <div class="d-grid d-lg-block gap-2">
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button onsubmit="loadingButton(event)" type="submit" class="btn btn-primary">Save</button>
         <a href="<?= base_url('tickets'); ?>" class="btn btn-secondary">Cancel</a>
       </div>
     </div>
