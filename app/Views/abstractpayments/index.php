@@ -15,20 +15,20 @@ $user = $user->role->code;
 <?php endif;
 
 if (session()->has('messages')) :
-  ?>
-    <?php if (!empty(session('messages')['error'])) : ?>
-      <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <?= session('messages')['error'] ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    <?php endif; ?>
-    <?php if (!empty(session('messages')['success'])) : ?>
-      <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <?= session('messages')['success'] ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    <?php endif; ?>
-  <?php endif ?>
+?>
+  <?php if (!empty(session('messages')['error'])) : ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <?= session('messages')['error'] ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif; ?>
+  <?php if (!empty(session('messages')['success'])) : ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <?= session('messages')['success'] ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif; ?>
+<?php endif ?>
 
 
 <div class="card">
@@ -63,24 +63,20 @@ if (session()->has('messages')) :
                     <td>-</td>
                   <?php endif ?>
                   <?php if ($abstrac->ticket_user_id != null) : ?>
-                  <td>
-                    <a href="<?= $abstrac->ticketUser->proof ?>" title="Download" class="btn btn-primary" download><i class="bi bi-download"></i></a>
-                  </td>
-                  <td>
-                    <?= $abstrac->ticketUser->status ? badge($abstrac->ticketUser->status->text, $abstrac->ticketUser->status->color) : badge('Unknown', 'secondary') ?>
-                  </td>
+                    <td>
+                      <a href="<?= $abstrac->ticketUser->proof ?>" title="Download" class="btn btn-primary" download><i class="bi bi-download"></i></a>
+                    </td>
+                    <td>
+                      <?= $abstrac->ticketUser->status ? badge($abstrac->ticketUser->status->text, $abstrac->ticketUser->status->color) : badge('Unknown', 'secondary') ?>
+                    </td>
                   <?php endif ?>
                   <td class="text-nowrap">
-                    <?php if ($user == '3'): 
-                    ?>
-                    <a href="/abstractpayments/pay/<?= $abstrac->id ?>" title="Pay" class="btn btn-primary mb-1"><i class="bi bi-credit-card"></i></a>
-                    <?php endif 
-                    ?>
-                    <?php if ($user == '3'): 
-                    ?>
-                    <button onclick="handleDelete(<?= $abstrac->id; ?>)" title="Cancel" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-x-lg"></i></button>
-                    <?php endif 
-                    ?>
+                    <?php if ($user == '3') : ?>
+                      <a href="/abstractpayments/pay/<?= $abstrac->id ?>" title="Pay" class="btn btn-primary mb-1"><i class="bi bi-credit-card"></i></a>
+                      <button onclick="handleDelete(<?= $abstrac->id; ?>)" title="Cancel" class="btn btn-danger mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-x-lg"></i></button>
+                    <?php else : ?>
+                      -
+                    <?php endif ?>
 
                   </td>
                 </tr>

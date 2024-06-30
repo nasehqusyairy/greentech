@@ -131,14 +131,14 @@ class Abstracs extends BaseController
 
     $mail = set_mail(
       'Your Abstract Succecfully Submitted',
-      "Hello! $title has been submited. If you did not make this change, please contact our customer service.",
+      "Hello! $title has been submited. If you did not make this change, please contact our service.",
       base_url('/abstracs/index'),
       'Go to Abstract'
     );
 
     foreach ($emails as $email) {
       if (!send_email($mail, $email)) {
-        $error = 'Failed to send email to ' . $email . ', please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
+        $error = 'Failed to send email to <b>' . $email . '</b>, please make sure your email is valid and try again. If the problem persists, please contact our customer service.';
       }
     }
     $response = [
@@ -150,7 +150,6 @@ class Abstracs extends BaseController
 
     // redirect
     return redirect()->to('/abstracs/')->with('messages', $response);
-
   }
 
   public function edit($id = null)
@@ -186,21 +185,16 @@ class Abstracs extends BaseController
   public function detail($id = null)
   {
     // find data
-    $abstrac = Abstrac::find($id);
+    $abstrac = Abstrac::find($id)->load('creator', 'topic', 'reviewer', 'ticketUser');
 
     // throw error if the data is not found
     if ($id == null || !$abstrac)
       throw new PageNotFoundException();
 
     // return view
-    return view('abstracs/edit', [
+    return view('abstracs/detail', [
       'abstract' => $abstrac,
-      'user' => $this->getUser(),
-      'topics' => Topic::all(),
-      'reviewers' => User::with('role')->whereHas('role', function ($query) {
-        $query->where('code', 2);
-      })->get(),
-      'title' => 'Edit Abstract'
+      'title' => 'Abstract Details'
     ]);
   }
 

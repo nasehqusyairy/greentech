@@ -32,7 +32,7 @@
   <meta name="theme-color" content="#008080">
   <!-- <meta name="theme-color" content="#0d6efd"> -->
   <script>
-      const stamp = `
+    const stamp = `
 ----------------==++++******++++==----------------
 ------------=++********************++=------------
 ---------=+****************************+=---------
@@ -71,13 +71,13 @@ LIST OF MEMBERS
 6. ALDIANA DAMAYANTI
 7. FIRDA ARINDA
       `
-      console.log(stamp)
+    console.log(stamp)
   </script>
 </head>
 
 <body style="background-color: var(--bs-gray-900);">
-    
-<!--
+
+  <!--
 
 ----------------==++++******++++==----------------
 ------------=++********************++=------------

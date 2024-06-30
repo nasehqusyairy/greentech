@@ -26,21 +26,21 @@ if (session()->has('errors')) : ?>
 <?php endif;
 
 if (session()->has('messages')) :
-  ?>
-    <?php if (!empty(session('messages')['error'])) : ?>
-      <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <?= session('messages')['error'] ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    <?php endif; ?>
-    <?php if (!empty(session('messages')['success'])) : ?>
-      <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <?= session('messages')['success'] ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    <?php endif; ?>
-    
-  <?php endif ?>
+?>
+  <?php if (!empty(session('messages')['error'])) : ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <?= session('messages')['error'] ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif; ?>
+  <?php if (!empty(session('messages')['success'])) : ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <?= session('messages')['success'] ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif; ?>
+
+<?php endif ?>
 
 <div class="card">
   <div class="card-body">
@@ -94,7 +94,7 @@ if (session()->has('messages')) :
                     <?php if ($user == 0 || array_search($user, [1, 2, 3])) : ?>
                       <a href="<?= base_url("/reviews/?abstract_id=$abstract->id"); ?>" title="Review" class="btn btn-info mb-1"><i class="bi bi-chat-left-text"></i></a>
                     <?php endif ?>
-                    <?php if ($user == '0'||$user == '1'||$user=='3') : ?>
+                    <?php if ($user == '0' || $user == '1' || $user == '3') : ?>
                       <a href="/abstracs/edit/<?= $abstract->id ?>" title="Edit" class="btn btn-warning mb-1"><i class="bi bi-pencil"></i></a>
                     <?php endif ?>
                     <?php if ($user == '0' || $user == '1') : ?>

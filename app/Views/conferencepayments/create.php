@@ -47,11 +47,49 @@ if (session()->has('errors')) : ?>
 
 </form>
 
+<div class="card">
+  <div class="card-body">
+    <h5>Available Ticket Details</h5>
+    <table class="table table-striped table-hover w-100" id="available">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Attendence</th>
+          <th>Type</th>
+          <th>Role</th>
+          <th>State</th>
+          <th>Study</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+        $i = 1;
+        foreach ($tickets as $ticket) : ?>
+          <tr>
+            <td><?= $i++; ?></td>
+            <td><?= $ticket->name ?></td>
+            <td><?= $ticket->attendance ?></td>
+            <td><?= $ticket->ttype->name ?></td>
+            <td><?= $ticket->trole->name ?></td>
+            <td><?= $ticket->state->name ?></td>
+            <td><?= $ticket->study->name ?></td>
+            <td>Rp. <?= $ticket->price ?></td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  </div>
+</div>
+
 <?php
 $this->endSection();
 $this->section('footer');
 ?>
 <script>
+  const table = new DataTable('#available');
+
   // select2
   $('#ticket').select2({
     theme: 'bootstrap-5',
