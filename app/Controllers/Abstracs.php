@@ -56,17 +56,6 @@ class Abstracs extends BaseController
     ]);
   }
 
-  public function addReview()
-  {
-    // Review::updateOrCreate([
-    //   'abstrac_id' => 1
-    // ], [
-    //   'comment' => 'tes',
-    //   'file' => 'tes',
-    //   'status_id' => 1
-    // ]);
-  }
-
   public function index()
   {
     $abstract = Abstrac::with('creator', 'topic', 'reviewer');

@@ -12,7 +12,7 @@ $gender = old('gender' . $user['gender']);
 $country = old('country' . $user['country']);
 $institution = old('institution');
 $phone = old('phone');
-// dd($countries);
+// dd(session('errors'));
 ?>
 
 <div class="row justify-content-center">
@@ -20,15 +20,15 @@ $phone = old('phone');
     <div class="card my-3">
       <div class="card-body">
         <h3 class="text-center">Sign Up</h3>
-        <!-- <?php if (session()->has('errors')): ?>
+        <?php if (session()->has('errors')) : ?>
           <div class="alert alert-danger" role="alert">
             <ul>
-              <?php foreach (session('errors') as $error): ?>
+              <?php foreach (session('errors') as $error) : ?>
                 <li><?= $error ?></li>
               <?php endforeach; ?>
             </ul>
           </div>
-        <?php endif; ?> -->
+        <?php endif; ?>
         <form action="<?= base_url('auth/store'); ?>" method="post">
           <?= csrf_field(); ?>
           <div class="mb-3">
@@ -50,8 +50,7 @@ $phone = old('phone');
             <label for="phone" class="form-label">Phone Number</label>
             <div class="input-group">
               <span class="input-group-text" id="phone-addon"><?= $callingcode; ?></span>
-              <input type="text" class="form-control" id="phone" name="phone" placeholder="81234567890"
-                value="<?= $phone; ?>">
+              <input type="text" class="form-control" id="phone" name="phone" placeholder="81234567890" value="<?= $phone; ?>">
             </div>
           </div>
           <div class="mb-3">
@@ -71,7 +70,7 @@ $phone = old('phone');
             <label for="role" class="form-label">Role</label>
             <!-- select -->
             <select class="form-select" id="role" name="role_id">
-              <?php foreach ($roles as $role): ?>
+              <?php foreach ($roles as $role) : ?>
                 <option value="<?= $role->id; ?>"><?= $role->name; ?></option>
               <?php endforeach ?>
             </select>

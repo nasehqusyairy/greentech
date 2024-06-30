@@ -201,6 +201,7 @@ class Auth extends BaseController
       $validInput['password'] = password_hash($validInput['password'], PASSWORD_DEFAULT);
     }
 
+    $validInput['image'] = $this->session->get('user')['img'];
     $validInput['isActive'] = 0;
     User::create($validInput);
 
@@ -260,8 +261,7 @@ class Auth extends BaseController
       if (!$user)
         throw new PageNotFoundException();
       return view('auth/reset', ['resetPasswordCode' => $resetPasswordCode]);
-    }
-    ;
+    };
     $this->isPostRequest();
 
     $user = User::where('email', $this->request->getVar('email'))->first();
