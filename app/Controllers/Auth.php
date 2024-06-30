@@ -129,7 +129,7 @@ class Auth extends BaseController
         // $user = User::create($preparedData);
 
         // $this->session->set('user', $preparedData);
-        $this->session->set('user', $preparedData);
+        $this->session->set('preparedData', $preparedData);
 
         return redirect()->to('auth/register');
       }
@@ -147,7 +147,7 @@ class Auth extends BaseController
 
   public function register()
   {
-    $user = $this->session->get('user');
+    $user = $this->session->get('preparedData');
 
     return view('auth/register', [
       'roles' => Role::where([
@@ -201,11 +201,12 @@ class Auth extends BaseController
       $validInput['password'] = password_hash($validInput['password'], PASSWORD_DEFAULT);
     }
 
-    $validInput['image'] = $this->session->get('user')['img'];
+    $validInput['image'] = $this->session->get('preparedData')['img'];
     $validInput['isActive'] = 0;
     User::create($validInput);
 
     $user = User::where('email', $validInput['email'])->first();
+    $this->session->remove('preparedData');
     $this->session->set('user', $user->id);
 
     // redirect
